@@ -1,0 +1,39 @@
+body {
+    background: #ffffff url("https://dss3.bdstatic.com/lPoZeXSm1A5BphGlnYG/skin/122.jpg?2") no-repeat fixed center center;
+    background-size: cover;
+}
+
+.layui-container {
+    margin: 0 auto;
+    max-width: 1700px;
+}
+
+.panel {
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: flex-end;
+    position: relative;
+    margin-right: 20%;
+    margin-top: 15%;
+    float: right;
+}
+
+.login-form {
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.3);
+    box-shadow: 0 3px 0 rgb(12 12 12 / 3%);
+    border-radius: 3px;
+    padding: 20px 25px 10px 0px;
+    margin: auto;
+}
+
+.layui-form {
+    margin-left: -30px;
+}
+
+.layui-icon {
+    font-size: 20px;
+}

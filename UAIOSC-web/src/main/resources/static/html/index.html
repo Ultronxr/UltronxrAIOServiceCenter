@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UltronxrAIOServiceCenter</title>
+    <link href="/static/lib/layui-v2.7.6/css/layui.css" rel="stylesheet">
+    <link href="/static/css/index.css" rel="stylesheet">
+</head>
+<body>
+<div class="panel">
+    <div class="title">
+        <h1 class="layui-nav-title">UltronxrAIOServiceCenter</h1>
+    </div>
+    <div class="login-form">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <i class="layui-icon layui-icon-username"></i>
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" required  lay-verify="required" placeholder="输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <i class="layui-icon layui-icon-password"></i>
+                </label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" required lay-verify="required" placeholder="输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="checkbox" name="isRememberMe" title="记住我" lay-skin="primary">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="login">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/static/lib/layui-v2.7.6/layui.js"></script>
+<script src="/static/lib/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="/static/js/index.js"></script>
+</body>
+</html>

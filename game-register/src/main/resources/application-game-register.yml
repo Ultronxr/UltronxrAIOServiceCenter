@@ -1,3 +1,0 @@
-mybatis:
-  type-aliases-package: cn.ultronxr.gameregister.bean.mybatis.bean
-  mapper-locations: classpath:mapper/*.xml

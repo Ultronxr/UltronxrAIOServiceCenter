@@ -1,8 +1,0 @@
-spring:
-  profiles:
-    active: secret, common, game-register
-
-server:
-  port: 9500
-  servlet:
-    context-path: /
