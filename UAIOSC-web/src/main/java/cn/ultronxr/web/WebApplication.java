@@ -17,6 +17,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "cn.ultronxr.gameregister"
 })
 @MapperScan(basePackages = {
+        "cn.ultronxr.common.bean.mybatis.mapper",
+        "cn.ultronxr.framework.bean.mybatis.mapper",
+        "cn.ultronxr.system.bean.mybatis.mapper",
+        "cn.ultronxr.web.bean.mybatis.mapper",
         "cn.ultronxr.gameregister.bean.mybatis.mapper"
 })
 public class WebApplication {

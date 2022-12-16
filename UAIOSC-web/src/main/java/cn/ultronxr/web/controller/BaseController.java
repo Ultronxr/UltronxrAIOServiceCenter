@@ -2,15 +2,14 @@ package cn.ultronxr.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Ultronxr
  * @date 2022/12/11 23:33
  * @description
  */
-@Controller
+@Controller()
 @RequestMapping("/")
 @Slf4j
 public class BaseController {
@@ -18,7 +17,7 @@ public class BaseController {
     /**
      * 首页 controller
      */
-    @RequestMapping(value = {"", "index"})
+    @GetMapping(value = {"", "index"})
     public String index() {
         return "index";
     }
@@ -27,7 +26,7 @@ public class BaseController {
      * 处理 HTTP错误代码 的 controller，跳转到对应的错误页面<br/>
      * {@link cn.ultronxr.web.config.ErrorPageConfig}
      */
-    @RequestMapping("error/{errorCode}")
+    @GetMapping("error/{errorCode}")
     public String errorPage(@PathVariable Integer errorCode) {
         log.warn("web 请求错误，错误代码：{}", errorCode);
         switch (errorCode) {
