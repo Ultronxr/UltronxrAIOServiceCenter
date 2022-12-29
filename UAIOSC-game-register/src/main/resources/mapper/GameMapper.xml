@@ -25,6 +25,11 @@
     <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
     <result column="purchase_price_rmb" jdbcType="DECIMAL" property="purchasePriceRmb" />
     <result column="actual_shop" jdbcType="VARCHAR" property="actualShop" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -88,7 +93,7 @@
     id, parent_id, version, name, name_eng, name_nick, name_bak, description, tag, url, 
     logo, img, developer, publisher, lowest_price_currency, lowest_price, lowest_price_rmb, 
     bought_account_id, purchase_date, purchase_price_currency, purchase_price, purchase_price_rmb, 
-    actual_shop
+    actual_shop, note, create_by, create_time, update_by, update_time
   </sql>
   <select id="selectByExample" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.GameExample" resultMap="BaseResultMap">
     select
@@ -128,7 +133,9 @@
       publisher, lowest_price_currency, lowest_price, 
       lowest_price_rmb, bought_account_id, purchase_date, 
       purchase_price_currency, purchase_price, purchase_price_rmb, 
-      actual_shop)
+      actual_shop, note, create_by, 
+      create_time, update_by, update_time
+      )
     values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{version,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{nameEng,jdbcType=VARCHAR}, #{nameNick,jdbcType=VARCHAR}, 
       #{nameBak,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
@@ -136,7 +143,9 @@
       #{publisher,jdbcType=VARCHAR}, #{lowestPriceCurrency,jdbcType=VARCHAR}, #{lowestPrice,jdbcType=DECIMAL}, 
       #{lowestPriceRmb,jdbcType=DECIMAL}, #{boughtAccountId,jdbcType=INTEGER}, #{purchaseDate,jdbcType=DATE}, 
       #{purchasePriceCurrency,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, #{purchasePriceRmb,jdbcType=DECIMAL}, 
-      #{actualShop,jdbcType=VARCHAR})
+      #{actualShop,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.Game">
     insert into game_register_game
@@ -210,6 +219,21 @@
       <if test="actualShop != null">
         actual_shop,
       </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -280,6 +304,21 @@
       </if>
       <if test="actualShop != null">
         #{actualShop,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -361,6 +400,21 @@
       <if test="record.actualShop != null">
         actual_shop = #{record.actualShop,jdbcType=VARCHAR},
       </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -390,7 +444,12 @@
       purchase_price_currency = #{record.purchasePriceCurrency,jdbcType=VARCHAR},
       purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
       purchase_price_rmb = #{record.purchasePriceRmb,jdbcType=DECIMAL},
-      actual_shop = #{record.actualShop,jdbcType=VARCHAR}
+      actual_shop = #{record.actualShop,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -464,6 +523,21 @@
       <if test="actualShop != null">
         actual_shop = #{actualShop,jdbcType=VARCHAR},
       </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -490,7 +564,12 @@
       purchase_price_currency = #{purchasePriceCurrency,jdbcType=VARCHAR},
       purchase_price = #{purchasePrice,jdbcType=DECIMAL},
       purchase_price_rmb = #{purchasePriceRmb,jdbcType=DECIMAL},
-      actual_shop = #{actualShop,jdbcType=VARCHAR}
+      actual_shop = #{actualShop,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -10,6 +10,11 @@
     <result column="platform" jdbcType="VARCHAR" property="platform" />
     <result column="shop" jdbcType="VARCHAR" property="shop" />
     <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, nick, username, email, phone, platform, shop, region
+    id, nick, username, email, phone, platform, shop, region, note, create_by, create_time, 
+    update_by, update_time
   </sql>
   <select id="selectByExample" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.AccountExample" resultMap="BaseResultMap">
     select
@@ -105,10 +111,14 @@
   <insert id="insert" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.Account">
     insert into game_register_account (id, nick, username, 
       email, phone, platform, 
-      shop, region)
+      shop, region, note, 
+      create_by, create_time, update_by, 
+      update_time)
     values (#{id,jdbcType=INTEGER}, #{nick,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, 
-      #{shop,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR})
+      #{shop,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.Account">
     insert into game_register_account
@@ -137,6 +147,21 @@
       <if test="region != null">
         region,
       </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -162,6 +187,21 @@
       </if>
       <if test="region != null">
         #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -198,6 +238,21 @@
       <if test="record.region != null">
         region = #{record.region,jdbcType=VARCHAR},
       </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -212,7 +267,12 @@
       phone = #{record.phone,jdbcType=VARCHAR},
       platform = #{record.platform,jdbcType=VARCHAR},
       shop = #{record.shop,jdbcType=VARCHAR},
-      region = #{record.region,jdbcType=VARCHAR}
+      region = #{record.region,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,6 +301,21 @@
       <if test="region != null">
         region = #{region,jdbcType=VARCHAR},
       </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -252,7 +327,12 @@
       phone = #{phone,jdbcType=VARCHAR},
       platform = #{platform,jdbcType=VARCHAR},
       shop = #{shop,jdbcType=VARCHAR},
-      region = #{region,jdbcType=VARCHAR}
+      region = #{region,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

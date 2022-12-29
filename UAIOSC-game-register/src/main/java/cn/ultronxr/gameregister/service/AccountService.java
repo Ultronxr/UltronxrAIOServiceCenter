@@ -11,12 +11,14 @@ import java.util.List;
  */
 public interface AccountService {
 
-    int createAccount(Account account);
+    int create(Account account);
 
-    int deleteAccount(int id);
+    int delete(int id);
 
-    int updateAccount(Account account);
+    int delete(List<Integer> idList);
 
-    List<Account> queryAccount(Account account);
+    int update(Account account);
+
+    List<Account> query(Account account);
 
 }

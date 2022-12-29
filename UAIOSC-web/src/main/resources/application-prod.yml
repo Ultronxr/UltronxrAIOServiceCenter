@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # name: xxx-druid
+      url: ${secret.prod.spring.datasource.druid.url}
+      username: ${secret.prod.spring.datasource.druid.username}
+      password: ${secret.prod.spring.datasource.druid.password}
+      filters: stat,wall
+      initialSize: 5
+      maxActive: 20
+      maxWait: 60000
+      minIdle: 5
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 1 from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+      web:
+        username: ${secret.prod.spring.datasource.druid.web.username}
+        password: ${secret.prod.spring.datasource.druid.web.password}
+        resetEnable: false

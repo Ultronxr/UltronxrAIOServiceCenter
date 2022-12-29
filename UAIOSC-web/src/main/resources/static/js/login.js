@@ -8,22 +8,10 @@ layui.define(function(){
     //exports('index', {});
 });
 
-form.on('submit(login)', function(data){
-    $.ajaxSetup({
-        url: '/ajaxLogin',
-        method: 'POST',
-        timeout: 10000,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        data: JSON.stringify(data.field),
-        beforeSend: function () {
-            this.layerIndex = layer.load(2, { shade: [0.2, '#ccc'] });
-        },
-        complete: function () {
-            layer.close(this.layerIndex);
-        },
-        success: function (res) {
+form.on('submit(login)', function(data) {
+    ajaxPost(getAPIUrl('system.login'),
+        JSON.stringify(data.field),
+        function (res) {
             // console.log(res);
             switch (res.code) {
                 case RESPONSE_CODE.SUCCESS: {
@@ -40,7 +28,7 @@ form.on('submit(login)', function(data){
                 }
             }
         },
-        error: function (res) {
+        function (res) {
             let msg;
             let resText = ' (' + res.status + ' ' + res.statusText + ')';
             switch (res.status) {
@@ -50,9 +38,14 @@ form.on('submit(login)', function(data){
             }
             console.log(res);
             layer.msg(msg + resText, {icon:2});
+        },
+        function () {
+            this.layerIndex = layer.load(2, { shade: [0.2, '#ccc'] });
+        },
+        function () {
+            layer.close(this.layerIndex);
         }
-    });
-    $.ajax();
+    );
 
     return false;
 });

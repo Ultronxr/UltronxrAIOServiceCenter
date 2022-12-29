@@ -1,12 +1,13 @@
 package cn.ultronxr.gameregister.controller;
 
+import cn.ultronxr.common.bean.AjaxResponse;
 import cn.ultronxr.gameregister.bean.mybatis.bean.Account;
 import cn.ultronxr.gameregister.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,41 +20,44 @@ import java.util.List;
 @Slf4j
 public class AccountController {
 
-    @Resource
+    @Autowired
     private AccountService service;
 
 
     @PostMapping("create")
     @ResponseBody
-    public String createAccount(@RequestBody Account account) {
-        if(service.createAccount(account) > 0) {
-            return "创建成功。";
+    public AjaxResponse create(@RequestBody Account account) {
+        if(service.create(account) > 0) {
+            return AjaxResponse.success();
         }
-        return "创建失败！";
+        return AjaxResponse.fail();
     }
 
     @GetMapping("delete")
     @ResponseBody
-    public String deleteAccount(@RequestParam("id") String id) {
-        if(service.deleteAccount(Integer.parseInt(id)) > 0) {
-            return "删除成功。";
+    public AjaxResponse delete(@RequestParam List<Integer> idList) {
+        if(service.delete(idList) > 0) {
+            return AjaxResponse.success();
         }
-        return "删除失败！";
+        return AjaxResponse.fail();
     }
 
     @PostMapping("update")
     @ResponseBody
-    public String updateAccount(@RequestBody Account account) {
-        if(service.updateAccount(account) > 0) {
-            return "更新成功。";
+    public AjaxResponse update(@RequestBody Account account) {
+        if(service.update(account) > 0) {
+            return AjaxResponse.success();
         }
-        return "更新失败！";
+        return AjaxResponse.fail();
     }
 
     @PostMapping("query")
     @ResponseBody
-    public List<Account> queryAccount(@RequestBody Account account) {
-        return service.queryAccount(account);
+    public AjaxResponse query(@RequestBody Account account) {
+        List<Account> accountList = service.query(account);
+        AjaxResponse response = AjaxResponse.success(null, accountList);
+        response.put("count", accountList.size());
+        return response;
     }
 
 }
