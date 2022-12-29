@@ -1,5 +1,7 @@
 package cn.ultronxr.gameregister.bean.mybatis.bean;
 
+import java.util.Date;
+
 public class Account {
     private Integer id;
 
@@ -16,6 +18,16 @@ public class Account {
     private String shop;
 
     private String region;
+
+    private String note;
+
+    private String createBy;
+
+    private Date createTime;
+
+    private String updateBy;
+
+    private Date updateTime;
 
     public Integer getId() {
         return id;
@@ -79,5 +91,45 @@ public class Account {
 
     public void setRegion(String region) {
         this.region = region == null ? null : region.trim();
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note == null ? null : note.trim();
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy == null ? null : createBy.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy == null ? null : updateBy.trim();
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
