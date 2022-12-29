@@ -37,23 +37,25 @@
         <aspectj.version>1.9.6</aspectj.version>
         <slf4j-log4j12.version>1.7.35</slf4j-log4j12.version>
         <log4j.version>2.17.1</log4j.version>
-        <mysql-connector.version>8.0.28</mysql-connector.version>
-        <alibaba.druid.version>1.1.24</alibaba.druid.version>
-        <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
-        <mybatis-generator.version>1.4.0</mybatis-generator.version>
-        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <mysql-connector.version>8.0.31</mysql-connector.version>
+        <alibaba.druid.version>1.2.15</alibaba.druid.version>
+        <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
+        <mybatis-generator.version>1.4.1</mybatis-generator.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <pagehelper-starter.version>1.4.2</pagehelper-starter.version>
         <redisson.version>3.15.1</redisson.version>
         <jackson.version>2.11.3</jackson.version>
         <snakeyaml.version>1.28</snakeyaml.version>
-        <apache.commons-lang3.version>3.9</apache.commons-lang3.version>
-        <apache.commons-text.version>1.9</apache.commons-text.version>
-        <apache.commons-io.version>2.8.0</apache.commons-io.version>
-        <commons-cli.version>1.4</commons-cli.version>
+        <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
+        <apache.commons-text.version>1.10.0</apache.commons-text.version>
+        <apache.commons-io.version>2.11.0</apache.commons-io.version>
+        <apache.commons-collections.version>3.2.2</apache.commons-collections.version>
+        <apache.commons-collections4.version>4.4</apache.commons-collections4.version>
+        <commons-cli.version>1.5</commons-cli.version>
         <devtools.version>2.3.5.RELEASE</devtools.version>
-        <jetbrains.annotations.verison>23.0.0</jetbrains.annotations.verison>
-        <lombok.version>1.18.8</lombok.version>
-        <hutool.version>5.5.8</hutool.version>
+        <jetbrains.annotations.verison>23.1.0</jetbrains.annotations.verison>
+        <lombok.version>1.18.24</lombok.version>
+        <hutool.version>5.8.10</hutool.version>
         <aliyun-sdk-oss.version>3.11.0</aliyun-sdk-oss.version>
         <tencentcloud-sdk-java.version>3.1.621</tencentcloud-sdk-java.version>
         <quartz.version>2.3.2</quartz.version>
@@ -86,22 +88,22 @@
             <version>${spring-boot.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.10.1</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>org.apache.shiro</groupId>-->
+        <!--    <artifactId>shiro-core</artifactId>-->
+        <!--    <version>1.10.1</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>1.10.1</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>org.apache.shiro</groupId>-->
+        <!--    <artifactId>shiro-spring</artifactId>-->
+        <!--    <version>1.10.1</version>-->
+        <!--</dependency>-->
 
         <!-- 数据库 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>${mysql-connector.version}</version>
         </dependency>
 
@@ -143,6 +145,30 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${apache.commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${apache.commons-text.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${apache.commons-io.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${apache.commons-collections.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${apache.commons-collections4.version}</version>
         </dependency>
 
 
@@ -262,19 +288,6 @@
             <!--    <version>${jackson.version}</version>-->
             <!--</dependency>-->
 
-
-
-            <!--<dependency>-->
-            <!--    <groupId>org.apache.commons</groupId>-->
-            <!--    <artifactId>commons-text</artifactId>-->
-            <!--    <version>${apache.commons-text.version}</version>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-            <!--    <groupId>commons-io</groupId>-->
-            <!--    <artifactId>commons-io</artifactId>-->
-            <!--    <version>${apache.commons-io.version}</version>-->
-            <!--</dependency>-->
 
             <!--<dependency>-->
             <!--    <groupId>commons-cli</groupId>-->

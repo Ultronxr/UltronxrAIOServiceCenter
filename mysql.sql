@@ -4,6 +4,7 @@
 
 CREATE DATABASE `ultronxr_aio_service_center` DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
 
+CREATE DATABASE `ultronxr_aio_service_center_dev` DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
 
 -- ----------------------------
 -- UAIOSC-system 系统管理模块
@@ -164,6 +165,33 @@ CREATE TABLE game_register_game (
     `update_time`                DATETIME        DEFAULT NULL               COMMENT '更新时间',
     PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 已购买的游戏信息表';
+
+CREATE TABLE game_register_platform (
+    `id`      VARCHAR(50)    NOT NULL    COMMENT '游戏平台ID',
+    `name`    VARCHAR(50)    NOT NULL    COMMENT '游戏平台名称',
+    `sort`    INT            NOT NULL    COMMENT '排序',
+    PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 游戏平台表';
+
+INSERT INTO game_register_platform VALUES ('PC', 'PC端', 1);
+INSERT INTO game_register_platform VALUES ('Android', 'Android安卓端', 2);
+INSERT INTO game_register_platform VALUES ('IOS', 'IOS苹果端', 3);
+
+CREATE TABLE game_register_shop (
+    `id`      VARCHAR(50)    NOT NULL    COMMENT '游戏商城ID',
+    `name`    VARCHAR(50)    NOT NULL    COMMENT '游戏商城名称',
+    `sort`    INT            NOT NULL    COMMENT '排序',
+    PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 游戏商城表';
+
+INSERT INTO game_register_shop VALUES ('Steam', 'Steam', 1);
+INSERT INTO game_register_shop VALUES ('Epic', 'Epic', 2);
+INSERT INTO game_register_shop VALUES ('EA/Origin', 'EA/Origin', 3);
+INSERT INTO game_register_shop VALUES ('Uplay', 'Uplay 育碧', 4);
+INSERT INTO game_register_shop VALUES ('Riot', 'Riot 拳头', 5);
+INSERT INTO game_register_shop VALUES ('RStar', 'RStar R星', 6);
+INSERT INTO game_register_shop VALUES ('BattleNet', 'BattleNet 暴雪战网', 7);
+INSERT INTO game_register_shop VALUES ('Microsoft', 'Microsoft 微软', 8);
 
 
 -- ----------------------------
