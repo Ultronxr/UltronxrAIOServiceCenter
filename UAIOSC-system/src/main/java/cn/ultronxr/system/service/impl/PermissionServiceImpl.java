@@ -49,28 +49,30 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> queryPermission(Permission permission) {
-        PermissionExample example = new PermissionExample();
-        PermissionExample.Criteria criteria = example.createCriteria();
+        PermissionExample example = null;
+        if(permission != null) {
+            example = new PermissionExample();
+            PermissionExample.Criteria criteria = example.createCriteria();
 
-        if(StringUtils.isNotEmpty(permission.getPermissionName())) {
-            criteria.andPermissionNameLike(SqlUtil.buildLikeValue(permission.getPermissionName(), Condition.LikeType.Contains, false));
+            if(StringUtils.isNotEmpty(permission.getPermissionName())) {
+                criteria.andPermissionNameLike(SqlUtil.buildLikeValue(permission.getPermissionName(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(permission.getPermissionCode())) {
+                criteria.andPermissionCodeLike(SqlUtil.buildLikeValue(permission.getPermissionCode(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(permission.getMenu())) {
+                criteria.andMenuLike(SqlUtil.buildLikeValue(permission.getMenu(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(permission.getMenuType())) {
+                criteria.andMenuTypeLike(SqlUtil.buildLikeValue(permission.getMenuType(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(permission.getRequest())) {
+                criteria.andRequestLike(SqlUtil.buildLikeValue(permission.getRequest(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(permission.getNote())) {
+                criteria.andNoteLike(SqlUtil.buildLikeValue(permission.getNote(), Condition.LikeType.Contains, false));
+            }
         }
-        if(StringUtils.isNotEmpty(permission.getPermissionCode())) {
-            criteria.andPermissionCodeLike(SqlUtil.buildLikeValue(permission.getPermissionCode(), Condition.LikeType.Contains, false));
-        }
-        if(StringUtils.isNotEmpty(permission.getMenu())) {
-            criteria.andPermissionCodeLike(SqlUtil.buildLikeValue(permission.getMenu(), Condition.LikeType.Contains, false));
-        }
-        if(StringUtils.isNotEmpty(permission.getMenuType())) {
-            criteria.andPermissionCodeLike(SqlUtil.buildLikeValue(permission.getMenuType(), Condition.LikeType.Contains, false));
-        }
-        if(StringUtils.isNotEmpty(permission.getRequest())) {
-            criteria.andPermissionCodeLike(SqlUtil.buildLikeValue(permission.getRequest(), Condition.LikeType.Contains, false));
-        }
-        if(StringUtils.isNotEmpty(permission.getNote())) {
-            criteria.andPermissionCodeLike(SqlUtil.buildLikeValue(permission.getNote(), Condition.LikeType.Contains, false));
-        }
-
         return permissionMapper.selectByExample(example);
     }
 }

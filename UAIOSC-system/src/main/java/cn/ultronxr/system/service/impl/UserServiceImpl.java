@@ -50,19 +50,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> queryUser(User user) {
-        UserExample example = new UserExample();
-        UserExample.Criteria criteria = example.createCriteria();
+        UserExample example = null;
+        if(user != null) {
+            example = new UserExample();
+            UserExample.Criteria criteria = example.createCriteria();
 
-        if(StringUtils.isNotEmpty(user.getNick())) {
-            criteria.andNickLike(SqlUtil.buildLikeValue(user.getNick(), Condition.LikeType.Contains, false));
+            if(StringUtils.isNotEmpty(user.getNick())) {
+                criteria.andNickLike(SqlUtil.buildLikeValue(user.getNick(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(user.getUsername())) {
+                criteria.andUsernameLike(SqlUtil.buildLikeValue(user.getUsername(), Condition.LikeType.Contains, false));
+            }
+            if(StringUtils.isNotEmpty(user.getNote())) {
+                criteria.andNoteLike(SqlUtil.buildLikeValue(user.getNote(), Condition.LikeType.Contains, false));
+            }
         }
-        if(StringUtils.isNotEmpty(user.getUsername())) {
-            criteria.andNickLike(SqlUtil.buildLikeValue(user.getUsername(), Condition.LikeType.Contains, false));
-        }
-        if(StringUtils.isNotEmpty(user.getNote())) {
-            criteria.andNickLike(SqlUtil.buildLikeValue(user.getNote(), Condition.LikeType.Contains, false));
-        }
-
         return userMapper.selectByExample(example);
     }
 
