@@ -9,16 +9,16 @@ layui.define(function(){
 });
 
 form.on('submit(login)', function(data) {
-    ajaxPost(getAPIUrl('system.login'),
+    app.util.ajax.post(app.util.api.getAPIUrl('system.login'),
         JSON.stringify(data.field),
         function (res) {
             // console.log(res);
             switch (res.code) {
-                case RESPONSE_CODE.SUCCESS: {
+                case app.RESPONSE_CODE.SUCCESS: {
                     window.location.href = '/index'
                     break;
                 }
-                case RESPONSE_CODE.FAIL: {
+                case app.RESPONSE_CODE.FAIL: {
                     layer.msg('登录失败！' + res.msg, {icon:5});
                     break;
                 }

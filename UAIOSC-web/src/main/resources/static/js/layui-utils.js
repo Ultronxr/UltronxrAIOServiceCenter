@@ -20,7 +20,7 @@ function closeLayerWindow() {
  * @param targetSelect 目标 select 选项框的jquery对象
  */
 function loadSelect(url, targetSelect) {
-    ajaxGet(url,
+    app.util.ajax.get(url,
         null,
         function (res) {
             let options = '<option value="">--- 请选择 ---</option>';

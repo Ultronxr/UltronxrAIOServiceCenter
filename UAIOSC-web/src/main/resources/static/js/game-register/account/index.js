@@ -3,8 +3,8 @@ $(function () {
 });
 
 function loadAllSelect() {
-    loadSelect(getAPIUrl('game-register.platform.list'), $('#platform'));
-    loadSelect(getAPIUrl('game-register.shop.list'), $('#shop'));
+    loadSelect(app.util.api.getAPIUrl('game-register.platform.list'), $('#platform'));
+    loadSelect(app.util.api.getAPIUrl('game-register.shop.list'), $('#shop'));
 }
 
 table.render({
@@ -28,7 +28,7 @@ table.render({
     ,defaultToolbar: [] //清空默认的三个工具栏按钮
     ,totalRow: false
 
-    ,url: getAPIUrl('game-register.account.query')
+    ,url: app.util.api.getAPIUrl('game-register.account.query')
     ,method: 'POST'
     ,contentType: 'application/json'
     ,headers: {}
@@ -104,11 +104,11 @@ $('#table-div .layui-btn').on('click', function(){
 
 // 删除选中的行
 function deleteRows(toBeDeletedIdList) {
-    ajaxGet(getAPIUrl('game-register.account.delete'),
+    app.util.ajax.get(app.util.api.getAPIUrl('game-register.account.delete'),
         {idList: toBeDeletedIdList.join()},
         function (res) {
             // console.log(res);
-            if(res.code === RESPONSE_CODE.SUCCESS) {
+            if(res.code === app.RESPONSE_CODE.SUCCESS) {
                 layer.msg('删除成功。', {time: 2000});
                 refreshTable();
             }
