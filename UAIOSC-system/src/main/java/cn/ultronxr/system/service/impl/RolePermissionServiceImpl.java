@@ -8,9 +8,9 @@ import cn.ultronxr.system.bean.mybatis.mapper.PermissionMapper;
 import cn.ultronxr.system.bean.mybatis.mapper.RolePermissionMapper;
 import cn.ultronxr.system.service.RolePermissionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RolePermissionServiceImpl implements RolePermissionService {
 
-    @Resource
+    @Autowired
     private PermissionMapper permissionMapper;
 
-    @Resource
+    @Autowired
     private RolePermissionMapper rolePermissionMapper;
 
 

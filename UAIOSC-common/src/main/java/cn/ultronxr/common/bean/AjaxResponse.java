@@ -1,5 +1,6 @@
 package cn.ultronxr.common.bean;
 
+import cn.hutool.json.JSONUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -84,6 +85,11 @@ public class AjaxResponse extends HashMap<String, Object> {
             return AjaxResponse.FAIL;
         }
         return new AjaxResponse(ResponseCode.FAIL, msg, data);
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonStr(this);
     }
 
 }

@@ -1,0 +1,39 @@
+# 请注意该配置文件中不包含连接redis的地址和密码，这两项单独配置在 application-dev/prod.yml 文件中
+# 单节点配置
+singleServerConfig:
+  # address:
+  # password:
+  # 空闲等待超时（毫秒）
+  idleConnectionTimeout: 10000
+  # 连接等待超时（毫秒）
+  connectTimeout: 10000
+  # 命令等待超时（毫秒）
+  timeout: 3000
+  # 命令执行失败重试次数
+  retryAttempts: 3
+  # 命令重试时间间隔（毫秒）
+  retryInterval: 1500
+  # 客户端名称、地址、密码
+  clientName: null
+  # 单个连接最大订阅数量
+  subscriptionsPerConnection: 5
+  # 发布和订阅最小空闲连接数量
+  subscriptionConnectionMinimumIdleSize: 1
+  # 发布和订阅连接池大小
+  subscriptionConnectionPoolSize: 25 #50
+  # 最小连接空闲数量
+  connectionMinimumIdleSize: 6 #24
+  # 连接池大小
+  connectionPoolSize: 32 #64
+  # 数据库编号
+  database: 0
+  # DNS监测时间间隔（毫秒）
+  dnsMonitoringInterval: 5000
+# 线程池线程数量，默认值：CPU核心数*2
+threads: 2 #4
+# netty线程池线程数量，默认值：CPU核心数*2
+nettyThreads: 2 #4
+# 编码
+codec: !<org.redisson.codec.MarshallingCodec> {}
+# 传输模式
+transportMode: "NIO"

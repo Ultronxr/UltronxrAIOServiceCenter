@@ -8,9 +8,9 @@ import cn.ultronxr.system.bean.mybatis.mapper.RoleMapper;
 import cn.ultronxr.system.bean.mybatis.mapper.UserRoleMapper;
 import cn.ultronxr.system.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserRoleServiceImpl implements UserRoleService {
 
-    @Resource
+    @Autowired
     private RoleMapper roleMapper;
 
-    @Resource
+    @Autowired
     private UserRoleMapper userRoleMapper;
 
 

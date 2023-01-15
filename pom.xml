@@ -44,6 +44,7 @@
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <pagehelper-starter.version>1.4.2</pagehelper-starter.version>
         <redisson.version>3.15.1</redisson.version>
+        <jjwt.version>0.11.5</jjwt.version>
         <jackson.version>2.11.3</jackson.version>
         <snakeyaml.version>1.28</snakeyaml.version>
         <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
@@ -251,17 +252,39 @@
             <!--</dependency>-->
 
             <!-- redis -->
-            <!--<dependency>-->
-            <!--    <groupId>org.redisson</groupId>-->
-            <!--    <artifactId>redisson-spring-boot-starter</artifactId>-->
-            <!--    <version>${redisson.version}</version>-->
-            <!--    <exclusions>-->
-            <!--        <exclusion>-->
-            <!--            <groupId>org.springframework.boot</groupId>-->
-            <!--            <artifactId>spring-boot-starter-web</artifactId>-->
-            <!--        </exclusion>-->
-            <!--    </exclusions>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-web</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- JSON Web Token Support For The JVM -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
 
             <!-- 数据序列化 -->
             <!--<dependency>-->

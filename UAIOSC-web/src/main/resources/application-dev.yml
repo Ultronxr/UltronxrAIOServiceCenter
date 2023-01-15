@@ -24,3 +24,17 @@ spring:
         username: ${secret.dev.spring.datasource.druid.web.username}
         password: ${secret.dev.spring.datasource.druid.web.password}
         resetEnable: false
+
+  redis:
+    redisson:
+      singleServerConfig:
+        # 连接redis的地址和密码
+        address: ${secret.dev.spring.redis.redisson.singleServerConfig.address}
+        password: ${secret.dev.spring.redis.redisson.singleServerConfig.password}
+
+jjwt:
+  issuer: "UAIOSC-framework-JJWT-dev"
+  secret: ${secret.dev.jjwt.secret}
+  expireMinutes:
+    authToken: 5
+    refreshToken: 20
