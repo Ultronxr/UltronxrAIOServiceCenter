@@ -57,7 +57,7 @@ const app = {
              * 例：getAPIUrl('game-register.account.query')
              */
             getAPIUrl: function (location) {
-                return app.util.api.deepSearchAPI(app.API, location, 'url')
+                return this.deepSearchAPI(app.API, location, 'url')
                     .join('');
             },
 
@@ -92,45 +92,75 @@ const app = {
         },
 
         ajax: {
-            get: function (url, data, success, error, beforeSend, complete) {
-                app.util.ajax.request('GET', url, null, data, success, error, beforeSend, complete);
+            get: function (url, data, success, error) {
+                let method = "GET",
+                    contentType = "application/x-www-form-urlencoded",
+                    dataType = "json";
+                this.request(method, url, null, data, success, error, null, null, null, null, contentType, dataType);
             },
 
-            post: function (url, data, success, error, beforeSend, complete) {
+            post: function (url, data, success, error, beforeSend, complete, async) {
+                let method = "POST",
+                    contentType = "application/json; charset=UTF-8",
+                    dataType = "json";
                 if(!app.util.string.isJsonStringify(data)) {
                     data = JSON.stringify(data);
                 }
-                let headers = {
-                    'Content-Type': 'application/json'
-                };
-                app.util.ajax.request('POST', url, headers, data, success, error, beforeSend, complete);
+                this.request(method, url, null, data, success, error, beforeSend, complete, async, null, contentType, dataType);
             },
 
-            request: function (method, url, headers, data, success, error, beforeSend, complete) {
+            request: function (method, url, headers, data, success, error, beforeSend, complete, async, timeout, contentType, dataType) {
+                if(!app.util.function.isFunction(success)) {
+                    success = function (res) {};
+                }
+                if(!app.util.function.isFunction(error)) {
+                    error = function (res) {};
+                }
+                if(!app.util.function.isFunction(beforeSend)) {
+                    beforeSend = function (request) {};
+                }
+                if(!app.util.function.isFunction(complete)) {
+                    complete = function (res) {};
+                }
+
+                if(headers == null) {
+                    let token = "";
+                    headers = {
+                        "Authorization": token,
+                    };
+                }
+                if(async == null) {
+                    async = true;
+                }
+                if(timeout == null) {
+                    timeout = 10000;
+                }
+                if(contentType == null) {
+                    contentType = "application/json; charset=UTF-8";
+                }
+                if(dataType == null) {
+                    dataType = "json";
+                }
+
                 $.ajaxSetup({
                     url: url,
                     method: method,
-                    timeout: 10000,
+                    async: async,
+                    timeout: timeout,
                     headers: headers,
+                    contentType: contentType,
+                    dataType: dataType,
                     data: data,
-                    beforeSend: function (res) {
-                        if(beforeSend !== undefined && typeof beforeSend === "function")
-                            beforeSend(res);
-                    },
-                    success: function (res) {
-                        if(success !== undefined && typeof success === "function")
-                            success(res);
-                    },
-                    error: function (res) {
-                        if(error !== undefined && typeof error === "function")
-                            error(res);
-                    },
-                    complete: function (res) {
-                        if(complete !== undefined && typeof complete === "function")
-                            complete(res);
-                    }
+                    beforeSend: beforeSend,
+                    success: success,
+                    error: error,
+                    complete: complete,
                 });
                 $.ajax();
+            },
+
+            upload: function (url, data, success, error) {
+
             },
 
         },
@@ -149,6 +179,53 @@ const app = {
                     }
                 }
                 return false;
+            },
+
+        },
+
+        function: {
+            /**
+             * 判断一个对象是否是 function 函数
+             */
+            isFunction: function (func) {
+                return func !== null && func !== undefined && typeof func === "function";
+            },
+
+        },
+
+        user: {
+            /**
+             * 每个需要鉴权的页面都要调用这个方法，验证用户是否已经登录，以及用户登录是否合法，否则跳转到 login 页面
+             */
+            validate: function () {
+
+            },
+            getUsername: function () {
+
+            },
+        },
+
+        token: {
+            options: {
+                expires: 7,
+                path: "/",
+                domain: "localhost",
+                secure: false
+            },
+
+            get: function () {
+                return $.cookie("token");
+            },
+
+            save: function (userID, username, token, role) {
+                $.cookie("token", token, this.options);
+            },
+
+            remove: function () {
+                $.removeCookie("username", this.options);
+                $.removeCookie("userID", this.options);
+                $.removeCookie("token", this.options);
+                $.removeCookie("role", this.options);
             },
 
         },

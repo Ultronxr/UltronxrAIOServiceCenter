@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class BaseController {
 
     /**
-     * 首页 controller
+     * 直接返回 login 页面
      */
     @GetMapping(value = {"", "index"})
     public String index() {
-        return "index";
+        return "login";
     }
 
     /**

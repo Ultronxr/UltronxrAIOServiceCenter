@@ -15,6 +15,8 @@ form.on('submit(login)', function(data) {
             // console.log(res);
             switch (res.code) {
                 case app.RESPONSE_CODE.SUCCESS: {
+                    // TODO
+                    app.util.token.save(null, username, token, role);
                     window.location.href = '/index'
                     break;
                 }
