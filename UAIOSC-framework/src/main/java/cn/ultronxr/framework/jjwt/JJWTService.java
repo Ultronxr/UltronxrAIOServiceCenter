@@ -101,30 +101,13 @@ public class JJWTService {
      * @param token JWS token
      * @return {@code Jws} 对象，包含 Header、Body (PayLoad)、Signature 三部分
      */
-    public Jws<Claims> parse(String token) {
-        Jws<Claims> jws = null;
-        try{
-            jws = Jwts.parserBuilder()
-                    .setSigningKey(SECRET_KEY)
-                    .build()
-                    .parseClaimsJws(token);
-        } catch (Exception e) {
-            if(e instanceof UnsupportedJwtException) {
-                log.info("JWS 类型不匹配（不是一个正确包含声明与签名的JWS）");
-            } else if(e instanceof MalformedJwtException) {
-                log.info("JWS 字符串格式不正确");
-            } else if(e instanceof SignatureException) {
-                log.info("JWS 签名验证失败");
-            } else if(e instanceof ExpiredJwtException) {
-                log.info("JWS 已过期");
-            } else if(e instanceof IllegalArgumentException) {
-                log.info("JWS 不能为空");
-            }
-            log.info("\n{}", e.getMessage());
-
-            return null;
-        }
-        return jws;
+    public Jws<Claims> parse(String token)
+            throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException
+    {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token);
     }
 
 }

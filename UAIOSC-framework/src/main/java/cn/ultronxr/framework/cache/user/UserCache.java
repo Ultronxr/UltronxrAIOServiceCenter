@@ -1,0 +1,59 @@
+package cn.ultronxr.framework.cache.user;
+
+import cn.ultronxr.framework.cache.ThreadLocalCache;
+
+/**
+ * @author Ultronxr
+ * @date 2023/01/15 17:33
+ * @description 使用 ThreadLocalCache 实现的用户缓存
+ */
+public class UserCache {
+
+    /** 向 ThreadLocal 中存入已登录用户对象（user）时使用的 key */
+    private static final String USER_MAP_KEY = "user";
+
+    /** 向 ThreadLocal 中存入用户登录时是否“记住我”的状态（rememberMe）时使用的 key */
+    private static final String REMEMBER_ME_MAP_KEY = "rememberMe";
+
+
+    /**
+     * 向 ThreadLocal 缓存中存入已登录用户对象
+     *
+     * @param user       用户对象
+     * @param rememberMe 登录时是否“记住我”
+     * @param <T>        用户对象的类型<br/>
+     *                      （为什么这里使用类型 T 而不是 User ：<br/>
+     *                      framework 模块处于maven依赖的上层，User 对象处于 system 模块（下层），直接使用 User 类型会导致循环依赖）
+     */
+    public static <T> void putUser(T user, boolean rememberMe) {
+        ThreadLocalCache.put(USER_MAP_KEY, user, REMEMBER_ME_MAP_KEY, rememberMe);
+    }
+
+    /**
+     * 从 ThreadLocal 缓存中取出已登录用户对象
+     *
+     * @return 返回用户对象 {@code Object} ，需手动强转为 {@code User} 类型：<br/>
+     *              {@code (User) UserCache.getUser()}
+     */
+    public static Object getUser() {
+        return ThreadLocalCache.get(USER_MAP_KEY);
+    }
+
+    /**
+     * 从 ThreadLocal 缓存中取出用户登录时是否“记住我”的状态
+     *
+     * @return {@code boolean}
+     */
+    public static boolean getRememberMe() {
+        return (boolean) ThreadLocalCache.get(REMEMBER_ME_MAP_KEY);
+    }
+
+    /**
+     * 删除 ThreadLocal 缓存中的已登录用户对象、以及是否“记住我”的状态
+     */
+    public static void deleteUser() {
+        ThreadLocalCache.delete(USER_MAP_KEY);
+        ThreadLocalCache.delete(REMEMBER_ME_MAP_KEY);
+    }
+
+}

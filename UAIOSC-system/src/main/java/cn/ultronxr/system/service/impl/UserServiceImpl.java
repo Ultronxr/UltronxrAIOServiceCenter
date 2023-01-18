@@ -3,6 +3,7 @@ package cn.ultronxr.system.service.impl;
 import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.SqlUtil;
+import cn.ultronxr.framework.cache.user.UserCache;
 import cn.ultronxr.system.bean.mybatis.bean.User;
 import cn.ultronxr.system.bean.mybatis.bean.UserExample;
 import cn.ultronxr.system.bean.mybatis.mapper.UserMapper;
@@ -31,14 +32,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public int createUser(User user) {
         user.setId(null);
-        user.setCreateBy("");
+        user.setCreateBy(((User) UserCache.getUser()).getUsername());
         user.setCreateTime(CalendarUtil.calendar().getTime());
         return userMapper.insertSelective(user);
     }
 
     @Override
     public int updateUser(User user) {
-        user.setUpdateBy("");
+        user.setUpdateBy(((User) UserCache.getUser()).getUsername());
         user.setUpdateTime(CalendarUtil.calendar().getTime());
         return userMapper.updateByPrimaryKey(user);
     }

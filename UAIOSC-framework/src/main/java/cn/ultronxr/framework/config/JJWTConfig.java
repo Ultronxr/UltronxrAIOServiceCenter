@@ -28,7 +28,7 @@ public class JJWTConfig {
      * （不管有没有勾选“记住我”，登录 token 的有效时长都是固定的；
      * 勾选了“记住我”之后会多签发一个有效时长大得多的 更新 token ，在登录 token 过期之后进行更新）
      */
-    @Value("${jjwt.expireMinutes.rememberMe.refreshToken}")
+    @Value("${jjwt.expireMinutes.refreshToken}")
     private long refreshTokenExpireMinutes;
 
 

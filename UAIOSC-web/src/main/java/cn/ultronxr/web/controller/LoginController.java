@@ -1,10 +1,10 @@
 package cn.ultronxr.web.controller;
 
 import cn.ultronxr.common.bean.AjaxResponse;
-import cn.ultronxr.framework.cache.user.UserCacheService;
-import cn.ultronxr.framework.jjwt.TokenService;
+import cn.ultronxr.framework.cache.user.UserCache;
+import cn.ultronxr.framework.jjwt.JWSTokenService;
 import cn.ultronxr.system.bean.mybatis.bean.User;
-import cn.ultronxr.web.bean.LoginVO;
+import cn.ultronxr.web.bean.LoginObj;
 import cn.ultronxr.web.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +30,23 @@ public class LoginController {
     private LoginService loginService;
 
     @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private UserCacheService userCacheService;
+    private JWSTokenService jwsTokenService;
 
 
     /**
      * 默认返回 login 页面<br/>
      * 如果用户已登录，则跳转到 index 页面
      */
-    @GetMapping("login")
+    @GetMapping(value = {"", "login"})
     public String login(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-        // TODO 如果已登录则自动跳转到index
-        String token = request.getHeader("Authorization");
+        String clientAuthToken = request.getHeader("authToken"),
+                clientRefreshToken = request.getHeader("refreshToken");
+        if(loginService.isLogin(clientAuthToken, clientRefreshToken)) {
+            return "index";
+        } else if(loginService.isOnlyAuthTokenExpired(clientAuthToken, clientAuthToken)) {
+            String updatedAuthToken = loginService.updateAuthToken(clientAuthToken, clientRefreshToken);
+            //response.addCookie();
+        }
         return "login";
     }
 
@@ -52,26 +55,29 @@ public class LoginController {
      */
     @PostMapping("ajaxLogin")
     @ResponseBody
-    public AjaxResponse ajaxLogin(@RequestBody LoginVO loginVO, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResponse ajaxLogin(@RequestBody LoginObj loginObj, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        loginObj.setRememberMe(loginObj.getRememberMe() != null && loginObj.getRememberMe());
+
         // 校验用户名和密码
-        User user = loginService.login(loginVO);
+        User user = loginService.login(loginObj);
         if(user != null) {
-            // 校验成功，在缓存中保存用户信息
-            userCacheService.putUser(user, loginVO.getRememberMe());
-
-            // 签发 JWS auth token
-            String authToken = tokenService.createAuthToken(loginVO.getUsername(), loginVO.getRememberMe());
-            tokenService.saveToken("AUTH" + loginVO.getUsername(), authToken);
-
-            // 勾选了“记住我”时，签发 JWS refresh token
-            if(loginVO.getRememberMe()) {
-                String refreshToken = tokenService.createRefreshToken(loginVO.getUsername(), loginVO.getRememberMe());
-                tokenService.saveToken("REFRESH" + loginVO.getUsername(), refreshToken);
-            }
-
             HashMap<String, String> responseMap = new HashMap<>();
-            responseMap.put("authToken", null);
-            responseMap.put("refreshToken", null);
+            String authToken = null,
+                    refreshToken = null;
+
+            // 校验成功，在缓存中保存用户信息
+            UserCache.putUser(user, loginObj.getRememberMe());
+
+            // 签发 JWS auth token 和 refresh token ，并存入 redis
+            authToken = jwsTokenService.createAuthToken(loginObj.getUsername(), loginObj.getRememberMe());
+            if(loginObj.getRememberMe()) {
+                refreshToken = jwsTokenService.createRefreshToken(loginObj.getUsername(), loginObj.getRememberMe());
+                responseMap.put("refreshToken", refreshToken);
+            }
+            jwsTokenService.saveToken(loginObj.getUsername(), authToken, refreshToken);
+
+            responseMap.put("authToken", authToken);
+            //response.addCookie(new Cookie("authToken", authToken).setHttpOnly(true););
             return AjaxResponse.success("用户登录成功", responseMap);
         }
 

@@ -15,14 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class BaseController {
 
     /**
-     * 直接返回 login 页面
-     */
-    @GetMapping(value = {"", "index"})
-    public String index() {
-        return "login";
-    }
-
-    /**
      * 处理 HTTP错误代码 的 controller，跳转到对应的错误页面<br/>
      * {@link cn.ultronxr.web.config.ErrorPageConfig}
      */

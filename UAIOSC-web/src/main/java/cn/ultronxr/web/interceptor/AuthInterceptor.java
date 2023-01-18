@@ -1,12 +1,11 @@
 package cn.ultronxr.web.interceptor;
 
 import cn.ultronxr.common.bean.AjaxResponse;
-import cn.ultronxr.framework.cache.user.UserCacheService;
-import cn.ultronxr.framework.jjwt.TokenService;
+import cn.ultronxr.framework.bean.JWSParseResult;
+import cn.ultronxr.framework.cache.user.UserCache;
+import cn.ultronxr.framework.jjwt.JWSTokenService;
 import cn.ultronxr.system.bean.mybatis.bean.User;
 import cn.ultronxr.system.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,7 @@ import java.io.PrintWriter;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private UserCacheService userCacheService;
+    private JWSTokenService jwsTokenService;
 
     @Autowired
     private UserService userService;
@@ -49,14 +45,15 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 验证 header 中的 token
-        String authToken = request.getHeader("Authorization").replaceFirst("Bearer ", "");
+        String authToken = request.getHeader("Authorization");
                 //refreshToken = request.getHeader("Authorization-Refresh").replaceFirst("Bearer ", "");
         if(StringUtils.isNotEmpty(authToken)) {
-            Jws<Claims> jws = tokenService.validateToken(authToken);
-            if(null != jws) {
+            authToken = authToken.replaceFirst("Bearer ", "");
+            JWSParseResult authParse = jwsTokenService.parseToken(authToken);
+            if(authParse.isValidation()) {
                 // token 验证成功，把用户信息存储在 ThreadLocal
-                User user = userService.findUserByUsername((String) jws.getBody().get("username"));
-                userCacheService.putUser(user, (boolean) jws.getBody().get("rememberMe"));
+                User user = userService.findUserByUsername(authParse.getUsername());
+                UserCache.putUser(user, authParse.getRememberMe());
                 return true;
             }
         }
@@ -65,6 +62,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
         PrintWriter pw = response.getWriter();
         pw.write(AjaxResponse.fail("用户登录验证失败").toString());
+        response.sendRedirect("/login");
 
         return false;
     }

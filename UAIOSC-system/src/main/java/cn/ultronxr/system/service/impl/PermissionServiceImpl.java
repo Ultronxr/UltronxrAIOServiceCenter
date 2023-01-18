@@ -3,8 +3,10 @@ package cn.ultronxr.system.service.impl;
 import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.SqlUtil;
+import cn.ultronxr.framework.cache.user.UserCache;
 import cn.ultronxr.system.bean.mybatis.bean.Permission;
 import cn.ultronxr.system.bean.mybatis.bean.PermissionExample;
+import cn.ultronxr.system.bean.mybatis.bean.User;
 import cn.ultronxr.system.bean.mybatis.mapper.PermissionMapper;
 import cn.ultronxr.system.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +32,14 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public int createPermission(Permission permission) {
         permission.setId(null);
-        permission.setCreateBy("");
+        permission.setCreateBy(((User) UserCache.getUser()).getUsername());
         permission.setCreateTime(CalendarUtil.calendar().getTime());
         return permissionMapper.insert(permission);
     }
 
     @Override
     public int updatePermission(Permission permission) {
-        permission.setUpdateBy("");
+        permission.setUpdateBy(((User) UserCache.getUser()).getUsername());
         permission.setUpdateTime(CalendarUtil.calendar().getTime());
         return permissionMapper.updateByPrimaryKey(permission);
     }
