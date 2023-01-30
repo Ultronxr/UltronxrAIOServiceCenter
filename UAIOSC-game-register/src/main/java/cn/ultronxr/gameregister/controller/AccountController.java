@@ -1,6 +1,7 @@
 package cn.ultronxr.gameregister.controller;
 
 import cn.ultronxr.common.bean.AjaxResponse;
+import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.gameregister.bean.mybatis.bean.Account;
 import cn.ultronxr.gameregister.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,34 +29,34 @@ public class AccountController {
     @ResponseBody
     public AjaxResponse create(@RequestBody Account account) {
         if(service.create(account) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @GetMapping("delete")
     @ResponseBody
     public AjaxResponse delete(@RequestParam List<Integer> idList) {
         if(service.delete(idList) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @PostMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Account account) {
         if(service.update(account) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @PostMapping("query")
     @ResponseBody
     public AjaxResponse query(@RequestBody Account account) {
         List<Account> accountList = service.query(account);
-        AjaxResponse response = AjaxResponse.success(null, accountList);
+        AjaxResponse response = AjaxResponseUtils.success(null, accountList);
         response.put("count", accountList.size());
         return response;
     }

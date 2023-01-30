@@ -1,7 +1,6 @@
 package cn.ultronxr.common.bean;
 
 import cn.hutool.json.JSONUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -23,18 +22,13 @@ public class AjaxResponse extends HashMap<String, Object> {
     private static final String DATA_KEY = "data";
 
 
-    /** 无消息、无数据的成功响应单例 */
-    private static final AjaxResponse SUCCESS = new AjaxResponse(ResponseCode.SUCCESS);
-
-    /** 无消息、无数据的失败响应单例 */
-    private static final AjaxResponse FAIL = new AjaxResponse(ResponseCode.FAIL);
-
-
     public AjaxResponse() {
     }
 
     public AjaxResponse(@NotNull ResponseCode code) {
         super.put(CODE_KEY, code.getCode());
+        // 未提供自定义信息时，默认自动填充 ResponseCode 中的信息
+        super.put(MSG_KEY, code.getMsg());
     }
 
     public AjaxResponse(@NotNull ResponseCode code, String msg) {
@@ -42,49 +36,21 @@ public class AjaxResponse extends HashMap<String, Object> {
         super.put(MSG_KEY, msg);
     }
 
-    public AjaxResponse(@NotNull ResponseCode code, String msg, Object data) {
+    public AjaxResponse(@NotNull ResponseCode code, Object data) {
         super.put(CODE_KEY, code.getCode());
-        super.put(MSG_KEY, msg);
-        if(data != null) {
+        // 未提供自定义信息时，默认自动填充 ResponseCode 中的信息
+        super.put(MSG_KEY, code.getMsg());
+        if(null != data) {
             super.put(DATA_KEY, data);
         }
     }
 
-
-    public static AjaxResponse success() {
-        return AjaxResponse.SUCCESS;
-    }
-
-    public static AjaxResponse success(String msg) {
-        if(StringUtils.isEmpty(msg)) {
-            return AjaxResponse.SUCCESS;
+    public AjaxResponse(@NotNull ResponseCode code, String msg, Object data) {
+        super.put(CODE_KEY, code.getCode());
+        super.put(MSG_KEY, msg);
+        if(null != data) {
+            super.put(DATA_KEY, data);
         }
-        return new AjaxResponse(ResponseCode.SUCCESS, msg);
-    }
-
-    public static AjaxResponse success(String msg, Object data) {
-        if(StringUtils.isEmpty(msg) && data == null) {
-            return AjaxResponse.SUCCESS;
-        }
-        return new AjaxResponse(ResponseCode.SUCCESS, msg, data);
-    }
-
-    public static AjaxResponse fail() {
-        return AjaxResponse.FAIL;
-    }
-
-    public static AjaxResponse fail(String msg) {
-        if(StringUtils.isEmpty(msg)) {
-            return AjaxResponse.FAIL;
-        }
-        return new AjaxResponse(ResponseCode.FAIL, msg);
-    }
-
-    public static AjaxResponse fail(String msg, Object data) {
-        if(StringUtils.isEmpty(msg) && data == null) {
-            return AjaxResponse.FAIL;
-        }
-        return new AjaxResponse(ResponseCode.FAIL, msg, data);
     }
 
     @Override

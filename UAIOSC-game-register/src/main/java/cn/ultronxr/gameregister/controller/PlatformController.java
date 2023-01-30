@@ -1,6 +1,7 @@
 package cn.ultronxr.gameregister.controller;
 
 import cn.ultronxr.common.bean.AjaxResponse;
+import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.gameregister.bean.mybatis.bean.Platform;
 import cn.ultronxr.gameregister.service.PlatformService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,41 +29,41 @@ public class PlatformController {
     @ResponseBody
     public AjaxResponse create(@RequestBody Platform platform) {
         if(service.create(platform) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @GetMapping("delete")
     @ResponseBody
     public AjaxResponse delete(@RequestParam("id") String id) {
         if(service.delete(id) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @PostMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Platform platform) {
         if(service.update(platform) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @PostMapping("query")
     @ResponseBody
     public AjaxResponse query(@RequestBody Platform platform) {
         List<Platform> platformList = service.query(platform);
-        return AjaxResponse.success(null, platformList);
+        return AjaxResponseUtils.success(null, platformList);
     }
 
     @GetMapping("list")
     @ResponseBody
     public AjaxResponse list() {
         List<Platform> platformList = service.query(null);
-        return AjaxResponse.success(null, platformList);
+        return AjaxResponseUtils.success(null, platformList);
     }
 
 }

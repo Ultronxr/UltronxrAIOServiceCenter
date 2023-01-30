@@ -1,6 +1,7 @@
 package cn.ultronxr.gameregister.controller;
 
 import cn.ultronxr.common.bean.AjaxResponse;
+import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.gameregister.bean.mybatis.bean.Shop;
 import cn.ultronxr.gameregister.service.ShopService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,41 +29,41 @@ public class ShopController {
     @ResponseBody
     public AjaxResponse create(@RequestBody Shop shop) {
         if(service.create(shop) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @GetMapping("delete")
     @ResponseBody
     public AjaxResponse delete(@RequestParam("id") String id) {
         if(service.delete(id) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @PostMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Shop shop) {
         if(service.update(shop) > 0) {
-            return AjaxResponse.success();
+            return AjaxResponseUtils.success();
         }
-        return AjaxResponse.fail();
+        return AjaxResponseUtils.fail();
     }
 
     @PostMapping("query")
     @ResponseBody
     public AjaxResponse query(@RequestBody Shop shop) {
         List<Shop> shopList = service.query(shop);
-        return AjaxResponse.success(null, shopList);
+        return AjaxResponseUtils.success(null, shopList);
     }
 
     @GetMapping("list")
     @ResponseBody
     public AjaxResponse list() {
         List<Shop> shopList = service.query(null);
-        return AjaxResponse.success(null, shopList);
+        return AjaxResponseUtils.success(null, shopList);
     }
 
 }

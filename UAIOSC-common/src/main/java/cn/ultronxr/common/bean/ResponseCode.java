@@ -7,15 +7,20 @@ package cn.ultronxr.common.bean;
  *              注：这里的响应代码只在业务上使用，与HTTP响应代码不一样。
  */
 public enum ResponseCode {
-    SUCCESS(200),
-    FAIL(500),
+    UNAUTHORIZED(-1, "未登录/未授权"),
+    REFRESH_AUTH_TOKEN(0, "需要更新 JWS auth token"),
+    SUCCESS(200, "业务成功"),
+    FAIL(500, "业务失败"),
     ;
 
 
     private int code;
 
-    ResponseCode(int code) {
+    private String msg;
+
+    ResponseCode(int code, String msg) {
         this.code = code;
+        this.msg = msg;
     }
 
     public int getCode() {
@@ -24,6 +29,14 @@ public enum ResponseCode {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
 }
