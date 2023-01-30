@@ -9,9 +9,11 @@ import java.util.HashMap;
 /**
  * @author Ultronxr
  * @date 2023/01/18 20:18
- * @description JWS token 解析缓存，防止一段时间内重复解析相同 token 浪费资源
+ * @description JWS token 解析缓存，防止一段时间内重复解析相同 token 浪费资源<br/>
+ *              <b>⚠警告：使用 token 解析缓存可能会导致当前已过期的 token 被误判为验证通过！暂时弃用。</b>
  */
 @Component
+@Deprecated
 public class JWSParseCache {
 
     private static final HashMap<String, JWSParseResult> TOKEN_PARSE_CACHE = new HashMap<>();
@@ -41,8 +43,8 @@ public class JWSParseCache {
         }
     }
 
-    // 每七天的 00:00:00 执行一次
-    @Scheduled(cron = "0 0 0 1/7 * ? ")
+    // 每三天的 00:00:00 执行一次
+    @Scheduled(cron = "0 0 0 1/3 * ? ")
     private void clearCacheScheduled() {
         clear();
     }

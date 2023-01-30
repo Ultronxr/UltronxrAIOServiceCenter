@@ -7,7 +7,7 @@ import java.util.Map;
  * @author Ultronxr
  * @date 2023/01/15 19:46
  * @description ThreadLocal 实现的缓存<br/>
- *              警告：线程池中的线程不再使用时（不论会不会销毁），务必清空该线程的缓存内容，避免线程重用导致数据混乱
+ *              <b>⚠警告：线程池中的线程不再使用时（不论会不会销毁），务必清空该线程的缓存内容，避免线程重用导致数据混乱</b>
  */
 public class ThreadLocalCache {
 

@@ -1,11 +1,9 @@
 package cn.ultronxr.web.interceptor;
 
-import cn.ultronxr.common.bean.AjaxResponse;
-import cn.ultronxr.framework.bean.JWSParseResult;
-import cn.ultronxr.framework.cache.user.UserCache;
+import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.framework.jjwt.JWSTokenService;
-import cn.ultronxr.system.bean.mybatis.bean.User;
-import cn.ultronxr.system.service.UserService;
+import cn.ultronxr.web.service.LoginService;
+import cn.ultronxr.web.util.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -26,11 +25,12 @@ import java.io.PrintWriter;
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private JWSTokenService jwsTokenService;
+    private static final String AUTH_KEY = "Authorization";
+
+    private static final String REFRESH_KEY = "Authorization_Refresh";
 
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
 
 
     /**
@@ -44,24 +44,44 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // 验证 header 中的 token
-        String authToken = request.getHeader("Authorization");
-                //refreshToken = request.getHeader("Authorization-Refresh").replaceFirst("Bearer ", "");
-        if(StringUtils.isNotEmpty(authToken)) {
-            authToken = authToken.replaceFirst("Bearer ", "");
-            JWSParseResult authParse = jwsTokenService.parseToken(authToken);
-            if(authParse.isValidation()) {
-                // token 验证成功，把用户信息存储在 ThreadLocal
-                User user = userService.findUserByUsername(authParse.getUsername());
-                UserCache.putUser(user, authParse.getRememberMe());
-                return true;
+        String clientAuthToken = null,
+                clientRefreshToken = null;
+        // 从请求的 cookie 中取出 token
+        for(Cookie cookie : request.getCookies()) {
+            if(cookie.getName().equals(AUTH_KEY)) {
+                clientAuthToken = cookie.getValue();
+            }
+            if(cookie.getName().equals(REFRESH_KEY)) {
+                clientRefreshToken = cookie.getValue();
             }
         }
 
+        // 未携带 auth token ，直接判未登录
+        if(StringUtils.isEmpty(clientAuthToken)) {
+            return notLoginResponse(response);
+        }
+
+        clientAuthToken = JWSTokenService.unwrapRequestToken(clientAuthToken);
+        clientRefreshToken = JWSTokenService.unwrapRequestToken(clientRefreshToken);
+
+        if(loginService.isLogin(clientAuthToken, clientRefreshToken)) {
+            // 已登录，放行
+            if(loginService.isOnlyAuthTokenExpired(clientAuthToken, clientRefreshToken)) {
+                // 已登录但 auth token 过期，使用 refresh token 对 auth token 进行更新
+                String updatedAuthToken = loginService.updateAuthToken(clientAuthToken, clientRefreshToken);
+                response.addCookie(CookieUtils.commonCookie(AUTH_KEY, updatedAuthToken));
+            }
+            return true;
+        }
+
+        return notLoginResponse(response);
+    }
+
+    private boolean notLoginResponse(HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         PrintWriter pw = response.getWriter();
-        pw.write(AjaxResponse.fail("用户登录验证失败").toString());
+        pw.write(AjaxResponseUtils.unauthorized("用户登录验证失败").toString());
         response.sendRedirect("/login");
 
         return false;

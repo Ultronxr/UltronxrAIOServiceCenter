@@ -8,20 +8,28 @@ layui.define(function(){
     //exports('index', {});
 });
 
+$(function () {
+    // app.util.token.init();
+});
+
 form.on('submit(login)', function(data) {
+    console.log(data.field);
+
     app.util.ajax.post(app.util.api.getAPIUrl('system.login'),
         JSON.stringify(data.field),
         function (res) {
             // console.log(res);
             switch (res.code) {
                 case app.RESPONSE_CODE.SUCCESS: {
-                    // TODO
-                    app.util.token.save(null, username, token, role);
-                    window.location.href = '/index'
+                    app.util.token.clear();
+                    app.util.token.auth.set(res.data[app.util.token.usernameKey], res.data[app.util.token.authKey], null, null);
+                    app.util.token.refresh.set(res.data[app.util.token.usernameKey], res.data[app.util.token.refreshKey], null, null);
+                    window.location.href = '/index';
                     break;
                 }
-                case app.RESPONSE_CODE.FAIL: {
-                    layer.msg('登录失败！' + res.msg, {icon:5});
+                case app.RESPONSE_CODE.UNAUTHORIZED: {
+                    //layer.msg('登录失败！' + res.msg, {icon:5});
+                    layer.msg('登录失败！', {icon:5});
                     break;
                 }
                 default: {
@@ -38,7 +46,7 @@ form.on('submit(login)', function(data) {
                 case 404: msg = '找不到地址！'; break;
                 default: msg = ''; break;
             }
-            console.log(res);
+            // console.log(res);
             layer.msg(msg + resText, {icon:2});
         },
         function () {

@@ -33,7 +33,7 @@ spring:
         password: ${secret.prod.spring.redis.redisson.singleServerConfig.password}
 
 jjwt:
-  issuer: "UAIOSC-framework-JJWT-prod"
+  issuer: UAIOSC-framework-JJWT-prod
   secret: ${secret.prod.jjwt.secret}
   expireMinutes:
     # 3小时、7天

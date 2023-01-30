@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Ultronxr
  * @date 2023/01/14 20:48
@@ -31,7 +33,7 @@ public class JWSTokenService {
      */
     private static final String FIELD_PREFIX_AUTH_TOKEN = "AUTH-";
 
-    /** 插入 JWS refresh token 键值对内容时使用的 field 键*/
+    /** 插入 JWS refresh token 键值对内容时使用的 field 键 */
     private static final String FIELD_PREFIX_REFRESH_TOKEN = "REFRESH-";
 
 
@@ -76,10 +78,13 @@ public class JWSTokenService {
     }
 
     /**
+     * <b>⚠警告：该方法返回的 false 值大部分情况下应当丢弃，不能作为“token未过期”的依据，因为该断言往往隐含了“token已通过验证”的前提；<br/>
+     *      如有上述情况，应当采用 {@link #validatedToken(String)} 单独判断。 {@link JWSParseResult#isExpired()} </b><br/><br/>
+     *
      * 验证一个 JWS token 是否过期（使用此方法时解析的结果会被丢弃）
      *
      * @param token JWS token
-     * @return {@code true} - 已过期；{@code false} 未过期
+     * @return {@code true} - 已过期；{@code false} 验证通过，或验证未通过且原因不是“JWS 已过期”
      */
     public boolean expiredToken(String token) {
         return parseToken(token).isExpired();
@@ -93,9 +98,9 @@ public class JWSTokenService {
      */
     public JWSParseResult parseToken(String token) {
         // 检查缓存中是否存在该 token 的解析结果
-        if(JWSParseCache.contains(token)) {
-            return JWSParseCache.get(token);
-        }
+        //if(JWSParseCache.contains(token)) {
+        //    return JWSParseCache.get(token);
+        //}
 
         JWSParseResult result = new JWSParseResult();
         try {
@@ -117,10 +122,10 @@ public class JWSTokenService {
             } else {
                 result.setMsg("其他异常");
             }
-            log.info(result.getMsg(), e);
         }
+        log.info("JWS token username={}，验证结果={}，验证信息={}", result.getUsername() ,result.isValidation(), result.getMsg());
         // 把解析结果存入缓存
-        JWSParseCache.put(token, result);
+        //JWSParseCache.put(token, result);
         return result;
     }
 
@@ -196,7 +201,7 @@ public class JWSTokenService {
      *
      * @param username 用户名
      */
-    public String authFieldWrapper(String username) {
+    public static String authFieldWrapper(String username) {
         return FIELD_PREFIX_AUTH_TOKEN + username;
     }
 
@@ -205,8 +210,23 @@ public class JWSTokenService {
      *
      * @param username 用户名
      */
-    public String refreshFieldWrapper(String username) {
+    public static String refreshFieldWrapper(String username) {
         return FIELD_PREFIX_REFRESH_TOKEN + username;
+    }
+
+    public static String unwrapRequestToken(HttpServletRequest request, String headerKey) {
+        if(null == request) {
+            return null;
+        }
+        String token = request.getHeader(headerKey);
+        return unwrapRequestToken(token);
+    }
+
+    public static String unwrapRequestToken(String bearerToken) {
+        if(!StringUtils.isEmpty(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.replaceFirst("Bearer ", "");
+        }
+        return bearerToken;
     }
 
 }

@@ -33,8 +33,13 @@ spring:
         password: ${secret.dev.spring.redis.redisson.singleServerConfig.password}
 
 jjwt:
-  issuer: "UAIOSC-framework-JJWT-dev"
+  issuer: UAIOSC-framework-JJWT-dev
   secret: ${secret.dev.jjwt.secret}
   expireMinutes:
-    authToken: 5
+    authToken: 2
     refreshToken: 20
+#  cookieKey:
+#    auth: Authorization
+#    refresh: Authorization_Refresh
+#    username: Username
+

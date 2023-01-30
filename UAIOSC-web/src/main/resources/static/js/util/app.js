@@ -1,6 +1,8 @@
 const app = {
     // 业务响应代码（cn.ultronxr.common.bean.ResponseCode）
     RESPONSE_CODE: {
+        UNAUTHORIZED: -1,
+        REFRESH_AUTH_TOKEN: 0,
         SUCCESS: 200,
         FAIL: 500
     },
@@ -11,7 +13,8 @@ const app = {
         system: {
             url: '',
             login: '/ajaxLogin',
-            logout: ''
+            logout: '',
+            token: "/ajaxToken"
         },
         'game-register': {
             url: '/game-register',
@@ -124,11 +127,18 @@ const app = {
                 }
 
                 if(headers == null) {
-                    let token = "";
-                    headers = {
-                        "Authorization": token,
-                    };
+                    headers = {};
                 }
+                // let authToken = app.util.token.auth.get(),
+                //     refreshToken = app.util.token.refresh.get();
+                // if(app.util.string.isNotEmpty(authToken)) {
+                //     headers["Authorization"] = "Bearer " + authToken;
+                // }
+                // if(app.util.string.isNotEmpty(refreshToken)) {
+                //     headers["Authorization-Refresh"] = "Bearer " + refreshToken;
+                // }
+                // console.log(headers);
+
                 if(async == null) {
                     async = true;
                 }
@@ -166,6 +176,12 @@ const app = {
         },
 
         string: {
+            isEmpty: function (str) {
+                return str === undefined || str === null || str === "";
+            },
+            isNotEmpty: function (str) {
+                return !this.isEmpty(str);
+            },
             /**
              * 判断一个字符串是否是正确的JSON字符串
              */
@@ -181,6 +197,7 @@ const app = {
                 return false;
             },
 
+
         },
 
         function: {
@@ -191,6 +208,44 @@ const app = {
                 return func !== null && func !== undefined && typeof func === "function";
             },
 
+        },
+
+        /**
+         * 前端存储内容的统一方法
+         */
+        storage: {
+            // cookie
+            cookie: {
+                // 用于操作 cookie 的统一 options
+                cookieOptions: {
+                    expires: 30,
+                    domain: "localhost",
+                    path: "/",
+                    httpOnly: false,
+                    secure: false,
+                },
+                set: function (key, value) {
+                    $.cookie(key, value, this.cookieOptions);
+                },
+                get: function (key) {
+                    return $.cookie(key, this.cookieOptions);
+                },
+                remove: function (key) {
+                    $.removeCookie(key, this.cookieOptions);
+                },
+            },
+            // localStorage
+            item: {
+                set: function (key, value) {
+                    window.localStorage.setItem(key, value);
+                },
+                get: function (key) {
+                   return window.localStorage.getItem(key);
+                },
+                remove: function (key) {
+                    window.localStorage.removeItem(key);
+                },
+            },
         },
 
         user: {
@@ -206,26 +261,86 @@ const app = {
         },
 
         token: {
-            options: {
-                expires: 7,
-                path: "/",
-                domain: "localhost",
-                secure: false
+            /**
+             * 操作 token 时使用的 key
+             */
+            authKey: "Authorization",
+            refreshKey: "Authorization_Refresh",
+            usernameKey: "Username",
+
+            /**
+             * 统一的操作 token 的方法，全部放在 cookie 中进行
+             */
+            storage: {
+                set: function (key, value) {
+                    app.util.storage.cookie.set(key, value);
+                },
+                get: function (key) {
+                    return app.util.storage.cookie.get(key);
+                },
+                remove: function (key) {
+                    app.util.storage.cookie.remove(key);
+                },
             },
 
-            get: function () {
-                return $.cookie("token");
+            init: function () {
+                // app.util.ajax.get(app.util.api.getAPIUrl("system.token"),
+                //     null,
+                //     function (res) {
+                //         switch (res.code) {
+                //             case app.RESPONSE_CODE.UNAUTHORIZED:
+                //                 window.location.href = "/login";
+                //                 break;
+                //             case app.RESPONSE_CODE.REFRESH_AUTH_TOKEN:
+                //                 app.util.token.auth.remove();
+                //                 app.util.token.auth.set(res.data.username, res.data.authToken, null, null);
+                //                 break;
+                //         }
+                //     },
+                // function (res) {
+                //
+                //     });
             },
 
-            save: function (userID, username, token, role) {
-                $.cookie("token", token, this.options);
+            auth: {
+                get: function () {
+                    return app.util.token.storage.get(app.util.token.authKey);
+                },
+                set: function (username, token, userID, role) {
+                    if(app.util.string.isNotEmpty(username)) {
+                        app.util.token.storage.set(app.util.token.usernameKey, username);
+                    }
+                    if(app.util.string.isNotEmpty(token)) {
+                        app.util.token.storage.set(app.util.token.authKey, token);
+                    }
+                },
+                remove: function () {
+                    app.util.token.storage.remove(app.util.token.usernameKey);
+                    app.util.token.storage.remove(app.util.token.authKey);
+                },
+            },
+            refresh: {
+                get: function () {
+                    return app.util.token.storage.get(app.util.token.refreshKey);
+                },
+                set: function (username, token, userID, role) {
+                    if(app.util.string.isNotEmpty(username)) {
+                        app.util.token.storage.set(app.util.token.usernameKey, username);
+                    }
+                    if(app.util.string.isNotEmpty(token)) {
+                        app.util.token.storage.set(app.util.token.refreshKey, token);
+                    }
+                },
+                remove: function () {
+                    app.util.token.storage.remove(app.util.token.usernameKey);
+                    app.util.token.storage.remove(app.util.token.refreshKey);
+                },
             },
 
-            remove: function () {
-                $.removeCookie("username", this.options);
-                $.removeCookie("userID", this.options);
-                $.removeCookie("token", this.options);
-                $.removeCookie("role", this.options);
+            clear: function () {
+                this.storage.remove(app.util.token.usernameKey);
+                this.storage.remove(app.util.token.authKey);
+                this.storage.remove(app.util.token.refreshKey);
             },
 
         },
