@@ -34,7 +34,7 @@ public class PlatformController {
         return AjaxResponseUtils.fail();
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
     @ResponseBody
     public AjaxResponse delete(@RequestParam("id") String id) {
         if(service.delete(id) > 0) {
@@ -43,7 +43,7 @@ public class PlatformController {
         return AjaxResponseUtils.fail();
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Platform platform) {
         if(service.update(platform) > 0) {

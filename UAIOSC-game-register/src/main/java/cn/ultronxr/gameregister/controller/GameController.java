@@ -34,7 +34,7 @@ public class GameController {
         return AjaxResponseUtils.fail();
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
     @ResponseBody
     public AjaxResponse deleteGame(@RequestParam("id") String id) {
         if(gameService.deleteGame(Long.parseLong(id)) > 0) {
@@ -43,7 +43,7 @@ public class GameController {
         return AjaxResponseUtils.fail();
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     @ResponseBody
     public AjaxResponse updateGame(@RequestBody Game game) {
         if(gameService.updateGame(game) > 0) {

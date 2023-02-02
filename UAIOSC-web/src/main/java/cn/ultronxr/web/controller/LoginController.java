@@ -4,6 +4,7 @@ import cn.ultronxr.common.bean.AjaxResponse;
 import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.framework.cache.user.UserCache;
 import cn.ultronxr.framework.jjwt.JWSTokenService;
+import cn.ultronxr.framework.util.JWSTokenUtils;
 import cn.ultronxr.system.bean.mybatis.bean.User;
 import cn.ultronxr.web.bean.LoginObj;
 import cn.ultronxr.web.service.LoginService;
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
+import static cn.ultronxr.web.bean.Constant.AuthCookieKey.*;
+import static cn.ultronxr.web.bean.Constant.AuthInfo;
+
 /**
  * @author Ultronxr
  * @date 2023/01/13 14:58
@@ -28,12 +32,6 @@ import java.util.HashMap;
 @RequestMapping("/")
 @Slf4j
 public class LoginController {
-
-    private static final String AUTH_KEY = "Authorization";
-
-    private static final String REFRESH_KEY = "Authorization_Refresh";
-
-    private static final String USERNAME_KEY = "Username";
 
     @Autowired
     private LoginService loginService;
@@ -52,39 +50,27 @@ public class LoginController {
                         HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         // 未携带 auth token ，直接判未登录
         if(StringUtils.isEmpty(clientAuthToken)) {
+            log.info("LoginController 登录结果 = {}", AuthInfo.NO_AUTH_TOKEN);
             return "login";
         }
 
-        clientAuthToken = JWSTokenService.unwrapRequestToken(clientAuthToken);
-        clientRefreshToken = JWSTokenService.unwrapRequestToken(clientRefreshToken);
+        clientAuthToken = JWSTokenUtils.unwrapRequestToken(clientAuthToken);
+        clientRefreshToken = JWSTokenUtils.unwrapRequestToken(clientRefreshToken);
 
         if(loginService.isLogin(clientAuthToken, clientRefreshToken)) {
             // 已登录，跳转主页
-            if(loginService.isOnlyAuthTokenExpired(clientAuthToken, clientRefreshToken)) {
+            if(loginService.isAuthTokenExpiredButRefreshTokenStillValid(clientAuthToken, clientRefreshToken)) {
                 // 已登录但 auth token 过期，使用 refresh token 对 auth token 进行更新
                 String updatedAuthToken = loginService.updateAuthToken(clientAuthToken, clientRefreshToken);
                 response.addCookie(CookieUtils.commonCookie(AUTH_KEY, updatedAuthToken));
+                log.info("LoginController 登录结果 = {}",  AuthInfo.REFRESH_AUTH_TOKEN);
             }
+            log.info("LoginController 登录结果 = {}", AuthInfo.LOGGED_IN);
             return "index";
         }
 
+        log.info("LoginController 登录结果 = {}", AuthInfo.INVALID_TOKEN);
         return "login";
-    }
-
-    @PostMapping("token")
-    @ResponseBody
-    public AjaxResponse ajaxToken(HttpServletRequest request) {
-        //String authToken = JWSTokenService.unwrapRequestToken(request, "Authorization"),
-        //        refreshToken = JWSTokenService.unwrapRequestToken(request, "Authorization-Refresh");
-        //
-        //if(StringUtils.isEmpty(authToken)) {
-        //    return AjaxResponseUtils.unauthorized();
-        //}
-        //if(loginService.isOnlyAuthTokenExpired(authToken, refreshToken)) {
-        //    String updatedAuthToken = jwsTokenService.createAuthToken()
-        //    return AjaxResponseUtils.refreshAuthToken();
-        //}
-        return AjaxResponseUtils.unauthorized();
     }
 
     /**
@@ -93,6 +79,7 @@ public class LoginController {
     @PostMapping("ajaxLogin")
     @ResponseBody
     public AjaxResponse ajaxLogin(@RequestBody LoginObj loginObj, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        // rememberMe 若为 null ，则设 false
         loginObj.setRememberMe(loginObj.getRememberMe() != null && loginObj.getRememberMe());
 
         // 校验用户名和密码
@@ -103,12 +90,12 @@ public class LoginController {
                     refreshToken = null;
 
             // 校验成功，在缓存中保存用户信息
-            UserCache.putUser(user, loginObj.getRememberMe());
+            UserCache.putUser(user);
 
             // 签发 JWS auth token 和 refresh token ，并存入 redis
-            authToken = jwsTokenService.createAuthToken(loginObj.getUsername(), loginObj.getRememberMe());
+            authToken = jwsTokenService.createAuthToken(loginObj.getUsername());
             if(loginObj.getRememberMe()) {
-                refreshToken = jwsTokenService.createRefreshToken(loginObj.getUsername(), loginObj.getRememberMe());
+                refreshToken = jwsTokenService.createRefreshToken(loginObj.getUsername());
                 responseMap.put(REFRESH_KEY, refreshToken);
             }
             jwsTokenService.saveToken(loginObj.getUsername(), authToken, refreshToken);
@@ -120,6 +107,19 @@ public class LoginController {
         }
 
         return AjaxResponseUtils.unauthorized();
+    }
+
+    /**
+     * 处理 ajax logout 请求
+     */
+    @GetMapping("ajaxLogout")
+    @ResponseBody
+    public AjaxResponse ajaxLogout(@CookieValue(value = AUTH_KEY, required = false) String clientAuthToken,
+                                   HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        if(loginService.logout(JWSTokenUtils.unwrapRequestToken(clientAuthToken))) {
+            return AjaxResponseUtils.success("用户登出成功");
+        }
+        return AjaxResponseUtils.unauthorized("用户登出失败");
     }
 
 }

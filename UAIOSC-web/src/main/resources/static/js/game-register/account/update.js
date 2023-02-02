@@ -1,10 +1,11 @@
-$(function () {
-    loadAllSelect();
-});
-
-function loadAllSelect() {
-    loadSelect(app.util.api.getAPIUrl('game-register.platform.list'), $('#platform'));
-    loadSelect(app.util.api.getAPIUrl('game-register.shop.list'), $('#shop'));
+/**
+ * 父页面调用 iframe 执行的方法，同步加载 select 下拉列表、并填充数据
+ * @param rowData 父页面传递过来的表格中的某一行数据
+ */
+function loadSelectAndSetRowData(rowData) {
+    loadSelect(app.util.api.getAPIUrl('game-register.platform.list'), $('#platform'), false);
+    loadSelect(app.util.api.getAPIUrl('game-register.shop.list'), $('#shop'), false);
+    setRowData(rowData);
 }
 
 /**
@@ -27,7 +28,7 @@ function setRowData(rowData) {
 }
 
 form.on('submit(update)', function(data) {
-    app.util.ajax.post(app.util.api.getAPIUrl('game-register.account.update'),
+    app.util.ajax.put(app.util.api.getAPIUrl('game-register.account.update'),
         JSON.stringify(data.field),
         function (res) {
             // console.log(res);

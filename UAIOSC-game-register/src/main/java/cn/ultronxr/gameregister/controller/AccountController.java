@@ -34,7 +34,7 @@ public class AccountController {
         return AjaxResponseUtils.fail();
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
     @ResponseBody
     public AjaxResponse delete(@RequestParam List<Integer> idList) {
         if(service.delete(idList) > 0) {
@@ -43,7 +43,7 @@ public class AccountController {
         return AjaxResponseUtils.fail();
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Account account) {
         if(service.update(account) > 0) {

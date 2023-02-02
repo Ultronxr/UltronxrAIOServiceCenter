@@ -13,8 +13,7 @@ const app = {
         system: {
             url: '',
             login: '/ajaxLogin',
-            logout: '',
-            token: "/ajaxToken"
+            logout: "/ajaxLogout",
         },
         'game-register': {
             url: '/game-register',
@@ -95,13 +94,18 @@ const app = {
         },
 
         ajax: {
-            get: function (url, data, success, error) {
+            get: function (url, data, success, error, async) {
                 let method = "GET",
                     contentType = "application/x-www-form-urlencoded",
                     dataType = "json";
-                this.request(method, url, null, data, success, error, null, null, null, null, contentType, dataType);
+                this.request(method, url, null, data, success, error, null, null, async, null, contentType, dataType);
             },
-
+            delete: function (url, data, success, error, async) {
+                let method = "DELETE",
+                    contentType = "application/x-www-form-urlencoded",
+                    dataType = "json";
+                this.request(method, url, null, data, success, error, null, null, async, null, contentType, dataType);
+            },
             post: function (url, data, success, error, beforeSend, complete, async) {
                 let method = "POST",
                     contentType = "application/json; charset=UTF-8",
@@ -111,11 +115,20 @@ const app = {
                 }
                 this.request(method, url, null, data, success, error, beforeSend, complete, async, null, contentType, dataType);
             },
+            put: function (url, data, success, error, beforeSend, complete, async) {
+                let method = "PUT",
+                    contentType = "application/json; charset=UTF-8",
+                    dataType = "json";
+                if(!app.util.string.isJsonStringify(data)) {
+                    data = JSON.stringify(data);
+                }
+                this.request(method, url, null, data, success, error, beforeSend, complete, async, null, contentType, dataType);
+            },
 
             request: function (method, url, headers, data, success, error, beforeSend, complete, async, timeout, contentType, dataType) {
-                if(!app.util.function.isFunction(success)) {
-                    success = function (res) {};
-                }
+                // if(!app.util.function.isFunction(success)) {
+                //     success = function (res) {};
+                // }
                 if(!app.util.function.isFunction(error)) {
                     error = function (res) {};
                 }
@@ -248,18 +261,6 @@ const app = {
             },
         },
 
-        user: {
-            /**
-             * 每个需要鉴权的页面都要调用这个方法，验证用户是否已经登录，以及用户登录是否合法，否则跳转到 login 页面
-             */
-            validate: function () {
-
-            },
-            getUsername: function () {
-
-            },
-        },
-
         token: {
             /**
              * 操作 token 时使用的 key
@@ -284,22 +285,6 @@ const app = {
             },
 
             init: function () {
-                // app.util.ajax.get(app.util.api.getAPIUrl("system.token"),
-                //     null,
-                //     function (res) {
-                //         switch (res.code) {
-                //             case app.RESPONSE_CODE.UNAUTHORIZED:
-                //                 window.location.href = "/login";
-                //                 break;
-                //             case app.RESPONSE_CODE.REFRESH_AUTH_TOKEN:
-                //                 app.util.token.auth.remove();
-                //                 app.util.token.auth.set(res.data.username, res.data.authToken, null, null);
-                //                 break;
-                //         }
-                //     },
-                // function (res) {
-                //
-                //     });
             },
 
             auth: {

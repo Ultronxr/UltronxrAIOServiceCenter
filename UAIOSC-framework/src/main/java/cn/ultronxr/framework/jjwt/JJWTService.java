@@ -56,16 +56,14 @@ public class JJWTService {
      * 为用户签发一个新的 JWS token
      *
      * @param username                登录用户名
-     * @param rememberMe              登录时是否勾选了“记住我”
      * @param tokenExpireMilliSeconds 指定该 JWT 的有效时长（毫秒）
      * @return  签发的 token 字符串
      */
-    public String generate(String username, Boolean rememberMe, long tokenExpireMilliSeconds) {
+    public String generate(String username, long tokenExpireMilliSeconds) {
         Date now = CalendarUtil.calendar().getTime(),
              expire = new Date(now.getTime() + tokenExpireMilliSeconds);
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("username", username);
-        claims.put("rememberMe", rememberMe);
 
         JwtBuilder jwtBuilder = Jwts.builder()
                 // === Header ===

@@ -53,16 +53,15 @@ public class LoginServiceImpl implements LoginService {
 
         if(authParse.isValidation()) {
             // client auth token 验证通过，进一步检查
-            boolean rememberMe = authParse.getRememberMe();
             String username = authParse.getUsername(),
                     serverAuthToken = jwsTokenService.getAuthToken(username);
 
-            if(serverAuthToken.equals(clientAuthToken)) {
+            if(StringUtils.isNotEmpty(serverAuthToken) && serverAuthToken.equals(clientAuthToken)) {
                 // redis 中存储的 server auth token 与 client auth token 匹配
                 if(null == user || !user.getUsername().equals(username)) {
                     // 缓存中无 user 或不匹配，重新写入缓存
                     UserCache.deleteUser();
-                    UserCache.putUser(userService.findUserByUsername(username), rememberMe);
+                    UserCache.putUser(userService.findUserByUsername(username));
                 }
                 return true;
             }
@@ -81,7 +80,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public boolean isOnlyAuthTokenExpired(String clientAuthToken, String clientRefreshToken) {
+    public boolean isAuthTokenExpiredButRefreshTokenStillValid(String clientAuthToken, String clientRefreshToken) {
         // 对于 refresh token 的判断需要使用 validation 属性，确保其有效
         return jwsTokenService.expiredToken(clientAuthToken)
                 && jwsTokenService.validatedToken(clientRefreshToken);
@@ -89,9 +88,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String updateAuthToken(String clientAuthToken, String clientRefreshToken) {
-        if(isOnlyAuthTokenExpired(clientAuthToken, clientRefreshToken)) {
+        if(isAuthTokenExpiredButRefreshTokenStillValid(clientAuthToken, clientRefreshToken)) {
             JWSParseResult refreshParse = jwsTokenService.parseToken(clientRefreshToken);
-            String updatedAuthToken = jwsTokenService.createAuthToken(refreshParse.getUsername(), refreshParse.getRememberMe());
+            String updatedAuthToken = jwsTokenService.createAuthToken(refreshParse.getUsername());
             jwsTokenService.saveToken(refreshParse.getUsername(), updatedAuthToken, clientRefreshToken);
             log.info("使用 refreshToken 对 authToken 进行更新，username={}", refreshParse.getUsername());
             return updatedAuthToken;
@@ -100,9 +99,22 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public void logout(LoginObj loginObj) {
-        UserCache.deleteUser();
-        jwsTokenService.deleteToken(loginObj.getUsername());
+    public boolean logout(String clientAuthToken) {
+        if (StringUtils.isEmpty(clientAuthToken)) {
+            return false;
+        }
+
+        JWSParseResult authParse = jwsTokenService.parseToken(clientAuthToken);
+        String username = authParse.getUsername();
+        String cachedUsername = ((User) UserCache.getUser()).getUsername();
+
+        if(username.equals(cachedUsername)) {
+            UserCache.deleteUser();
+            jwsTokenService.deleteToken(username);
+            log.info("用户登出 username = {}", username);
+            return true;
+        }
+        return false;
     }
 
 }

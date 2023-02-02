@@ -50,17 +50,6 @@ public class JWSParseResult {
 
     /**
      * 前提：当 JWS token 通过验证后，<br/>
-     *      获取解析结果中 "rememberMe" 对应的值
-     *
-     * @return token 解析结果中的 "rememberMe" 对应的 {@code Boolean} 值<br/>
-     *          如果 token 验证未通过，返回 {@code null}
-     */
-    public Boolean getRememberMe() {
-        return null == jws ? null : jws.getBody().get("rememberMe", Boolean.class);
-    }
-
-    /**
-     * 前提：当 JWS token 通过验证后，<br/>
      *      获取解析结果中 "username" 对应的值
      *
      * @return token 解析结果中的 "username" 对应的 {@code String} 值<br/>

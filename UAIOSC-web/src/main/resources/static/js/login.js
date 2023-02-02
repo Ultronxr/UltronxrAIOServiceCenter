@@ -1,15 +1,4 @@
-var layer, form, table;
-layui.define(function(){
-    layer = layui.layer;
-    form = layui.form;
-    // table = layui.table;
-
-    console.log('layui 模块加载完成。');
-    //exports('index', {});
-});
-
 $(function () {
-    // app.util.token.init();
 });
 
 form.on('submit(login)', function(data) {

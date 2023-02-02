@@ -15,11 +15,14 @@ function closeLayerWindow() {
 }
 
 /**
- * 异步加载 select 选项框的选项
+ * 加载 select 选项框的选项
  * @param url          请求地址
  * @param targetSelect 目标 select 选项框的jquery对象
+ * @param async        请求数据时是异步还是同步：
+ *                          true - 异步（缺省）；false - 同步
+ * @param callback     请求完数据之后执行的回调函数
  */
-function loadSelect(url, targetSelect) {
+function loadSelect(url, targetSelect, async, callback) {
     app.util.ajax.get(url,
         null,
         function (res) {
@@ -34,6 +37,11 @@ function loadSelect(url, targetSelect) {
             let msg = targetSelect.selector + ' select 数据加载失败！';
             console.log(msg)
             layer.msg(msg, {time: 2000});
-        }
+        },
+        async
     );
+
+    if(app.util.function.isFunction(callback)) {
+        callback();
+    }
 }

@@ -20,7 +20,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // 注册拦截器
         registry.addInterceptor(authInterceptor())
                 // 不需要拦截的路径
-                .excludePathPatterns("/", "/login", "/ajaxLogin", "/ajaxToken", "/index", "/error/**")
+                .excludePathPatterns("/error/**")
+                .excludePathPatterns("/", "/login", "/index")
+                .excludePathPatterns("/ajaxLogin")
                 // 需要拦截的路径
                 .addPathPatterns("/**");
     }

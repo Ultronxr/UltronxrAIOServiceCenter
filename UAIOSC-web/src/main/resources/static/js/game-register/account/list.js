@@ -104,7 +104,7 @@ $('#table-div .layui-btn').on('click', function(){
 
 // 删除选中的行
 function deleteRows(toBeDeletedIdList) {
-    app.util.ajax.get(app.util.api.getAPIUrl('game-register.account.delete'),
+    app.util.ajax.delete(app.util.api.getAPIUrl('game-register.account.delete'),
         {idList: toBeDeletedIdList.join()},
         function (res) {
             // console.log(res);
@@ -171,7 +171,7 @@ table.on('tool(accountTable)', function(obj) {
                 // body.find('#content').append(editor.txt.html());
                 // 执行子页面的函数
                 let iframe = window[layero.find('iframe')[0]['name']];
-                iframe.setRowData(rowData);
+                iframe.loadSelectAndSetRowData(rowData);
             }
         });
     }

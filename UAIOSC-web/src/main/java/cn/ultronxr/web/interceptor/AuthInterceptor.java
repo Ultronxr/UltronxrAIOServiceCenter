@@ -1,7 +1,7 @@
 package cn.ultronxr.web.interceptor;
 
 import cn.ultronxr.common.util.AjaxResponseUtils;
-import cn.ultronxr.framework.jjwt.JWSTokenService;
+import cn.ultronxr.framework.util.JWSTokenUtils;
 import cn.ultronxr.web.service.LoginService;
 import cn.ultronxr.web.util.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
+import static cn.ultronxr.web.bean.Constant.AuthCookieKey.*;
+import static cn.ultronxr.web.bean.Constant.AuthInfo;
+
 /**
  * @author Ultronxr
  * @date 2023/01/15 14:44
@@ -24,10 +27,6 @@ import java.io.PrintWriter;
  */
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
-
-    private static final String AUTH_KEY = "Authorization";
-
-    private static final String REFRESH_KEY = "Authorization_Refresh";
 
     @Autowired
     private LoginService loginService;
@@ -58,22 +57,26 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         // 未携带 auth token ，直接判未登录
         if(StringUtils.isEmpty(clientAuthToken)) {
+            log.info("AuthInterceptor 请求地址 = {} | 登录结果 = {}", request.getRequestURI(), AuthInfo.NO_AUTH_TOKEN);
             return notLoginResponse(response);
         }
 
-        clientAuthToken = JWSTokenService.unwrapRequestToken(clientAuthToken);
-        clientRefreshToken = JWSTokenService.unwrapRequestToken(clientRefreshToken);
+        clientAuthToken = JWSTokenUtils.unwrapRequestToken(clientAuthToken);
+        clientRefreshToken = JWSTokenUtils.unwrapRequestToken(clientRefreshToken);
 
         if(loginService.isLogin(clientAuthToken, clientRefreshToken)) {
             // 已登录，放行
-            if(loginService.isOnlyAuthTokenExpired(clientAuthToken, clientRefreshToken)) {
+            if(loginService.isAuthTokenExpiredButRefreshTokenStillValid(clientAuthToken, clientRefreshToken)) {
                 // 已登录但 auth token 过期，使用 refresh token 对 auth token 进行更新
                 String updatedAuthToken = loginService.updateAuthToken(clientAuthToken, clientRefreshToken);
                 response.addCookie(CookieUtils.commonCookie(AUTH_KEY, updatedAuthToken));
+                log.info("AuthInterceptor 请求地址 = {} | 登录结果 = {}", request.getRequestURI(), AuthInfo.REFRESH_AUTH_TOKEN);
             }
+            log.info("AuthInterceptor 请求地址 = {} | 登录结果 = {}", request.getRequestURI(), AuthInfo.LOGGED_IN);
             return true;
         }
 
+        log.info("AuthInterceptor 请求地址 = {} | 登录结果 = {}", request.getRequestURI(), AuthInfo.INVALID_TOKEN);
         return notLoginResponse(response);
     }
 

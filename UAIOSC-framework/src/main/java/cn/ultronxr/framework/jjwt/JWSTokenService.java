@@ -1,8 +1,8 @@
 package cn.ultronxr.framework.jjwt;
 
 import cn.ultronxr.framework.bean.JWSParseResult;
-import cn.ultronxr.framework.cache.token.JWSParseCache;
 import cn.ultronxr.framework.config.JJWTConfig;
+import cn.ultronxr.framework.util.JWSTokenUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Ultronxr
@@ -24,18 +22,6 @@ public class JWSTokenService {
 
     /** 向 redis 中插入哈希值时使用的 key 键 */
     public static final String REDIS_KEY = "UAIOSC-framework";
-
-    /**
-     * 插入 JWS auth token 键值对内容时使用的 field 键<br/><br/>
-     *
-     * 注：有关 redis hash 中 key 和 field 的区别：<br/>
-     *     key -> {field1: value1, field2: value2 ...}
-     */
-    private static final String FIELD_PREFIX_AUTH_TOKEN = "AUTH-";
-
-    /** 插入 JWS refresh token 键值对内容时使用的 field 键 */
-    private static final String FIELD_PREFIX_REFRESH_TOKEN = "REFRESH-";
-
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
@@ -51,20 +37,18 @@ public class JWSTokenService {
      * 为用户签发一个新的 JWS auth token
      *
      * @param username   用户名
-     * @param rememberMe 登录时是否勾选了“记住我”
      */
-    public String createAuthToken(String username, Boolean rememberMe) {
-        return jjwtService.generate(username, rememberMe, jjwtConfig.authTokenExpireMilliSeconds());
+    public String createAuthToken(String username) {
+        return jjwtService.generate(username, jjwtConfig.authTokenExpireMilliSeconds());
     }
 
     /**
      * 为用户签发一个新的 JWS refresh token （勾选了“记住我”）
      *
      * @param username   用户名
-     * @param rememberMe 登录时是否勾选了“记住我”
      */
-    public String createRefreshToken(String username, Boolean rememberMe) {
-        return jjwtService.generate(username, rememberMe, jjwtConfig.refreshTokenExpireMilliSeconds());
+    public String createRefreshToken(String username) {
+        return jjwtService.generate(username, jjwtConfig.refreshTokenExpireMilliSeconds());
     }
 
     /**
@@ -123,7 +107,7 @@ public class JWSTokenService {
                 result.setMsg("其他异常");
             }
         }
-        log.info("JWS token username={}，验证结果={}，验证信息={}", result.getUsername() ,result.isValidation(), result.getMsg());
+        log.info("JWS token username = {} | 验证结果 = {} | 信息 = {}", result.getUsername() ,result.isValidation(), result.getMsg());
         // 把解析结果存入缓存
         //JWSParseCache.put(token, result);
         return result;
@@ -136,7 +120,7 @@ public class JWSTokenService {
      * @return {@code true} - 存在；{@code false} - 不存在
      */
     public boolean hasAuthToken(String username) {
-        return redisTemplate.opsForHash().hasKey(REDIS_KEY, authFieldWrapper(username));
+        return redisTemplate.opsForHash().hasKey(REDIS_KEY, JWSTokenUtils.authFieldWrapper(username));
     }
 
     /**
@@ -146,7 +130,7 @@ public class JWSTokenService {
      * @return {@code true} - 存在；{@code false} - 不存在
      */
     public boolean hasRefreshToken(String username) {
-        return redisTemplate.opsForHash().hasKey(REDIS_KEY, refreshFieldWrapper(username));
+        return redisTemplate.opsForHash().hasKey(REDIS_KEY, JWSTokenUtils.refreshFieldWrapper(username));
     }
 
     /**
@@ -156,7 +140,7 @@ public class JWSTokenService {
      * @return JWS auth token 字符串
      */
     public String getAuthToken(String username) {
-        return (String) redisTemplate.opsForHash().get(REDIS_KEY, authFieldWrapper(username));
+        return (String) redisTemplate.opsForHash().get(REDIS_KEY, JWSTokenUtils.authFieldWrapper(username));
     }
 
     /**
@@ -166,7 +150,7 @@ public class JWSTokenService {
      * @return JWS refresh token 字符串
      */
     public String getRefreshToken(String username) {
-        return (String) redisTemplate.opsForHash().get(REDIS_KEY, refreshFieldWrapper(username));
+        return (String) redisTemplate.opsForHash().get(REDIS_KEY, JWSTokenUtils.refreshFieldWrapper(username));
     }
 
     /**
@@ -179,10 +163,10 @@ public class JWSTokenService {
      */
     public void saveToken(String username, String authToken, String refreshToken) {
         if(StringUtils.isNotEmpty(authToken)) {
-            redisTemplate.opsForHash().put(REDIS_KEY, authFieldWrapper(username), authToken);
+            redisTemplate.opsForHash().put(REDIS_KEY, JWSTokenUtils.authFieldWrapper(username), authToken);
         }
         if(StringUtils.isNotEmpty(refreshToken)) {
-            redisTemplate.opsForHash().put(REDIS_KEY, refreshFieldWrapper(username), refreshToken);
+            redisTemplate.opsForHash().put(REDIS_KEY, JWSTokenUtils.refreshFieldWrapper(username), refreshToken);
         }
     }
 
@@ -192,41 +176,8 @@ public class JWSTokenService {
      * @param username 用户名
      */
     public void deleteToken(String username) {
-        redisTemplate.opsForHash().delete(REDIS_KEY, authFieldWrapper(username));
-        redisTemplate.opsForHash().delete(REDIS_KEY, refreshFieldWrapper(username));
-    }
-
-    /**
-     * 把传入的 用户名 包装成 JWS auth token 插入 redis 时使用的 field 键
-     *
-     * @param username 用户名
-     */
-    public static String authFieldWrapper(String username) {
-        return FIELD_PREFIX_AUTH_TOKEN + username;
-    }
-
-    /**
-     * 把传入的 用户名 包装成 JWS refresh token 插入 redis 时使用的 field 键
-     *
-     * @param username 用户名
-     */
-    public static String refreshFieldWrapper(String username) {
-        return FIELD_PREFIX_REFRESH_TOKEN + username;
-    }
-
-    public static String unwrapRequestToken(HttpServletRequest request, String headerKey) {
-        if(null == request) {
-            return null;
-        }
-        String token = request.getHeader(headerKey);
-        return unwrapRequestToken(token);
-    }
-
-    public static String unwrapRequestToken(String bearerToken) {
-        if(!StringUtils.isEmpty(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.replaceFirst("Bearer ", "");
-        }
-        return bearerToken;
+        redisTemplate.opsForHash().delete(REDIS_KEY, JWSTokenUtils.authFieldWrapper(username));
+        redisTemplate.opsForHash().delete(REDIS_KEY, JWSTokenUtils.refreshFieldWrapper(username));
     }
 
 }

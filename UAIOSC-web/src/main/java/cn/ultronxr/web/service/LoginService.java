@@ -37,7 +37,7 @@ public interface LoginService {
      * @param clientRefreshToken 客户端请求的 JWS refresh token
      * @return
      */
-    boolean isOnlyAuthTokenExpired(String clientAuthToken, String clientRefreshToken);
+    boolean isAuthTokenExpiredButRefreshTokenStillValid(String clientAuthToken, String clientRefreshToken);
 
     /**
      * 当用户登录已过期，但是 JWS refresh token 仍有效时，为其签发新的 JWS auth token
@@ -51,8 +51,9 @@ public interface LoginService {
     /**
      * 用户主动注销
      *
-     * @param loginObj
+     * @param clientAuthToken 客户端请求的 JWS auth token
+     * @return
      */
-    void logout(LoginObj loginObj);
+    boolean logout(String clientAuthToken);
 
 }
