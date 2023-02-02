@@ -241,7 +241,7 @@ const app = {
                     $.cookie(key, value, this.cookieOptions);
                 },
                 get: function (key) {
-                    return $.cookie(key, this.cookieOptions);
+                    return $.cookie(key);
                 },
                 remove: function (key) {
                     $.removeCookie(key, this.cookieOptions);
@@ -320,6 +320,10 @@ const app = {
                     app.util.token.storage.remove(app.util.token.usernameKey);
                     app.util.token.storage.remove(app.util.token.refreshKey);
                 },
+            },
+
+            getUsername: function () {
+                return app.util.token.storage.get(app.util.token.usernameKey);
             },
 
             clear: function () {

@@ -8,9 +8,96 @@
     <link href="/static/css/index.css" rel="stylesheet">
 </head>
 <body>
-<h1>index 管理面板主页</h1>
-<h2>当前登录用户：<p id="login-username"></p></h2>
-<button onclick="logout()">注销登录</button>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo layui-hide-xs layui-bg-black">UAIOSC</div>
+        <!-- 水平导航栏 -->
+        <ul class="layui-nav layui-layout-left">
+            <!-- 移动端显示 -->
+            <!--<li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">-->
+            <!--    <i class="layui-icon layui-icon-spread-left"></i>-->
+            <!--</li>-->
+
+            <li class="layui-nav-item layui-hide-xs">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <!--<li class="layui-nav-item layui-hide-xs"><a href="">标签 1</a></li>-->
+            <!--<li class="layui-nav-item">-->
+            <!--    <a href="javascript:;">标签组</a>-->
+            <!--    <dl class="layui-nav-child">-->
+            <!--        <dd><a href="">下拉标签 11</a></dd>-->
+            <!--    </dl>-->
+            <!--</li>-->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <img src="" class="layui-nav-img">
+                    <label id="username">用户未登录</label>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">个人资料</a></dd>
+                    <dd><a href="">设置</a></dd>
+                    <dd><a href="javascript:logout();">登出</a></dd>
+                </dl>
+            </li>
+            <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>-->
+            <!--    <a href="javascript:;">-->
+            <!--        <i class="layui-icon layui-icon-more-vertical"></i>-->
+            <!--    </a>-->
+            <!--</li>-->
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧垂直导航栏 -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="leftNavFilter">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" class="left-nav-menu" data-url="" data-name="首页" data-id="layMenuID00">首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">游戏注册 game-register</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" class="left-nav-menu" data-url="/static/html/game-register/account/list.html" data-name="用户管理" data-id="layMenuID01">用户管理</a></dd>
+                        <dd><a href="javascript:;" class="left-nav-menu" data-url="/static/html/game-register/game/list.html" data-name="游戏管理" data-id="layMenuID02">游戏管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">test</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" class="left-nav-menu" data-url="/xxx" data-name="test1" data-id="layMenuID11">用户管理</a></dd>
+                        <dd><a href="javascript:;" class="left-nav-menu" data-url="/xxx" data-name="test2" data-id="layMenuID12">游戏管理</a></dd>
+                    </dl>
+                </li>
+
+                <!--<li class="layui-nav-item"><a href="">超链接</a></li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-tab" lay-allowClose="true" lay-filter="tabFilter">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="layMenuID00">首页</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">首页...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 页脚 -->
+        页脚
+    </div>
+</div>
+
+<script type="text/html" id="indexTab">
+    <div class="layui-tab-item layui-show">首页...</div>
+</script>
 
 <script src="/static/lib/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="/static/lib/jquery-3.6.0/jquery.cookie-v1.4.1.js"></script>

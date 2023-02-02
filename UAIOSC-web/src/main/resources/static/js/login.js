@@ -2,8 +2,6 @@ $(function () {
 });
 
 form.on('submit(login)', function(data) {
-    console.log(data.field);
-
     app.util.ajax.post(app.util.api.getAPIUrl('system.login'),
         JSON.stringify(data.field),
         function (res) {
