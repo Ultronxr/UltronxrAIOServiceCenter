@@ -61,4 +61,11 @@ public class AccountController {
         return response;
     }
 
+    @GetMapping("list")
+    @ResponseBody
+    public AjaxResponse list() {
+        List<Account> accountList = service.query(null);
+        return AjaxResponseUtils.success(null, accountList);
+    }
+
 }

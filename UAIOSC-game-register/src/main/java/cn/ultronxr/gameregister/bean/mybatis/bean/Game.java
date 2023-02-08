@@ -4,9 +4,17 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Game {
-    private Long id;
+    private Long gameId;
 
     private Long parentId;
+
+    private Integer accountId;
+
+    private Integer appId;
+
+    private String shop;
+
+    private String actualPlayShop;
 
     private String version;
 
@@ -38,8 +46,6 @@ public class Game {
 
     private BigDecimal lowestPriceRmb;
 
-    private Integer boughtAccountId;
-
     private Date purchaseDate;
 
     private String purchasePriceCurrency;
@@ -47,8 +53,6 @@ public class Game {
     private BigDecimal purchasePrice;
 
     private BigDecimal purchasePriceRmb;
-
-    private String actualShop;
 
     private String note;
 
@@ -60,12 +64,12 @@ public class Game {
 
     private Date updateTime;
 
-    public Long getId() {
-        return id;
+    public Long getGameId() {
+        return gameId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 
     public Long getParentId() {
@@ -74,6 +78,38 @@ public class Game {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
+
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop == null ? null : shop.trim();
+    }
+
+    public String getActualPlayShop() {
+        return actualPlayShop;
+    }
+
+    public void setActualPlayShop(String actualPlayShop) {
+        this.actualPlayShop = actualPlayShop == null ? null : actualPlayShop.trim();
     }
 
     public String getVersion() {
@@ -196,14 +232,6 @@ public class Game {
         this.lowestPriceRmb = lowestPriceRmb;
     }
 
-    public Integer getBoughtAccountId() {
-        return boughtAccountId;
-    }
-
-    public void setBoughtAccountId(Integer boughtAccountId) {
-        this.boughtAccountId = boughtAccountId;
-    }
-
     public Date getPurchaseDate() {
         return purchaseDate;
     }
@@ -234,14 +262,6 @@ public class Game {
 
     public void setPurchasePriceRmb(BigDecimal purchasePriceRmb) {
         this.purchasePriceRmb = purchasePriceRmb;
-    }
-
-    public String getActualShop() {
-        return actualShop;
-    }
-
-    public void setActualShop(String actualShop) {
-        this.actualShop = actualShop == null ? null : actualShop.trim();
     }
 
     public String getNote() {

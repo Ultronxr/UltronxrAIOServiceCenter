@@ -133,63 +133,63 @@ public class GameExample {
             addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
-        public Criteria andIdIsNull() {
-            addCriterion("id is null");
+        public Criteria andGameIdIsNull() {
+            addCriterion("game_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andIdIsNotNull() {
-            addCriterion("id is not null");
+        public Criteria andGameIdIsNotNull() {
+            addCriterion("game_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIdEqualTo(Long value) {
-            addCriterion("id =", value, "id");
+        public Criteria andGameIdEqualTo(Long value) {
+            addCriterion("game_id =", value, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotEqualTo(Long value) {
-            addCriterion("id <>", value, "id");
+        public Criteria andGameIdNotEqualTo(Long value) {
+            addCriterion("game_id <>", value, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThan(Long value) {
-            addCriterion("id >", value, "id");
+        public Criteria andGameIdGreaterThan(Long value) {
+            addCriterion("game_id >", value, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("id >=", value, "id");
+        public Criteria andGameIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("game_id >=", value, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThan(Long value) {
-            addCriterion("id <", value, "id");
+        public Criteria andGameIdLessThan(Long value) {
+            addCriterion("game_id <", value, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThanOrEqualTo(Long value) {
-            addCriterion("id <=", value, "id");
+        public Criteria andGameIdLessThanOrEqualTo(Long value) {
+            addCriterion("game_id <=", value, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<Long> values) {
-            addCriterion("id in", values, "id");
+        public Criteria andGameIdIn(List<Long> values) {
+            addCriterion("game_id in", values, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<Long> values) {
-            addCriterion("id not in", values, "id");
+        public Criteria andGameIdNotIn(List<Long> values) {
+            addCriterion("game_id not in", values, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(Long value1, Long value2) {
-            addCriterion("id between", value1, value2, "id");
+        public Criteria andGameIdBetween(Long value1, Long value2) {
+            addCriterion("game_id between", value1, value2, "gameId");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotBetween(Long value1, Long value2) {
-            addCriterion("id not between", value1, value2, "id");
+        public Criteria andGameIdNotBetween(Long value1, Long value2) {
+            addCriterion("game_id not between", value1, value2, "gameId");
             return (Criteria) this;
         }
 
@@ -250,6 +250,266 @@ public class GameExample {
 
         public Criteria andParentIdNotBetween(Long value1, Long value2) {
             addCriterion("parent_id not between", value1, value2, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdIsNull() {
+            addCriterion("account_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdIsNotNull() {
+            addCriterion("account_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdEqualTo(Integer value) {
+            addCriterion("account_id =", value, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdNotEqualTo(Integer value) {
+            addCriterion("account_id <>", value, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdGreaterThan(Integer value) {
+            addCriterion("account_id >", value, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("account_id >=", value, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdLessThan(Integer value) {
+            addCriterion("account_id <", value, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdLessThanOrEqualTo(Integer value) {
+            addCriterion("account_id <=", value, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdIn(List<Integer> values) {
+            addCriterion("account_id in", values, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdNotIn(List<Integer> values) {
+            addCriterion("account_id not in", values, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdBetween(Integer value1, Integer value2) {
+            addCriterion("account_id between", value1, value2, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("account_id not between", value1, value2, "accountId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdIsNull() {
+            addCriterion("app_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdIsNotNull() {
+            addCriterion("app_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdEqualTo(Integer value) {
+            addCriterion("app_id =", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdNotEqualTo(Integer value) {
+            addCriterion("app_id <>", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdGreaterThan(Integer value) {
+            addCriterion("app_id >", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("app_id >=", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdLessThan(Integer value) {
+            addCriterion("app_id <", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdLessThanOrEqualTo(Integer value) {
+            addCriterion("app_id <=", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdIn(List<Integer> values) {
+            addCriterion("app_id in", values, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdNotIn(List<Integer> values) {
+            addCriterion("app_id not in", values, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdBetween(Integer value1, Integer value2) {
+            addCriterion("app_id between", value1, value2, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("app_id not between", value1, value2, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIsNull() {
+            addCriterion("shop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIsNotNull() {
+            addCriterion("shop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopEqualTo(String value) {
+            addCriterion("shop =", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNotEqualTo(String value) {
+            addCriterion("shop <>", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGreaterThan(String value) {
+            addCriterion("shop >", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGreaterThanOrEqualTo(String value) {
+            addCriterion("shop >=", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopLessThan(String value) {
+            addCriterion("shop <", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopLessThanOrEqualTo(String value) {
+            addCriterion("shop <=", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopLike(String value) {
+            addCriterion("shop like", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNotLike(String value) {
+            addCriterion("shop not like", value, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIn(List<String> values) {
+            addCriterion("shop in", values, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNotIn(List<String> values) {
+            addCriterion("shop not in", values, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopBetween(String value1, String value2) {
+            addCriterion("shop between", value1, value2, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNotBetween(String value1, String value2) {
+            addCriterion("shop not between", value1, value2, "shop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopIsNull() {
+            addCriterion("actual_play_shop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopIsNotNull() {
+            addCriterion("actual_play_shop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopEqualTo(String value) {
+            addCriterion("actual_play_shop =", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopNotEqualTo(String value) {
+            addCriterion("actual_play_shop <>", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopGreaterThan(String value) {
+            addCriterion("actual_play_shop >", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopGreaterThanOrEqualTo(String value) {
+            addCriterion("actual_play_shop >=", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopLessThan(String value) {
+            addCriterion("actual_play_shop <", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopLessThanOrEqualTo(String value) {
+            addCriterion("actual_play_shop <=", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopLike(String value) {
+            addCriterion("actual_play_shop like", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopNotLike(String value) {
+            addCriterion("actual_play_shop not like", value, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopIn(List<String> values) {
+            addCriterion("actual_play_shop in", values, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopNotIn(List<String> values) {
+            addCriterion("actual_play_shop not in", values, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopBetween(String value1, String value2) {
+            addCriterion("actual_play_shop between", value1, value2, "actualPlayShop");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualPlayShopNotBetween(String value1, String value2) {
+            addCriterion("actual_play_shop not between", value1, value2, "actualPlayShop");
             return (Criteria) this;
         }
 
@@ -1283,66 +1543,6 @@ public class GameExample {
             return (Criteria) this;
         }
 
-        public Criteria andBoughtAccountIdIsNull() {
-            addCriterion("bought_account_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdIsNotNull() {
-            addCriterion("bought_account_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdEqualTo(Integer value) {
-            addCriterion("bought_account_id =", value, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdNotEqualTo(Integer value) {
-            addCriterion("bought_account_id <>", value, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdGreaterThan(Integer value) {
-            addCriterion("bought_account_id >", value, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("bought_account_id >=", value, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdLessThan(Integer value) {
-            addCriterion("bought_account_id <", value, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdLessThanOrEqualTo(Integer value) {
-            addCriterion("bought_account_id <=", value, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdIn(List<Integer> values) {
-            addCriterion("bought_account_id in", values, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdNotIn(List<Integer> values) {
-            addCriterion("bought_account_id not in", values, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdBetween(Integer value1, Integer value2) {
-            addCriterion("bought_account_id between", value1, value2, "boughtAccountId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoughtAccountIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("bought_account_id not between", value1, value2, "boughtAccountId");
-            return (Criteria) this;
-        }
-
         public Criteria andPurchaseDateIsNull() {
             addCriterion("purchase_date is null");
             return (Criteria) this;
@@ -1590,76 +1790,6 @@ public class GameExample {
 
         public Criteria andPurchasePriceRmbNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("purchase_price_rmb not between", value1, value2, "purchasePriceRmb");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopIsNull() {
-            addCriterion("actual_shop is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopIsNotNull() {
-            addCriterion("actual_shop is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopEqualTo(String value) {
-            addCriterion("actual_shop =", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopNotEqualTo(String value) {
-            addCriterion("actual_shop <>", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopGreaterThan(String value) {
-            addCriterion("actual_shop >", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopGreaterThanOrEqualTo(String value) {
-            addCriterion("actual_shop >=", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopLessThan(String value) {
-            addCriterion("actual_shop <", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopLessThanOrEqualTo(String value) {
-            addCriterion("actual_shop <=", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopLike(String value) {
-            addCriterion("actual_shop like", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopNotLike(String value) {
-            addCriterion("actual_shop not like", value, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopIn(List<String> values) {
-            addCriterion("actual_shop in", values, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopNotIn(List<String> values) {
-            addCriterion("actual_shop not in", values, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopBetween(String value1, String value2) {
-            addCriterion("actual_shop between", value1, value2, "actualShop");
-            return (Criteria) this;
-        }
-
-        public Criteria andActualShopNotBetween(String value1, String value2) {
-            addCriterion("actual_shop not between", value1, value2, "actualShop");
             return (Criteria) this;
         }
 

@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ultronxr.gameregister.bean.mybatis.mapper.GameMapper">
   <resultMap id="BaseResultMap" type="cn.ultronxr.gameregister.bean.mybatis.bean.Game">
-    <id column="id" jdbcType="BIGINT" property="id" />
+    <id column="game_id" jdbcType="BIGINT" property="gameId" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="account_id" jdbcType="INTEGER" property="accountId" />
+    <result column="app_id" jdbcType="INTEGER" property="appId" />
+    <result column="shop" jdbcType="VARCHAR" property="shop" />
+    <result column="actual_play_shop" jdbcType="VARCHAR" property="actualPlayShop" />
     <result column="version" jdbcType="VARCHAR" property="version" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="name_eng" jdbcType="VARCHAR" property="nameEng" />
@@ -19,12 +23,10 @@
     <result column="lowest_price_currency" jdbcType="VARCHAR" property="lowestPriceCurrency" />
     <result column="lowest_price" jdbcType="DECIMAL" property="lowestPrice" />
     <result column="lowest_price_rmb" jdbcType="DECIMAL" property="lowestPriceRmb" />
-    <result column="bought_account_id" jdbcType="INTEGER" property="boughtAccountId" />
     <result column="purchase_date" jdbcType="DATE" property="purchaseDate" />
     <result column="purchase_price_currency" jdbcType="VARCHAR" property="purchasePriceCurrency" />
     <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
     <result column="purchase_price_rmb" jdbcType="DECIMAL" property="purchasePriceRmb" />
-    <result column="actual_shop" jdbcType="VARCHAR" property="actualShop" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -90,10 +92,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, parent_id, version, name, name_eng, name_nick, name_bak, description, tag, url, 
-    logo, img, developer, publisher, lowest_price_currency, lowest_price, lowest_price_rmb, 
-    bought_account_id, purchase_date, purchase_price_currency, purchase_price, purchase_price_rmb, 
-    actual_shop, note, create_by, create_time, update_by, update_time
+    game_id, parent_id, account_id, app_id, shop, actual_play_shop, version, name, name_eng, 
+    name_nick, name_bak, description, tag, url, logo, img, developer, publisher, lowest_price_currency, 
+    lowest_price, lowest_price_rmb, purchase_date, purchase_price_currency, purchase_price, 
+    purchase_price_rmb, note, create_by, create_time, update_by, update_time
   </sql>
   <select id="selectByExample" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.GameExample" resultMap="BaseResultMap">
     select
@@ -113,11 +115,11 @@
     select 
     <include refid="Base_Column_List" />
     from game_register_game
-    where id = #{id,jdbcType=BIGINT}
+    where game_id = #{gameId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from game_register_game
-    where id = #{id,jdbcType=BIGINT}
+    where game_id = #{gameId,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.GameExample">
     delete from game_register_game
@@ -126,35 +128,47 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.Game">
-    insert into game_register_game (id, parent_id, version, 
-      name, name_eng, name_nick, 
-      name_bak, description, tag, 
-      url, logo, img, developer, 
-      publisher, lowest_price_currency, lowest_price, 
-      lowest_price_rmb, bought_account_id, purchase_date, 
+    insert into game_register_game (game_id, parent_id, account_id, 
+      app_id, shop, actual_play_shop, 
+      version, name, name_eng, 
+      name_nick, name_bak, description, 
+      tag, url, logo, img, 
+      developer, publisher, lowest_price_currency, 
+      lowest_price, lowest_price_rmb, purchase_date, 
       purchase_price_currency, purchase_price, purchase_price_rmb, 
-      actual_shop, note, create_by, 
-      create_time, update_by, update_time
-      )
-    values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{version,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{nameEng,jdbcType=VARCHAR}, #{nameNick,jdbcType=VARCHAR}, 
-      #{nameBak,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, 
-      #{publisher,jdbcType=VARCHAR}, #{lowestPriceCurrency,jdbcType=VARCHAR}, #{lowestPrice,jdbcType=DECIMAL}, 
-      #{lowestPriceRmb,jdbcType=DECIMAL}, #{boughtAccountId,jdbcType=INTEGER}, #{purchaseDate,jdbcType=DATE}, 
+      note, create_by, create_time, 
+      update_by, update_time)
+    values (#{gameId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{accountId,jdbcType=INTEGER}, 
+      #{appId,jdbcType=INTEGER}, #{shop,jdbcType=VARCHAR}, #{actualPlayShop,jdbcType=VARCHAR}, 
+      #{version,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{nameEng,jdbcType=VARCHAR}, 
+      #{nameNick,jdbcType=VARCHAR}, #{nameBak,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{tag,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, 
+      #{developer,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{lowestPriceCurrency,jdbcType=VARCHAR}, 
+      #{lowestPrice,jdbcType=DECIMAL}, #{lowestPriceRmb,jdbcType=DECIMAL}, #{purchaseDate,jdbcType=DATE}, 
       #{purchasePriceCurrency,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, #{purchasePriceRmb,jdbcType=DECIMAL}, 
-      #{actualShop,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{note,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.Game">
     insert into game_register_game
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
+      <if test="gameId != null">
+        game_id,
       </if>
       <if test="parentId != null">
         parent_id,
+      </if>
+      <if test="accountId != null">
+        account_id,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="shop != null">
+        shop,
+      </if>
+      <if test="actualPlayShop != null">
+        actual_play_shop,
       </if>
       <if test="version != null">
         version,
@@ -201,9 +215,6 @@
       <if test="lowestPriceRmb != null">
         lowest_price_rmb,
       </if>
-      <if test="boughtAccountId != null">
-        bought_account_id,
-      </if>
       <if test="purchaseDate != null">
         purchase_date,
       </if>
@@ -215,9 +226,6 @@
       </if>
       <if test="purchasePriceRmb != null">
         purchase_price_rmb,
-      </if>
-      <if test="actualShop != null">
-        actual_shop,
       </if>
       <if test="note != null">
         note,
@@ -236,11 +244,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
+      <if test="gameId != null">
+        #{gameId,jdbcType=BIGINT},
       </if>
       <if test="parentId != null">
         #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="accountId != null">
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="shop != null">
+        #{shop,jdbcType=VARCHAR},
+      </if>
+      <if test="actualPlayShop != null">
+        #{actualPlayShop,jdbcType=VARCHAR},
       </if>
       <if test="version != null">
         #{version,jdbcType=VARCHAR},
@@ -287,9 +307,6 @@
       <if test="lowestPriceRmb != null">
         #{lowestPriceRmb,jdbcType=DECIMAL},
       </if>
-      <if test="boughtAccountId != null">
-        #{boughtAccountId,jdbcType=INTEGER},
-      </if>
       <if test="purchaseDate != null">
         #{purchaseDate,jdbcType=DATE},
       </if>
@@ -301,9 +318,6 @@
       </if>
       <if test="purchasePriceRmb != null">
         #{purchasePriceRmb,jdbcType=DECIMAL},
-      </if>
-      <if test="actualShop != null">
-        #{actualShop,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         #{note,jdbcType=VARCHAR},
@@ -331,126 +345,134 @@
   <update id="updateByExampleSelective" parameterType="map">
     update game_register_game
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=BIGINT},
+      <if test="row.gameId != null">
+        game_id = #{row.gameId,jdbcType=BIGINT},
       </if>
-      <if test="record.parentId != null">
-        parent_id = #{record.parentId,jdbcType=BIGINT},
+      <if test="row.parentId != null">
+        parent_id = #{row.parentId,jdbcType=BIGINT},
       </if>
-      <if test="record.version != null">
-        version = #{record.version,jdbcType=VARCHAR},
+      <if test="row.accountId != null">
+        account_id = #{row.accountId,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="row.appId != null">
+        app_id = #{row.appId,jdbcType=INTEGER},
       </if>
-      <if test="record.nameEng != null">
-        name_eng = #{record.nameEng,jdbcType=VARCHAR},
+      <if test="row.shop != null">
+        shop = #{row.shop,jdbcType=VARCHAR},
       </if>
-      <if test="record.nameNick != null">
-        name_nick = #{record.nameNick,jdbcType=VARCHAR},
+      <if test="row.actualPlayShop != null">
+        actual_play_shop = #{row.actualPlayShop,jdbcType=VARCHAR},
       </if>
-      <if test="record.nameBak != null">
-        name_bak = #{record.nameBak,jdbcType=VARCHAR},
+      <if test="row.version != null">
+        version = #{row.version,jdbcType=VARCHAR},
       </if>
-      <if test="record.description != null">
-        description = #{record.description,jdbcType=VARCHAR},
+      <if test="row.name != null">
+        name = #{row.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.tag != null">
-        tag = #{record.tag,jdbcType=VARCHAR},
+      <if test="row.nameEng != null">
+        name_eng = #{row.nameEng,jdbcType=VARCHAR},
       </if>
-      <if test="record.url != null">
-        url = #{record.url,jdbcType=VARCHAR},
+      <if test="row.nameNick != null">
+        name_nick = #{row.nameNick,jdbcType=VARCHAR},
       </if>
-      <if test="record.logo != null">
-        logo = #{record.logo,jdbcType=VARCHAR},
+      <if test="row.nameBak != null">
+        name_bak = #{row.nameBak,jdbcType=VARCHAR},
       </if>
-      <if test="record.img != null">
-        img = #{record.img,jdbcType=VARCHAR},
+      <if test="row.description != null">
+        description = #{row.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.developer != null">
-        developer = #{record.developer,jdbcType=VARCHAR},
+      <if test="row.tag != null">
+        tag = #{row.tag,jdbcType=VARCHAR},
       </if>
-      <if test="record.publisher != null">
-        publisher = #{record.publisher,jdbcType=VARCHAR},
+      <if test="row.url != null">
+        url = #{row.url,jdbcType=VARCHAR},
       </if>
-      <if test="record.lowestPriceCurrency != null">
-        lowest_price_currency = #{record.lowestPriceCurrency,jdbcType=VARCHAR},
+      <if test="row.logo != null">
+        logo = #{row.logo,jdbcType=VARCHAR},
       </if>
-      <if test="record.lowestPrice != null">
-        lowest_price = #{record.lowestPrice,jdbcType=DECIMAL},
+      <if test="row.img != null">
+        img = #{row.img,jdbcType=VARCHAR},
       </if>
-      <if test="record.lowestPriceRmb != null">
-        lowest_price_rmb = #{record.lowestPriceRmb,jdbcType=DECIMAL},
+      <if test="row.developer != null">
+        developer = #{row.developer,jdbcType=VARCHAR},
       </if>
-      <if test="record.boughtAccountId != null">
-        bought_account_id = #{record.boughtAccountId,jdbcType=INTEGER},
+      <if test="row.publisher != null">
+        publisher = #{row.publisher,jdbcType=VARCHAR},
       </if>
-      <if test="record.purchaseDate != null">
-        purchase_date = #{record.purchaseDate,jdbcType=DATE},
+      <if test="row.lowestPriceCurrency != null">
+        lowest_price_currency = #{row.lowestPriceCurrency,jdbcType=VARCHAR},
       </if>
-      <if test="record.purchasePriceCurrency != null">
-        purchase_price_currency = #{record.purchasePriceCurrency,jdbcType=VARCHAR},
+      <if test="row.lowestPrice != null">
+        lowest_price = #{row.lowestPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.purchasePrice != null">
-        purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
+      <if test="row.lowestPriceRmb != null">
+        lowest_price_rmb = #{row.lowestPriceRmb,jdbcType=DECIMAL},
       </if>
-      <if test="record.purchasePriceRmb != null">
-        purchase_price_rmb = #{record.purchasePriceRmb,jdbcType=DECIMAL},
+      <if test="row.purchaseDate != null">
+        purchase_date = #{row.purchaseDate,jdbcType=DATE},
       </if>
-      <if test="record.actualShop != null">
-        actual_shop = #{record.actualShop,jdbcType=VARCHAR},
+      <if test="row.purchasePriceCurrency != null">
+        purchase_price_currency = #{row.purchasePriceCurrency,jdbcType=VARCHAR},
       </if>
-      <if test="record.note != null">
-        note = #{record.note,jdbcType=VARCHAR},
+      <if test="row.purchasePrice != null">
+        purchase_price = #{row.purchasePrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.createBy != null">
-        create_by = #{record.createBy,jdbcType=VARCHAR},
+      <if test="row.purchasePriceRmb != null">
+        purchase_price_rmb = #{row.purchasePriceRmb,jdbcType=DECIMAL},
       </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      <if test="row.note != null">
+        note = #{row.note,jdbcType=VARCHAR},
       </if>
-      <if test="record.updateBy != null">
-        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      <if test="row.createBy != null">
+        create_by = #{row.createBy,jdbcType=VARCHAR},
       </if>
-      <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.updateBy != null">
+        update_by = #{row.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="row.updateTime != null">
+        update_time = #{row.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
     update game_register_game
-    set id = #{record.id,jdbcType=BIGINT},
-      parent_id = #{record.parentId,jdbcType=BIGINT},
-      version = #{record.version,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      name_eng = #{record.nameEng,jdbcType=VARCHAR},
-      name_nick = #{record.nameNick,jdbcType=VARCHAR},
-      name_bak = #{record.nameBak,jdbcType=VARCHAR},
-      description = #{record.description,jdbcType=VARCHAR},
-      tag = #{record.tag,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR},
-      logo = #{record.logo,jdbcType=VARCHAR},
-      img = #{record.img,jdbcType=VARCHAR},
-      developer = #{record.developer,jdbcType=VARCHAR},
-      publisher = #{record.publisher,jdbcType=VARCHAR},
-      lowest_price_currency = #{record.lowestPriceCurrency,jdbcType=VARCHAR},
-      lowest_price = #{record.lowestPrice,jdbcType=DECIMAL},
-      lowest_price_rmb = #{record.lowestPriceRmb,jdbcType=DECIMAL},
-      bought_account_id = #{record.boughtAccountId,jdbcType=INTEGER},
-      purchase_date = #{record.purchaseDate,jdbcType=DATE},
-      purchase_price_currency = #{record.purchasePriceCurrency,jdbcType=VARCHAR},
-      purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
-      purchase_price_rmb = #{record.purchasePriceRmb,jdbcType=DECIMAL},
-      actual_shop = #{record.actualShop,jdbcType=VARCHAR},
-      note = #{record.note,jdbcType=VARCHAR},
-      create_by = #{record.createBy,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=VARCHAR},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
+    set game_id = #{row.gameId,jdbcType=BIGINT},
+      parent_id = #{row.parentId,jdbcType=BIGINT},
+      account_id = #{row.accountId,jdbcType=INTEGER},
+      app_id = #{row.appId,jdbcType=INTEGER},
+      shop = #{row.shop,jdbcType=VARCHAR},
+      actual_play_shop = #{row.actualPlayShop,jdbcType=VARCHAR},
+      version = #{row.version,jdbcType=VARCHAR},
+      name = #{row.name,jdbcType=VARCHAR},
+      name_eng = #{row.nameEng,jdbcType=VARCHAR},
+      name_nick = #{row.nameNick,jdbcType=VARCHAR},
+      name_bak = #{row.nameBak,jdbcType=VARCHAR},
+      description = #{row.description,jdbcType=VARCHAR},
+      tag = #{row.tag,jdbcType=VARCHAR},
+      url = #{row.url,jdbcType=VARCHAR},
+      logo = #{row.logo,jdbcType=VARCHAR},
+      img = #{row.img,jdbcType=VARCHAR},
+      developer = #{row.developer,jdbcType=VARCHAR},
+      publisher = #{row.publisher,jdbcType=VARCHAR},
+      lowest_price_currency = #{row.lowestPriceCurrency,jdbcType=VARCHAR},
+      lowest_price = #{row.lowestPrice,jdbcType=DECIMAL},
+      lowest_price_rmb = #{row.lowestPriceRmb,jdbcType=DECIMAL},
+      purchase_date = #{row.purchaseDate,jdbcType=DATE},
+      purchase_price_currency = #{row.purchasePriceCurrency,jdbcType=VARCHAR},
+      purchase_price = #{row.purchasePrice,jdbcType=DECIMAL},
+      purchase_price_rmb = #{row.purchasePriceRmb,jdbcType=DECIMAL},
+      note = #{row.note,jdbcType=VARCHAR},
+      create_by = #{row.createBy,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      update_by = #{row.updateBy,jdbcType=VARCHAR},
+      update_time = #{row.updateTime,jdbcType=TIMESTAMP}
+    <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
@@ -459,6 +481,18 @@
     <set>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="accountId != null">
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="shop != null">
+        shop = #{shop,jdbcType=VARCHAR},
+      </if>
+      <if test="actualPlayShop != null">
+        actual_play_shop = #{actualPlayShop,jdbcType=VARCHAR},
       </if>
       <if test="version != null">
         version = #{version,jdbcType=VARCHAR},
@@ -505,9 +539,6 @@
       <if test="lowestPriceRmb != null">
         lowest_price_rmb = #{lowestPriceRmb,jdbcType=DECIMAL},
       </if>
-      <if test="boughtAccountId != null">
-        bought_account_id = #{boughtAccountId,jdbcType=INTEGER},
-      </if>
       <if test="purchaseDate != null">
         purchase_date = #{purchaseDate,jdbcType=DATE},
       </if>
@@ -519,9 +550,6 @@
       </if>
       <if test="purchasePriceRmb != null">
         purchase_price_rmb = #{purchasePriceRmb,jdbcType=DECIMAL},
-      </if>
-      <if test="actualShop != null">
-        actual_shop = #{actualShop,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         note = #{note,jdbcType=VARCHAR},
@@ -539,11 +567,15 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where game_id = #{gameId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.ultronxr.gameregister.bean.mybatis.bean.Game">
     update game_register_game
     set parent_id = #{parentId,jdbcType=BIGINT},
+      account_id = #{accountId,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=INTEGER},
+      shop = #{shop,jdbcType=VARCHAR},
+      actual_play_shop = #{actualPlayShop,jdbcType=VARCHAR},
       version = #{version,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       name_eng = #{nameEng,jdbcType=VARCHAR},
@@ -559,17 +591,15 @@
       lowest_price_currency = #{lowestPriceCurrency,jdbcType=VARCHAR},
       lowest_price = #{lowestPrice,jdbcType=DECIMAL},
       lowest_price_rmb = #{lowestPriceRmb,jdbcType=DECIMAL},
-      bought_account_id = #{boughtAccountId,jdbcType=INTEGER},
       purchase_date = #{purchaseDate,jdbcType=DATE},
       purchase_price_currency = #{purchasePriceCurrency,jdbcType=VARCHAR},
       purchase_price = #{purchasePrice,jdbcType=DECIMAL},
       purchase_price_rmb = #{purchasePriceRmb,jdbcType=DECIMAL},
-      actual_shop = #{actualShop,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    where game_id = #{gameId,jdbcType=BIGINT}
   </update>
 </mapper>

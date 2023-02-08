@@ -117,55 +117,6 @@ INSERT INTO system_role_permission VALUES (1, 1024);
 -- UAIOSC-game-register 游戏统计模块
 -- ----------------------------
 
-CREATE TABLE game_register_account (
-    `id`             INT             NOT NULL AUTO_INCREMENT    COMMENT '账户ID，主键自增',
-    `nick`           VARCHAR(255)    DEFAULT NULL               COMMENT '账户名称',
-    `username`       VARCHAR(255)    DEFAULT NULL               COMMENT '账户登录名称',
-    `email`          VARCHAR(100)    DEFAULT NULL               COMMENT '关联邮箱',
-    `phone`          VARCHAR(100)    DEFAULT NULL               COMMENT '关联手机号',
-    `platform`       VARCHAR(50)     DEFAULT NULL               COMMENT '平台，PC/Android等',
-    `shop`           VARCHAR(50)     DEFAULT NULL               COMMENT '游戏商城，Steam/Epic/Uplay/Origin等',
-    `region`         VARCHAR(50)     DEFAULT NULL               COMMENT '账户所属地区',
-    `note`           VARCHAR(255)    DEFAULT NULL               COMMENT '备注',
-    `create_by`      VARCHAR(100)    DEFAULT NULL               COMMENT '创建者',
-    `create_time`    DATETIME        DEFAULT NULL               COMMENT '创建时间',
-    `update_by`      VARCHAR(100)    DEFAULT NULL               COMMENT '更新者',
-    `update_time`    DATETIME        DEFAULT NULL               COMMENT '更新时间',
-    PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 游戏账户信息表';
-
-CREATE TABLE game_register_game (
-    `id`                         BIGINT          NOT NULL AUTO_INCREMENT    COMMENT '游戏ID，主键自增',
-    `parent_id`                  BIGINT          DEFAULT NULL               COMMENT '如果是单独的DLC，需要填写游戏本体的父ID',
-    `version`                    VARCHAR(50)     DEFAULT NULL               COMMENT '游戏版本：本体/DLC/其他',
-    `name`                       VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名',
-    `name_eng`                   VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名-英文',
-    `name_nick`                  VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名-别名',
-    `name_bak`                   VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名-备注',
-    `description`                VARCHAR(255)    DEFAULT NULL               COMMENT '描述',
-    `tag`                        VARCHAR(255)    DEFAULT NULL               COMMENT '标签，使用英文逗号,分割',
-    `url`                        VARCHAR(255)    DEFAULT NULL               COMMENT '游戏链接',
-    `logo`                       VARCHAR(255)    DEFAULT NULL               COMMENT 'logo链接',
-    `img`                        VARCHAR(255)    DEFAULT NULL               COMMENT '大图链接',
-    `developer`                  VARCHAR(255)    DEFAULT NULL               COMMENT '开发商',
-    `publisher`                  VARCHAR(255)    DEFAULT NULL               COMMENT '发行商',
-    `lowest_price_currency`      VARCHAR(255)    DEFAULT NULL               COMMENT '史低价格货币种类，默认人民币',
-    `lowest_price`               DECIMAL(6,4)    DEFAULT NULL               COMMENT '史低价格',
-    `lowest_price_rmb`           DECIMAL(6,4)    DEFAULT NULL               COMMENT '换算成人民币的史低价格',
-    `bought_account_id`          INT             DEFAULT NULL               COMMENT '购买此游戏的账户ID，关联字段[game_register_service_account]-[id]',
-    `purchase_date`              DATE            DEFAULT NULL               COMMENT '购买此游戏的日期',
-    `purchase_price_currency`    VARCHAR(255)    DEFAULT NULL               COMMENT '购买此游戏的货币种类，默认人民币',
-    `purchase_price`             DECIMAL(6,4)    DEFAULT NULL               COMMENT '购买此游戏的价格',
-    `purchase_price_rmb`         DECIMAL(6,4)    DEFAULT NULL               COMMENT '换算成人民币的购买此游戏的价格',
-    `actual_shop`                VARCHAR(255)    DEFAULT NULL               COMMENT '实际游玩的商城（这个商城和账户的商城有所区分，例如steam上购买的游戏实际需要通过origin打开游戏）',
-    `note`                       VARCHAR(255)    DEFAULT NULL               COMMENT '备注',
-    `create_by`                  VARCHAR(100)    DEFAULT NULL               COMMENT '创建者',
-    `create_time`                DATETIME        DEFAULT NULL               COMMENT '创建时间',
-    `update_by`                  VARCHAR(100)    DEFAULT NULL               COMMENT '更新者',
-    `update_time`                DATETIME        DEFAULT NULL               COMMENT '更新时间',
-    PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 已购买的游戏信息表';
-
 CREATE TABLE game_register_platform (
     `id`      VARCHAR(50)    NOT NULL    COMMENT '游戏平台ID',
     `name`    VARCHAR(50)    NOT NULL    COMMENT '游戏平台名称',
@@ -176,6 +127,7 @@ CREATE TABLE game_register_platform (
 INSERT INTO game_register_platform VALUES ('PC', 'PC端', 1);
 INSERT INTO game_register_platform VALUES ('Android', 'Android安卓端', 2);
 INSERT INTO game_register_platform VALUES ('IOS', 'IOS苹果端', 3);
+
 
 CREATE TABLE game_register_shop (
     `id`      VARCHAR(50)    NOT NULL    COMMENT '游戏商城ID',
@@ -192,6 +144,59 @@ INSERT INTO game_register_shop VALUES ('Riot', 'Riot 拳头', 5);
 INSERT INTO game_register_shop VALUES ('RStar', 'RStar R星', 6);
 INSERT INTO game_register_shop VALUES ('BattleNet', 'BattleNet 暴雪战网', 7);
 INSERT INTO game_register_shop VALUES ('Microsoft', 'Microsoft 微软', 8);
+
+
+CREATE TABLE game_register_account (
+    `id`             INT             NOT NULL AUTO_INCREMENT    COMMENT '账户ID，主键自增',
+    `nick`           VARCHAR(255)    DEFAULT NULL               COMMENT '账户名称',
+    `username`       VARCHAR(255)    DEFAULT NULL               COMMENT '账户登录名称',
+    `email`          VARCHAR(100)    DEFAULT NULL               COMMENT '关联邮箱',
+    `phone`          VARCHAR(100)    DEFAULT NULL               COMMENT '关联手机号',
+    `platform`       VARCHAR(50)     DEFAULT NULL               COMMENT '平台，关联字段[game_register_platform]-[id]',
+    `shop`           VARCHAR(50)     DEFAULT NULL               COMMENT '游戏商城，关联字段[game_register_shop]-[id]',
+    `region`         VARCHAR(50)     DEFAULT NULL               COMMENT '账户所属地区',
+    `note`           VARCHAR(255)    DEFAULT NULL               COMMENT '备注',
+    `create_by`      VARCHAR(100)    DEFAULT NULL               COMMENT '创建者',
+    `create_time`    DATETIME        DEFAULT NULL               COMMENT '创建时间',
+    `update_by`      VARCHAR(100)    DEFAULT NULL               COMMENT '更新者',
+    `update_time`    DATETIME        DEFAULT NULL               COMMENT '更新时间',
+    PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 游戏账户信息表';
+
+
+CREATE TABLE game_register_game (
+    `game_id`                    BIGINT          NOT NULL AUTO_INCREMENT    COMMENT '游戏ID，主键',
+    `parent_id`                  BIGINT          DEFAULT NULL               COMMENT '如果是单独的DLC，需要填写游戏本体的父ID',
+    `account_id`                 INT             NOT NULL                   COMMENT '拥有此游戏的账户ID，主键，关联字段[game_register_account]-[id]',
+    `app_id`                     INT             DEFAULT NULL               COMMENT '游戏商城中，该游戏商品的ID（以Steam AppID为例）',
+    `shop`                       VARCHAR(50)     DEFAULT NULL               COMMENT '上架的游戏商城',
+    `actual_play_shop`           VARCHAR(50)     DEFAULT NULL               COMMENT '实际游玩的商城（这个商城和账户的商城有所区分，例如Steam上购买的游戏实际需要通过Origin打开游戏）',
+    `version`                    VARCHAR(50)     DEFAULT NULL               COMMENT '游戏版本：本体/DLC/捆绑包/其他',
+    `name`                       VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名',
+    `name_eng`                   VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名-英文',
+    `name_nick`                  VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名-别名',
+    `name_bak`                   VARCHAR(255)    DEFAULT NULL               COMMENT '游戏名-备注',
+    `description`                VARCHAR(800)    DEFAULT NULL               COMMENT '描述',
+    `tag`                        VARCHAR(255)    DEFAULT NULL               COMMENT '标签，使用英文逗号,分割',
+    `url`                        VARCHAR(255)    DEFAULT NULL               COMMENT '游戏链接',
+    `logo`                       VARCHAR(255)    DEFAULT NULL               COMMENT 'logo链接',
+    `img`                        VARCHAR(255)    DEFAULT NULL               COMMENT '大图链接',
+    `developer`                  VARCHAR(100)    DEFAULT NULL               COMMENT '开发商',
+    `publisher`                  VARCHAR(100)    DEFAULT NULL               COMMENT '发行商',
+    `lowest_price_currency`      VARCHAR(50)     DEFAULT NULL               COMMENT '史低价格货币种类，默认人民币',
+    `lowest_price`               DECIMAL(6,4)    DEFAULT NULL               COMMENT '史低价格',
+    `lowest_price_rmb`           DECIMAL(6,4)    DEFAULT NULL               COMMENT '换算成人民币的史低价格',
+    `purchase_date`              DATE            DEFAULT NULL               COMMENT '购买此游戏的日期',
+    `purchase_price_currency`    VARCHAR(50)     DEFAULT NULL               COMMENT '购买此游戏的货币种类，默认人民币',
+    `purchase_price`             DECIMAL(6,4)    DEFAULT NULL               COMMENT '购买此游戏的价格',
+    `purchase_price_rmb`         DECIMAL(6,4)    DEFAULT NULL               COMMENT '换算成人民币的购买此游戏的价格',
+    `note`                       VARCHAR(255)    DEFAULT NULL               COMMENT '备注',
+    `create_by`                  VARCHAR(100)    DEFAULT NULL               COMMENT '创建者',
+    `create_time`                DATETIME        DEFAULT NULL               COMMENT '创建时间',
+    `update_by`                  VARCHAR(100)    DEFAULT NULL               COMMENT '更新者',
+    `update_time`                DATETIME        DEFAULT NULL               COMMENT '更新时间',
+    PRIMARY KEY(`game_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'game-register 模块 - 已购买的游戏信息表';
 
 
 -- ----------------------------

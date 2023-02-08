@@ -21,9 +21,16 @@ server:
   servlet:
     context-path: /
 
+logging:
+  level:
+    cn.ultronxr.*.bean.mybatis.mapper: debug
+
 mybatis:
   type-aliases-package: cn.ultronxr.**.bean.mybatis.bean
   mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # springboot actuator 配置，参见 {@link https://www.cnblogs.com/caoweixiong/p/15325382.html}
 management:

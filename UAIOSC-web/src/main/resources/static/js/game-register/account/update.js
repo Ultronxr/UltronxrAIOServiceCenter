@@ -3,8 +3,8 @@
  * @param rowData 父页面传递过来的表格中的某一行数据
  */
 function loadSelectAndSetRowData(rowData) {
-    loadSelect(app.util.api.getAPIUrl('game-register.platform.list'), $('#platform'), false);
-    loadSelect(app.util.api.getAPIUrl('game-register.shop.list'), $('#shop'), false);
+    loadSelect(app.util.api.getAPIUrl('game-register.platform.list'), $('#platform'), "name", "id", false);
+    loadSelect(app.util.api.getAPIUrl('game-register.shop.list'), $('#shop'), "name", "id", false);
     setRowData(rowData);
 }
 

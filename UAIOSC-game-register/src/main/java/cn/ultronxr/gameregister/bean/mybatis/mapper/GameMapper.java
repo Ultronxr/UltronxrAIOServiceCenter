@@ -10,21 +10,21 @@ public interface GameMapper {
 
     int deleteByExample(GameExample example);
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long gameId);
 
-    int insert(Game record);
+    int insert(Game row);
 
-    int insertSelective(Game record);
+    int insertSelective(Game row);
 
     List<Game> selectByExample(GameExample example);
 
-    Game selectByPrimaryKey(Long id);
+    Game selectByPrimaryKey(Long gameId);
 
-    int updateByExampleSelective(@Param("record") Game record, @Param("example") GameExample example);
+    int updateByExampleSelective(@Param("row") Game row, @Param("example") GameExample example);
 
-    int updateByExample(@Param("record") Game record, @Param("example") GameExample example);
+    int updateByExample(@Param("row") Game row, @Param("example") GameExample example);
 
-    int updateByPrimaryKeySelective(Game record);
+    int updateByPrimaryKeySelective(Game row);
 
-    int updateByPrimaryKey(Game record);
+    int updateByPrimaryKey(Game row);
 }

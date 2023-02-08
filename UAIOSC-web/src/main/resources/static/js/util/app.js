@@ -22,7 +22,8 @@ const app = {
                 create: '/create',
                 delete: '/delete',
                 update: '/update',
-                query: '/query'
+                query: '/query',
+                list: '/list'
             },
             game: {
                 url: '/game',

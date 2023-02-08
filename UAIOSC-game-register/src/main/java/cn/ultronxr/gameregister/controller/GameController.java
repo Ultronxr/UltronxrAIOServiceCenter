@@ -27,8 +27,8 @@ public class GameController {
 
     @PostMapping("create")
     @ResponseBody
-    public AjaxResponse createGame(@RequestBody Game game) {
-        if(gameService.createGame(game) > 0) {
+    public AjaxResponse create(@RequestBody Game game) {
+        if(gameService.create(game) > 0) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -36,8 +36,8 @@ public class GameController {
 
     @DeleteMapping("delete")
     @ResponseBody
-    public AjaxResponse deleteGame(@RequestParam("id") String id) {
-        if(gameService.deleteGame(Long.parseLong(id)) > 0) {
+    public AjaxResponse delete(@RequestParam("id") String id) {
+        if(gameService.delete(Long.parseLong(id)) > 0) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -45,8 +45,8 @@ public class GameController {
 
     @PutMapping("update")
     @ResponseBody
-    public AjaxResponse updateGame(@RequestBody Game game) {
-        if(gameService.updateGame(game) > 0) {
+    public AjaxResponse update(@RequestBody Game game) {
+        if(gameService.update(game) > 0) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -54,8 +54,8 @@ public class GameController {
 
     @PostMapping("query")
     @ResponseBody
-    public AjaxResponse queryAccount(@RequestBody Game game) {
-        List<Game> gameList = gameService.queryGame(game);
+    public AjaxResponse query(@RequestBody Game game) {
+        List<Game> gameList = gameService.query(game);
         return AjaxResponseUtils.success(null, gameList);
     }
 

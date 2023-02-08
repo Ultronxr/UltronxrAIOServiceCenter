@@ -3,10 +3,12 @@ package cn.ultronxr.gameregister.service.impl;
 import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.SqlUtil;
+import cn.ultronxr.framework.cache.user.UserCache;
 import cn.ultronxr.gameregister.bean.mybatis.bean.Account;
 import cn.ultronxr.gameregister.bean.mybatis.bean.AccountExample;
 import cn.ultronxr.gameregister.bean.mybatis.mapper.AccountMapper;
 import cn.ultronxr.gameregister.service.AccountService;
+import cn.ultronxr.system.bean.mybatis.bean.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     public int create(Account account) {
         account.setId(null);
         account.setCreateTime(CalendarUtil.calendar().getTime());
-        account.setCreateBy("ReplaceMe!");
+        account.setCreateBy(((User) UserCache.getUser()).getUsername());
         return mapper.insertSelective(account);
     }
 
@@ -50,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public int update(Account account) {
         account.setUpdateTime(CalendarUtil.calendar().getTime());
-        account.setUpdateBy("ReplaceMe!");
+        account.setUpdateBy(((User) UserCache.getUser()).getUsername());
         return mapper.updateByPrimaryKeySelective(account);
     }
 
