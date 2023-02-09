@@ -28,7 +28,7 @@ public class ShopController {
     @PostMapping("create")
     @ResponseBody
     public AjaxResponse create(@RequestBody Shop shop) {
-        if(service.create(shop) > 0) {
+        if(service.save(shop)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -36,8 +36,8 @@ public class ShopController {
 
     @DeleteMapping("delete")
     @ResponseBody
-    public AjaxResponse delete(@RequestParam("id") String id) {
-        if(service.delete(id) > 0) {
+    public AjaxResponse delete(@RequestParam List<Integer> idList) {
+        if(service.removeByIds(idList)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -46,7 +46,7 @@ public class ShopController {
     @PutMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Shop shop) {
-        if(service.update(shop) > 0) {
+        if(service.updateById(shop)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -55,14 +55,14 @@ public class ShopController {
     @PostMapping("query")
     @ResponseBody
     public AjaxResponse query(@RequestBody Shop shop) {
-        List<Shop> shopList = service.query(shop);
+        List<Shop> shopList = service.listShop(shop);
         return AjaxResponseUtils.success(null, shopList);
     }
 
     @GetMapping("list")
     @ResponseBody
     public AjaxResponse list() {
-        List<Shop> shopList = service.query(null);
+        List<Shop> shopList = service.listShop(null);
         return AjaxResponseUtils.success(null, shopList);
     }
 

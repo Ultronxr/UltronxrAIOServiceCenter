@@ -25,9 +25,15 @@ logging:
   level:
     cn.ultronxr.*.bean.mybatis.mapper: debug
 
-mybatis:
+mybatis-plus:
   type-aliases-package: cn.ultronxr.**.bean.mybatis.bean
   mapper-locations: classpath*:mapper/**/*.xml
+  global-config:
+    db-config:
+#      insert-strategy: not_empty
+#      update-strategy: not_empty
+      # 排除 select 时 Java Bean 属性值为空对 where 筛选条件的影响
+      where-strategy: not_empty
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

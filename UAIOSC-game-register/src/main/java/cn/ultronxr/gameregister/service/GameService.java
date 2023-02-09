@@ -1,22 +1,17 @@
 package cn.ultronxr.gameregister.service;
 
 import cn.ultronxr.gameregister.bean.mybatis.bean.Game;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
 /**
  * @author Ultronxr
- * @date 2022/12/10 19:09
+ * @date 2023/02/08 12:26
  * @description
  */
-public interface GameService {
+public interface GameService extends IService<Game> {
 
-    int create(Game game);
-
-    int delete(long id);
-
-    int update(Game game);
-
-    List<Game> query(Game game);
+    List<Game> list(Game game);
 
 }

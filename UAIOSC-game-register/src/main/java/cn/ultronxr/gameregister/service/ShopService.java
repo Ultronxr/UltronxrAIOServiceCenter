@@ -1,6 +1,8 @@
 package cn.ultronxr.gameregister.service;
 
+
 import cn.ultronxr.gameregister.bean.mybatis.bean.Shop;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -9,14 +11,8 @@ import java.util.List;
  * @date 2022/12/29 16:46
  * @description
  */
-public interface ShopService {
+public interface ShopService extends IService<Shop> {
 
-    int create(Shop shop);
-
-    int delete(String id);
-
-    int update(Shop shop);
-
-    List<Shop> query(Shop shop);
+    List<Shop> listShop(Shop shop);
 
 }

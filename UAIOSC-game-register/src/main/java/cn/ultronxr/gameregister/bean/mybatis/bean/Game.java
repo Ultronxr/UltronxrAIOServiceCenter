@@ -1,9 +1,14 @@
 package cn.ultronxr.gameregister.bean.mybatis.bean;
 
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+@TableName("game_register_game")
 public class Game {
+    @TableId(type = IdType.AUTO)
     private Long gameId;
 
     private Long parentId;
@@ -56,12 +61,16 @@ public class Game {
 
     private String note;
 
+    @TableField(fill = FieldFill.INSERT)
     private String createBy;
 
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
+    @TableField(fill = FieldFill.UPDATE)
     private String updateBy;
 
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
     public Long getGameId() {
@@ -232,6 +241,7 @@ public class Game {
         this.lowestPriceRmb = lowestPriceRmb;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getPurchaseDate() {
         return purchaseDate;
     }

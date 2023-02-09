@@ -1,8 +1,12 @@
 package cn.ultronxr.gameregister.bean.mybatis.bean;
 
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
 
+@TableName("game_register_account")
 public class Account {
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     private String nick;
@@ -21,12 +25,16 @@ public class Account {
 
     private String note;
 
+    @TableField(fill = FieldFill.INSERT)
     private String createBy;
 
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
+    @TableField(fill = FieldFill.UPDATE)
     private String updateBy;
 
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
     public Integer getId() {

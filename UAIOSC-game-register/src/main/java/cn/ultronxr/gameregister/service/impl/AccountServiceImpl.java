@@ -1,16 +1,13 @@
 package cn.ultronxr.gameregister.service.impl;
 
-import cn.hutool.core.date.CalendarUtil;
-import cn.hutool.db.sql.Condition;
-import cn.hutool.db.sql.SqlUtil;
-import cn.ultronxr.framework.cache.user.UserCache;
 import cn.ultronxr.gameregister.bean.mybatis.bean.Account;
-import cn.ultronxr.gameregister.bean.mybatis.bean.AccountExample;
 import cn.ultronxr.gameregister.bean.mybatis.mapper.AccountMapper;
 import cn.ultronxr.gameregister.service.AccountService;
-import cn.ultronxr.system.bean.mybatis.bean.User;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,72 +20,28 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> implements AccountService {
 
     @Autowired
     private AccountMapper mapper;
 
 
     @Override
-    public int create(Account account) {
-        account.setId(null);
-        account.setCreateTime(CalendarUtil.calendar().getTime());
-        account.setCreateBy(((User) UserCache.getUser()).getUsername());
-        return mapper.insertSelective(account);
-    }
+    public List<Account> listAccount(Account account) {
+        LambdaQueryWrapper<Account> wrapper = Wrappers.lambdaQuery();
+        wrapper.orderByAsc(Account::getCreateTime);
 
-    @Override
-    public int delete(int id) {
-        return mapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public int delete(List<Integer> idList) {
-        AccountExample example = new AccountExample();
-        example.createCriteria().andIdIn(idList);
-        return mapper.deleteByExample(example);
-    }
-
-    @Override
-    public int update(Account account) {
-        account.setUpdateTime(CalendarUtil.calendar().getTime());
-        account.setUpdateBy(((User) UserCache.getUser()).getUsername());
-        return mapper.updateByPrimaryKeySelective(account);
-    }
-
-    @Override
-    public List<Account> query(Account account) {
-        AccountExample example = new AccountExample();
-        example.setOrderByClause("create_time asc");
-        if(account != null) {
-            AccountExample.Criteria criteria = example.createCriteria();
-
-            if(StringUtils.isNotEmpty(account.getNick())) {
-                criteria.andNickLike(SqlUtil.buildLikeValue(account.getNick(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getUsername())) {
-                criteria.andUsernameLike(SqlUtil.buildLikeValue(account.getUsername(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getEmail())) {
-                criteria.andEmailLike(SqlUtil.buildLikeValue(account.getEmail(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getPhone())) {
-                criteria.andPhoneLike(SqlUtil.buildLikeValue(account.getPhone(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getPlatform())) {
-                criteria.andPlatformLike(SqlUtil.buildLikeValue(account.getPlatform(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getShop())) {
-                criteria.andShopLike(SqlUtil.buildLikeValue(account.getShop(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getRegion())) {
-                criteria.andRegionLike(SqlUtil.buildLikeValue(account.getRegion(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(account.getNote())) {
-                criteria.andNoteLike(SqlUtil.buildLikeValue(account.getNote(), Condition.LikeType.Contains, false));
-            }
+        if(null != account) {
+            wrapper.like(StringUtils.isNotEmpty(account.getNick()), Account::getNick, account.getNick())
+                    .like(StringUtils.isNotEmpty(account.getUsername()), Account::getUsername, account.getUsername())
+                    .like(StringUtils.isNotEmpty(account.getEmail()), Account::getEmail, account.getEmail())
+                    .like(StringUtils.isNotEmpty(account.getPhone()), Account::getPhone, account.getPhone())
+                    .like(StringUtils.isNotEmpty(account.getPlatform()), Account::getPlatform, account.getPlatform())
+                    .like(StringUtils.isNotEmpty(account.getShop()), Account::getShop, account.getShop())
+                    .like(StringUtils.isNotEmpty(account.getRegion()), Account::getRegion, account.getRegion())
+                    .like(StringUtils.isNotEmpty(account.getNote()), Account::getNote, account.getNote());
         }
-        return mapper.selectByExample(example);
+        return mapper.selectList(wrapper);
     }
 
 }

@@ -41,7 +41,7 @@
         <alibaba.druid.version>1.2.15</alibaba.druid.version>
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
         <mybatis-generator.version>1.4.1</mybatis-generator.version>
-        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <pagehelper-starter.version>1.4.2</pagehelper-starter.version>
         <redisson.version>3.15.1</redisson.version>
         <jjwt.version>0.11.5</jjwt.version>
@@ -114,10 +114,16 @@
             <version>${alibaba.druid.version}</version>
         </dependency>
 
+        <!--<dependency>-->
+        <!--    <groupId>org.mybatis.spring.boot</groupId>-->
+        <!--    <artifactId>mybatis-spring-boot-starter</artifactId>-->
+        <!--    <version>${mybatis-spring-boot-starter.version}</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis-spring-boot-starter.version}</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
         </dependency>
 
         <dependency>

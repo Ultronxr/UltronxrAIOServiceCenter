@@ -28,7 +28,7 @@ public class AccountController {
     @PostMapping("create")
     @ResponseBody
     public AjaxResponse create(@RequestBody Account account) {
-        if(service.create(account) > 0) {
+        if(service.save(account)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -37,7 +37,7 @@ public class AccountController {
     @DeleteMapping("delete")
     @ResponseBody
     public AjaxResponse delete(@RequestParam List<Integer> idList) {
-        if(service.delete(idList) > 0) {
+        if(service.removeByIds(idList)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -46,7 +46,7 @@ public class AccountController {
     @PutMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Account account) {
-        if(service.update(account) > 0) {
+        if(service.updateById(account)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -55,7 +55,7 @@ public class AccountController {
     @PostMapping("query")
     @ResponseBody
     public AjaxResponse query(@RequestBody Account account) {
-        List<Account> accountList = service.query(account);
+        List<Account> accountList = service.listAccount(account);
         AjaxResponse response = AjaxResponseUtils.success(null, accountList);
         response.put("count", accountList.size());
         return response;
@@ -64,7 +64,7 @@ public class AccountController {
     @GetMapping("list")
     @ResponseBody
     public AjaxResponse list() {
-        List<Account> accountList = service.query(null);
+        List<Account> accountList = service.listAccount(null);
         return AjaxResponseUtils.success(null, accountList);
     }
 

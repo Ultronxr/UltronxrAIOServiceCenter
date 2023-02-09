@@ -28,7 +28,7 @@ public class PlatformController {
     @PostMapping("create")
     @ResponseBody
     public AjaxResponse create(@RequestBody Platform platform) {
-        if(service.create(platform) > 0) {
+        if(service.save(platform)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -36,8 +36,8 @@ public class PlatformController {
 
     @DeleteMapping("delete")
     @ResponseBody
-    public AjaxResponse delete(@RequestParam("id") String id) {
-        if(service.delete(id) > 0) {
+    public AjaxResponse delete(@RequestParam List<Integer> idList) {
+        if(service.removeByIds(idList)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -46,7 +46,7 @@ public class PlatformController {
     @PutMapping("update")
     @ResponseBody
     public AjaxResponse update(@RequestBody Platform platform) {
-        if(service.update(platform) > 0) {
+        if(service.updateById(platform)) {
             return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
@@ -55,14 +55,14 @@ public class PlatformController {
     @PostMapping("query")
     @ResponseBody
     public AjaxResponse query(@RequestBody Platform platform) {
-        List<Platform> platformList = service.query(platform);
+        List<Platform> platformList = service.listPlatform(platform);
         return AjaxResponseUtils.success(null, platformList);
     }
 
     @GetMapping("list")
     @ResponseBody
     public AjaxResponse list() {
-        List<Platform> platformList = service.query(null);
+        List<Platform> platformList = service.listPlatform(null);
         return AjaxResponseUtils.success(null, platformList);
     }
 

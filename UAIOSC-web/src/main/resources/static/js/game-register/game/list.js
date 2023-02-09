@@ -20,8 +20,10 @@ table.render({
     ,height: 500
     ,cols: [[ //表头
         {type: 'checkbox', fixed: 'left'}
-        ,{field: 'id', title: 'ID', sort: true, hide: true}
+        ,{field: 'gameId', title: 'ID', sort: true, hide: true}
         ,{field: 'parentId', title: '父ID', sort: true, hide: true}
+        ,{field: 'shop', title: '购买商城', sort: true}
+        ,{field: 'version', title: '版本', sort: true}
         ,{field: 'name', title: '游戏名', sort: true}
         ,{field: 'nameEng', title: '英文名', sort: true}
         ,{field: 'description', title: '描述', sort: true}
@@ -151,7 +153,7 @@ table.on('toolbar(dataTable)', function(obj){
                 layer.confirm('你选中了 ' + checkedRows.length + ' 行，确认删除？', {icon: 3, title:'提示'}, function (index) {
                     let toBeDeletedIdList = [];
                     for(let row of checkedRows) {
-                        toBeDeletedIdList.push(row.id);
+                        toBeDeletedIdList.push(row.gameId);
                     }
                     deleteRows(toBeDeletedIdList);
                 });
@@ -165,7 +167,7 @@ table.on('tool(dataTable)', function(obj) {
     let rowData = obj.data;
     if(obj.event === 'del'){
         layer.confirm('确认删除此行？', {icon: 3, title:'提示'}, function(index) {
-            let toBeDeletedIdList = [rowData.id];
+            let toBeDeletedIdList = [rowData.gameId];
             deleteRows(toBeDeletedIdList);
         });
     } else if(obj.event === 'edit'){

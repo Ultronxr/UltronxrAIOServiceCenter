@@ -23,9 +23,9 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">购买游戏的商城</label>
+            <label class="layui-form-label">购买游戏的商城<label class="emphasize-red">*</label></label>
             <div class="layui-input-inline">
-                <select name="shop" id="shop" lay-verify="" class="layui-select"></select>
+                <select name="shop" id="shop" required lay-verify="required" class="layui-select"></select>
             </div>
         </div>
         <div class="layui-form-item">
@@ -138,7 +138,7 @@
             <label class="layui-form-label">史低价格</label>
             <div class="layui-input-inline">
                 <label>
-                    <input type="text" name="lowestPrice" lay-verify="number" autocomplete="off" class="layui-input">
+                    <input type="text" name="lowestPrice" lay-verify="" autocomplete="off" class="layui-input">
                 </label>
             </div>
         </div>
@@ -146,7 +146,7 @@
             <label class="layui-form-label">史低价格换算人民币</label>
             <div class="layui-input-inline">
                 <label>
-                    <input type="text" name="lowestPriceRmb" lay-verify="number" autocomplete="off" class="layui-input">
+                    <input type="text" name="lowestPriceRmb" placeholder="￥" lay-verify="" autocomplete="off" class="layui-input">
                 </label>
             </div>
         </div>
@@ -178,7 +178,7 @@
             <label class="layui-form-label">购买价格换算人民币</label>
             <div class="layui-input-inline">
                 <label>
-                    <input type="text" name="purchasePriceRmb" lay-verify="" autocomplete="off" class="layui-input">
+                    <input type="text" name="purchasePriceRmb" placeholder="￥" lay-verify="" autocomplete="off" class="layui-input">
                 </label>
             </div>
         </div>

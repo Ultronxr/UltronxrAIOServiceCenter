@@ -1,5 +1,6 @@
 package cn.ultronxr.framework.cache.user;
 
+import cn.hutool.core.util.ReflectUtil;
 import cn.ultronxr.framework.cache.ThreadLocalCache;
 
 /**
@@ -33,6 +34,21 @@ public class UserCache {
      */
     public static Object getUser() {
         return ThreadLocalCache.get(USER_MAP_KEY);
+    }
+
+    /**
+     * 使用反射直接获取缓存中 User 对象的 username 属性值，<br/>
+     * 不需要 {@code ((User) UserCache.getUser()).getUsername()} 强制转换之后再获取
+     *
+     * @return 当缓存中存在用户对象时，返回其 {@code username} 属性值<br/>
+     *          当缓存中没有用户对象时，返回 {@code null}
+     */
+    public static String getUsername() {
+        Object user = UserCache.getUser();
+        if(null == user) {
+            return null;
+        }
+        return (String) ReflectUtil.getFieldValue(user, "username");
     }
 
     /**

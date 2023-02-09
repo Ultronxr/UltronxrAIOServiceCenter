@@ -1,6 +1,7 @@
 package cn.ultronxr.gameregister.service;
 
 import cn.ultronxr.gameregister.bean.mybatis.bean.Account;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -9,16 +10,8 @@ import java.util.List;
  * @date 2022/12/10 19:08
  * @description
  */
-public interface AccountService {
+public interface AccountService extends IService<Account> {
 
-    int create(Account account);
-
-    int delete(int id);
-
-    int delete(List<Integer> idList);
-
-    int update(Account account);
-
-    List<Account> query(Account account);
+    List<Account> listAccount(Account account);
 
 }

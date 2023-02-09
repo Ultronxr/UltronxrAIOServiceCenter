@@ -1,6 +1,11 @@
 package cn.ultronxr.gameregister.bean.mybatis.bean;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("game_register_shop")
 public class Shop {
+    @TableId
     private String id;
 
     private String name;

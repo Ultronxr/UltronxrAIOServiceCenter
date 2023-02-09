@@ -1,6 +1,7 @@
 package cn.ultronxr.gameregister.service;
 
 import cn.ultronxr.gameregister.bean.mybatis.bean.Platform;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -9,14 +10,8 @@ import java.util.List;
  * @date 2022/12/29 16:46
  * @description
  */
-public interface PlatformService {
+public interface PlatformService extends IService<Platform> {
 
-    int create(Platform platform);
-
-    int delete(String id);
-
-    int update(Platform platform);
-
-    List<Platform> query(Platform platform);
+    List<Platform> listPlatform(Platform platform);
 
 }
