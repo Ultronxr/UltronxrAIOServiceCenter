@@ -20,7 +20,7 @@
 
     <groupId>cn.ultronxr</groupId>
     <artifactId>UltronxrAIOServiceCenter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>UltronxrAIOServiceCenter</name>
     <description>Ultronxr 服务中心</description>
 
@@ -31,6 +31,12 @@
         <maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <module.common.version>0.1.0</module.common.version>
+        <module.framework.version>0.1.0</module.framework.version>
+        <module.system.version>0.0.1-SNAPSHOT</module.system.version>
+        <module.web.version>0.1.0</module.web.version>
+        <module.game-register.version>0.1.0</module.game-register.version>
 
         <spring-boot.version>2.7.6</spring-boot.version>
         <junit.version>4.13.2</junit.version>
@@ -241,14 +247,6 @@
             <!--            <artifactId>log4j-api</artifactId>-->
             <!--        </exclusion>-->
             <!--    </exclusions>-->
-            <!--</dependency>-->
-
-
-
-            <!--<dependency>-->
-            <!--    <groupId>com.baomidou</groupId>-->
-            <!--    <artifactId>mybatis-plus-boot-starter</artifactId>-->
-            <!--    <version>${mybatis-plus.version}</version>-->
             <!--</dependency>-->
 
             <!--<dependency>-->
