@@ -6,9 +6,12 @@ import cn.ultronxr.gameregister.service.GameService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ import java.util.List;
  * @description
  */
 @Service
+@Slf4j
 public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements GameService {
 
     @Autowired
@@ -50,6 +54,23 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
                     .like(StringUtils.isNotEmpty(game.getPublisher()),    Game::getPublisher,      game.getPublisher());
         }
         return mapper.selectList(wrapper);
+    }
+
+    @Override
+    @Transactional
+    public boolean importJson(String accountId, String shopId, MultipartFile file) {
+        log.info(file.getOriginalFilename());
+
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean importAPI(String accountId, String shopId) {
+
+
+        return true;
     }
 
 }

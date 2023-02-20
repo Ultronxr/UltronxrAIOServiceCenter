@@ -39,3 +39,10 @@ jjwt:
     # 3小时、7天
     authToken: 180
     refreshToken: 10080
+
+game-register:
+  steam:
+    webAPIKey: ${secret.game-register.steam.webAPIKey}
+    steamID: ${secret.game-register.steam.steamID}
+  epic:
+

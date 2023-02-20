@@ -1,0 +1,12 @@
+#data-form {
+    margin: 3% 3%;
+}
+#data-form .layui-form-label {
+    width: 150px;
+}
+.layui-input-inline {
+    width: 40% !important;
+}
+.emphasize-red {
+    color: red;
+}

@@ -43,3 +43,9 @@ jjwt:
 #    refresh: Authorization_Refresh
 #    username: Username
 
+game-register:
+  steam:
+    webAPIKey: ${secret.game-register.steam.webAPIKey}
+    steamID: ${secret.game-register.steam.steamID}
+  epic:
+

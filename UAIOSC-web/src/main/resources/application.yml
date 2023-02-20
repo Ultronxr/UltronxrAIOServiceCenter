@@ -8,6 +8,11 @@ spring:
       prefix: /static/html/
       suffix: .html
 
+  servlet:
+    multipart:
+      max-request-size: 200MB
+      max-file-size: 20MB
+
   web:
     resources:
       static-locations: classpath:/static/,classpath:/templates/

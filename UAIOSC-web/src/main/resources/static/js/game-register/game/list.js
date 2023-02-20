@@ -159,6 +159,14 @@ table.on('toolbar(dataTable)', function(obj){
                 });
             }
             break;
+        case 'import':
+            layer.open({
+                title: '导入游戏',
+                type: 2,
+                content: 'import.html',
+                area: ['650px', '500px']
+            });
+            break;
     };
 });
 

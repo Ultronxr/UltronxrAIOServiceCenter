@@ -30,7 +30,12 @@ const app = {
                 create: '/create',
                 delete: '/delete',
                 update: '/update',
-                query: '/query'
+                query: '/query',
+                import: {
+                    url: '/import',
+                    json: '/json',
+                    api: "/api"
+                }
             },
             platform: {
                 url: '/platform',
