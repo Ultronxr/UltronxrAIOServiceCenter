@@ -9,6 +9,7 @@
         <module>UAIOSC-system</module>
         <module>UAIOSC-web</module>
         <module>UAIOSC-game-register</module>
+        <module>UAIOSC-valorant</module>
     </modules>
 
     <parent>
@@ -20,7 +21,7 @@
 
     <groupId>cn.ultronxr</groupId>
     <artifactId>UltronxrAIOServiceCenter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${UAIOSC.version}</version>
     <name>UltronxrAIOServiceCenter</name>
     <description>Ultronxr 服务中心</description>
 
@@ -32,6 +33,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <UAIOSC.version>0.0.1-SNAPSHOT</UAIOSC.version>
+        <module.common.version>0.0.1-SNAPSHOT</module.common.version>
+        <module.framework.version>0.0.1-SNAPSHOT</module.framework.version>
+        <module.system.version>0.0.1-SNAPSHOT</module.system.version>
+        <module.web.version>0.0.1-SNAPSHOT</module.web.version>
+        <module.game-register.version>0.0.1-SNAPSHOT</module.game-register.version>
+        <module.valorant.version>0.0.1-SNAPSHOT</module.valorant.version>
+
         <spring-boot.version>2.7.6</spring-boot.version>
         <junit.version>4.13.2</junit.version>
         <aspectj.version>1.9.6</aspectj.version>
@@ -42,6 +51,7 @@
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
         <mybatis-generator.version>1.4.1</mybatis-generator.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <jeffreyning.mybatisplus.version>1.7.3-RELEASE</jeffreyning.mybatisplus.version>
         <pagehelper-starter.version>1.4.2</pagehelper-starter.version>
         <redisson.version>3.15.1</redisson.version>
         <jjwt.version>0.11.5</jjwt.version>
@@ -125,6 +135,13 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.jeffreyning</groupId>
+            <artifactId>mybatisplus-plus</artifactId>
+            <version>${jeffreyning.mybatisplus.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.mybatis.generator</groupId>

@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>UAIOSC-common</artifactId>
+    <version>${module.common.version}</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

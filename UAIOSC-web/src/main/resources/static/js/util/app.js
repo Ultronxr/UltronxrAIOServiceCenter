@@ -49,6 +49,26 @@ const app = {
                 list: '/list'
             },
         },
+        'valorant': {
+            url: '/valorant',
+            weaponAndSkin: {
+                url: '/weaponAndSkinAPI',
+                updateDB: '/updateDB',
+            },
+            // account: {
+            //     url: '/account',
+            //     create: '/create',
+            //     delete: '/delete',
+            //     update: '/update',
+            //     query: '/query',
+            //     list: '/list'
+            // },
+            storefront: {
+                url: '/storefront',
+                single: '/singleItemOffers',
+                bonus: '/bonusOffers',
+            },
+        },
     },
 
     // 通用方法类库

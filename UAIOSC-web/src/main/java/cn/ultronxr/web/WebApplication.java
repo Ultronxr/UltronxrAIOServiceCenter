@@ -1,5 +1,6 @@
 package cn.ultronxr.web;
 
+import com.github.jeffreyning.mybatisplus.conf.EnableMPP;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,15 +15,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "cn.ultronxr.framework",
         "cn.ultronxr.system",
         "cn.ultronxr.web",
-        "cn.ultronxr.gameregister"
+        "cn.ultronxr.gameregister",
+        "cn.ultronxr.valorant",
 })
 @MapperScan(basePackages = {
         "cn.ultronxr.common.bean.mybatis.mapper",
         "cn.ultronxr.framework.bean.mybatis.mapper",
         "cn.ultronxr.system.bean.mybatis.mapper",
         "cn.ultronxr.web.bean.mybatis.mapper",
-        "cn.ultronxr.gameregister.bean.mybatis.mapper"
+        "cn.ultronxr.gameregister.bean.mybatis.mapper",
+        "cn.ultronxr.valorant.bean.mybatis.mapper",
 })
+@EnableMPP
 public class WebApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);

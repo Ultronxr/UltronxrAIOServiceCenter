@@ -40,4 +40,5 @@ build/
 
 # 敏感信息文件
 application-secret.yml
+application-local.yml
 mybatisGeneratorConfig.xml
