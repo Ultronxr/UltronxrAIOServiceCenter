@@ -8,8 +8,8 @@ import cn.ultronxr.valorant.api.BaseAPI;
 import cn.ultronxr.valorant.api.InGameAPIEnum;
 import cn.ultronxr.valorant.auth.RSO;
 import cn.ultronxr.valorant.bean.mybatis.bean.StoreFront;
+import cn.ultronxr.valorant.exception.APIUnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,18 +29,18 @@ public class StoreFrontAPI extends BaseAPI {
     private static final String GAME_CURRENCY_VP_ID = "85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741";
 
 
-    @Autowired
-    private RSO rso;
-
-
-    public JSONObject process(String userId) {
-        String responseBody = requestAPI(API.replace("{userId}", userId), rso.getRequestHeaderMap());
+    public JSONObject process(RSO rso) throws APIUnauthorizedException {
+        String responseBody = requestAPI(API.replace("{userId}", rso.getUserId()), rso.getRequestHeaderMap());
         return parseData(responseBody);
     }
 
     @Override
-    public JSONObject parseData(String responseBody) {
-        return JSONUtil.parseObj(responseBody, false);
+    public JSONObject parseData(String responseBody) throws APIUnauthorizedException {
+        JSONObject obj = JSONUtil.parseObj(responseBody, false);
+        if(obj.getInt("httpStatus", 200) == 400 && obj.getStr("errorCode", "OK").equals("BAD_CLAIMS")) {
+            throw new APIUnauthorizedException();
+        }
+        return obj;
     }
 
     public List<StoreFront> getSingleItemOffers(JSONObject rootJsonObj, String userId) {

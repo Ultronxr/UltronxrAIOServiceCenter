@@ -7,7 +7,6 @@ import cn.ultronxr.valorant.api.ValorantDotComAPIEnum;
 import cn.ultronxr.valorant.auth.RSO;
 import cn.ultronxr.valorant.bean.RiotClientVersion;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,12 +20,8 @@ public class RiotClientVersionAPI extends BaseAPI {
 
     private static final String API = ValorantDotComAPIEnum.RiotClientVersion.getUrl();
 
-    @Autowired
-    private RSO rso;
 
-
-    @Override
-    public void process() {
+    public void process(RSO rso) {
         String responseBody = requestAPI(API, null);
         RiotClientVersion rcv = parseData(responseBody);
         rso.updateVersion(rcv);

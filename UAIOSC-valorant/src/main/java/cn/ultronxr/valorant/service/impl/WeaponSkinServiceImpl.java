@@ -29,7 +29,7 @@ public class WeaponSkinServiceImpl extends ServiceImpl<WeaponSkinMapper, WeaponS
         LambdaQueryWrapper<WeaponSkin> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(WeaponSkin::getParentWeaponUuid, weaponId)
                 .eq(WeaponSkin::getType, "skin")
-                .orderByAsc(WeaponSkin::getUuid);
+                .orderByAsc(WeaponSkin::getDisplayName);
         return wsMapper.selectList(wrapper);
     }
 
@@ -37,7 +37,7 @@ public class WeaponSkinServiceImpl extends ServiceImpl<WeaponSkinMapper, WeaponS
         LambdaQueryWrapper<WeaponSkin> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(WeaponSkin::getParentSkinUuid, skinId)
                 .eq(WeaponSkin::getType, "level")
-                .orderByAsc(WeaponSkin::getUuid);
+                .orderByAsc(WeaponSkin::getDisplayName);
         return wsMapper.selectList(wrapper);
     }
 
@@ -45,7 +45,7 @@ public class WeaponSkinServiceImpl extends ServiceImpl<WeaponSkinMapper, WeaponS
         LambdaQueryWrapper<WeaponSkin> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(WeaponSkin::getParentSkinUuid, skinId)
                 .eq(WeaponSkin::getType, "chroma")
-                .orderByAsc(WeaponSkin::getUuid);
+                .orderByAsc(WeaponSkin::getDisplayName);
         return wsMapper.selectList(wrapper);
     }
 

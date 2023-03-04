@@ -2,6 +2,7 @@ package cn.ultronxr.valorant.api;
 
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
+import cn.ultronxr.valorant.exception.APIUnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -31,7 +32,8 @@ public abstract class BaseAPI {
                 HttpUtil.createGet(API)
                         .headerMap(headerMap, true)
                         .execute();
-        responseBody = response.isOk() ? response.body() : null;
+        // responseBody = response.isOk() ? response.body() : null;
+        responseBody = response.body();
         response.close();
         return responseBody;
     }
@@ -39,7 +41,7 @@ public abstract class BaseAPI {
     /**
      * 解析 API 返回的数据
      */
-    public Object parseData(String responseBody) {
+    public Object parseData(String responseBody) throws APIUnauthorizedException {
         return null;
     }
 

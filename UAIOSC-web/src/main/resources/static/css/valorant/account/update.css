@@ -1,0 +1,16 @@
+#account-form {
+    margin: 3% 3%;
+}
+#account-form textarea {
+    /*width: 300px;*/
+    height: 120px;
+}
+.layui-input-inline {
+    width: 40% !important;
+}
+.emphasize-red {
+    color: red;
+}
+#id-form-item {
+    display: none;
+}

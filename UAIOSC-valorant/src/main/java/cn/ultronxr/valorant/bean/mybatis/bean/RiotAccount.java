@@ -31,6 +31,6 @@ public class RiotAccount {
 
     private String multiFactor;
 
-    private String isVerified;
+    private Boolean isVerified;
 
 }

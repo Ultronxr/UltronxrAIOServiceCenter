@@ -5,9 +5,12 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONObject;
 import cn.ultronxr.valorant.api.impl.StoreFrontAPI;
+import cn.ultronxr.valorant.auth.RSO;
 import cn.ultronxr.valorant.bean.VO.StoreFrontVO;
 import cn.ultronxr.valorant.bean.mybatis.bean.StoreFront;
 import cn.ultronxr.valorant.bean.mybatis.mapper.StoreFrontMapper;
+import cn.ultronxr.valorant.exception.APIUnauthorizedException;
+import cn.ultronxr.valorant.service.RSOService;
 import cn.ultronxr.valorant.service.StoreFrontService;
 import cn.ultronxr.valorant.service.WeaponSkinService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -40,14 +43,18 @@ public class StoreFrontServiceImpl extends MppServiceImpl<StoreFrontMapper, Stor
     @Autowired
     private WeaponSkinService wsService;
 
+    @Autowired
+    private RSOService rsoService;
+
 
     @Override
     public List<StoreFront> singleItemOffers(String userId, String date) {
         List<StoreFront> list = queryDB(userId, date, false);
 
         // 如果数据库中没有数据且过了今天8点，则请求API获取，并插入数据库
+        // 注意：已经过去的日期是无法再通过接口获取数据的，如果当天没有存入数据库，那么只能返回空结果！
         if((null == list || list.isEmpty()) && isNowAfterToday8AM()) {
-            JSONObject jObj = sfAPI.process(userId);
+            JSONObject jObj = requestAPI(userId);
             list = sfAPI.getSingleItemOffers(jObj, userId);
             this.saveOrUpdateBatchByMultiId(list);
         }
@@ -61,12 +68,29 @@ public class StoreFrontServiceImpl extends MppServiceImpl<StoreFrontMapper, Stor
 
         // 如果数据库中没有数据，则请求API获取，并插入数据库
         if((null == list || list.isEmpty()) && isNowAfterToday8AM()) {
-            JSONObject jObj = sfAPI.process(userId);
+            JSONObject jObj = requestAPI(userId);
             list = sfAPI.getBonusOffers(jObj, userId);
             this.saveOrUpdateBatchByMultiId(list);
         }
 
         return list;
+    }
+
+    private JSONObject requestAPI(String userId) {
+        JSONObject jObj = null;
+        RSO rso = rsoService.fromAccount(userId);
+        try {
+            jObj = sfAPI.process(rso);
+        } catch (APIUnauthorizedException e1) {
+            log.info("RSO token 已过期，尝试更新 token ...");
+            rso = rsoService.updateRSO(userId);
+            try {
+                jObj = sfAPI.process(rso);
+            } catch (APIUnauthorizedException e2) {
+
+            }
+        }
+        return jObj;
     }
 
     @Override
@@ -111,7 +135,7 @@ public class StoreFrontServiceImpl extends MppServiceImpl<StoreFrontMapper, Stor
     private static String addDays(String date, int amount) {
         Date dateObj = DateUtil.parseDate(date);
         dateObj = DateUtils.addDays(dateObj, amount);
-        return dateObj.toString();
+        return DateUtil.date(dateObj).toDateStr();
     }
 
 }

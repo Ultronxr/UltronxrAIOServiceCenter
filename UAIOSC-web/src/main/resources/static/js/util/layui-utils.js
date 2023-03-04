@@ -23,12 +23,14 @@ function closeLayerWindow() {
  * @param async        请求数据时是异步还是同步：
  *                          true - 异步（缺省）；false - 同步
  * @param callback     请求完数据之后执行的回调函数
+ * @param excludeEmptyOption 是否排除空选项（即默认的 “--- 请选择 ---” 选项）：
+ *                              true - 排除（即不包含默认的“请选择”选项）；false - 不排除（缺省，即包含默认的“请选择”选项）
  */
-function loadSelect(url, targetSelect, selectName, selectValue, async, callback) {
+function loadSelect(url, targetSelect, selectName, selectValue, async, callback, excludeEmptyOption) {
     app.util.ajax.get(url,
         null,
         function (res) {
-            loadSelectFromJson(res.data, targetSelect, selectName, selectValue);
+            loadSelectFromJson(res.data, targetSelect, selectName, selectValue, excludeEmptyOption);
         },
         function () {
             let msg = targetSelect.selector + ' select 数据加载失败！';
@@ -50,8 +52,10 @@ function loadSelect(url, targetSelect, selectName, selectValue, async, callback)
  * @param targetSelect 目标 select 选项框的jquery对象
  * @param selectName   json数据中用于 select选项 显示名称 的对象属性名，缺省为"name"
  * @param selectValue  json数据中用于 select选项 实际值 的对象属性名，缺省为"id"
+ * @param excludeEmptyOption 是否排除空选项（即默认的 “--- 请选择 ---” 选项）：
+ *                              true - 排除（即不包含默认的“请选择”选项）；false - 不排除（缺省，即包含默认的“请选择”选项）
  */
-function loadSelectFromJson(json, targetSelect, selectName, selectValue) {
+function loadSelectFromJson(json, targetSelect, selectName, selectValue, excludeEmptyOption) {
     if(app.util.string.isEmpty(selectName)) {
         selectName = "name";
     }
@@ -63,7 +67,7 @@ function loadSelectFromJson(json, targetSelect, selectName, selectValue) {
     if(app.util.string.isJsonStringify(json)) {
         jsonObj = JSON.parse(json);
     }
-    let options = '<option value="">--- 请选择 ---</option>';
+    let options = !excludeEmptyOption ? '<option value="">--- 请选择 ---</option>' : '';
     for (let i in jsonObj) {
         options += '<option value="' + jsonObj[i][selectValue] + '">' + jsonObj[i][selectName] + '</option>';
     }

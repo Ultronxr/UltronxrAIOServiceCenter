@@ -1,5 +1,7 @@
 package cn.ultronxr.valorant.controller;
 
+import cn.ultronxr.common.bean.AjaxResponse;
+import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.valorant.api.impl.WeaponAndSkinAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,9 @@ public class WeaponAndSkinController {
 
     @RequestMapping("updateDB")
     @ResponseBody
-    public String process() {
+    public AjaxResponse process() {
         weaponAndSkinAPI.processAndUpdateDB();
-        return "OK";
+        return AjaxResponseUtils.success();
     }
 
 }

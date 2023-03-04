@@ -1,49 +1,78 @@
+var laydate;
+layui.define(function(){
+    laydate = layui.laydate;
+});
+
 $(function () {
    loadAllSelect();
+    laydate.render({
+        elem: '#date',
+        value: new Date()
+    });
 });
 
 function loadAllSelect() {
-    let gameVersionData = [
-        {value: "本体", name: "本体"},
-        {value: "DLC", name: "DLC"},
-        {value: "捆绑包", name: "捆绑包"},
-        {value: "其他", name: "其他"},
-    ];
-    loadSelectFromJson(gameVersionData, $("#version"), "name", "value");
-    loadSelect(app.util.api.getAPIUrl('game-register.account.list'), $('#accountId'), "username", "id");
-    loadSelect(app.util.api.getAPIUrl('game-register.shop.list'), $('#shop'));
+    loadSelect(app.util.api.getAPIUrl('valorant.account.select'), $('#userId'), "username", "userId", false, null, true);
 }
 
 table.render({
     elem: '#data-table'
     ,id: 'dataTable'
-    ,height: 500
+    // ,height: 500
     ,cols: [[ //表头
-        {type: 'checkbox', fixed: 'left'}
-        ,{field: 'gameId', title: 'ID', sort: true, hide: true}
-        ,{field: 'parentId', title: '父ID', sort: true, hide: true}
-        ,{field: 'shop', title: '购买商城', sort: true}
-        ,{field: 'version', title: '版本', sort: true}
-        ,{field: 'name', title: '游戏名', sort: true}
-        ,{field: 'nameEng', title: '英文名', sort: true}
-        ,{field: 'description', title: '描述', sort: true}
-        ,{field: 'tag', title: '标签', sort: true}
-        ,{field: 'developer', title: '开发商', sort: true}
-        ,{field: 'publisher', title: '发行商', sort: true}
-        ,{field: 'purchaseDate', title: '购买日期', sort: true}
-        ,{field: 'purchasePrice', title: '购买价格', sort: true}
-        ,{field: 'note', title: '备注', sort: false}
-        ,{title:'操作', width: 125, minWidth: 125, fixed: 'right', toolbar: '#inlineToolbar'}
+        {field: 'weaponSkin.displayName', title: '皮肤名称', width: '10%', sort: false, align: 'center',
+            templet: '<div>{{=d.weaponSkin.displayName}}</div>'}
+        ,{field: 'weaponSkin.displayIcon', title: '皮肤图片', sort: false, align: 'center', width:'20%', style: 'height:150px;',
+            templet: '<div><img src="{{=d.weaponSkin.displayIcon}}" style="height:auto; width:auto; max-height:100%; max-width:100%;"></div>'}
+        ,{field: 'weaponSkin.streamedVideo', title: '皮肤本体预览', sort: false, align: 'center', width:'20%', style: 'height:150px',
+            templet: function (d) {
+                if(d.weaponSkin.streamedVideo == null) {
+                    return '<div>无预览视频</div>';
+                }
+                let videoUrl = d.weaponSkin.streamedVideo,
+                    imgUrl = d.weaponSkin.displayIcon,
+                    displayName = d.weaponSkin.displayName;
+                return '<a onclick="layeropen(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+            }}
+        ,{field: 'weaponSkinLevels', title: '皮肤升级', sort: false, align: 'center', width:'20%', style: 'height:150px',
+            templet: function(d) {
+                let html = '';
+                for(let index in d.weaponSkinLevels) {
+                    if(index > 0) {
+                        let videoUrl = d.weaponSkinLevels[index].streamedVideo,
+                            imgUrl = d.weaponSkinLevels[index].displayIcon,
+                            displayName = d.weaponSkinLevels[index].displayName;
+                        html += '<a onclick="layeropen(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                        html += '<br/>';
+                    }
+                }
+                return html;
+            }}
+        ,{field: 'weaponSkinChromas', title: '皮肤炫彩', sort: false, align: 'center', width:'20%', style: 'height:150px',
+            templet: function(d) {
+                let html = '';
+                for(let index in d.weaponSkinChromas) {
+                    if(index > 0) {
+                        let videoUrl = d.weaponSkinChromas[index].streamedVideo,
+                            imgUrl = d.weaponSkinChromas[index].displayIcon,
+                            displayName = d.weaponSkinChromas[index].displayName;
+                        html += '<a onclick="layeropen(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                        html += '<br/>';
+                    }
+                }
+                return html;
+            }}
     ]]
-    ,toolbar: '#toolbar'
-    ,defaultToolbar: [] //清空默认的三个工具栏按钮
     ,totalRow: false
 
-    ,url: app.util.api.getAPIUrl('game-register.game.query')
-    ,method: 'POST'
-    ,contentType: 'application/json'
+    ,url: app.util.api.getAPIUrl('valorant.storefront.bonus')
+    ,method: 'GET'
+    // ,contentType: 'application/json'
     ,headers: {}
-    ,where: {}
+    ,where: {
+        userId: $("#userId").val(),
+        date: $("#date").val(),
+    }
     ,page: false //分页
     ,request: {
         // pageName: 'page' //页码的参数名称，默认：page
@@ -82,29 +111,11 @@ var active = {
             //     curr: 1 //重新从第 1 页开始
             // },
             where: { //设定异步数据接口的额外参数
-                accountId: $("#accountId").val(),
-                shop: $("#shop").val(),
-                version: $("#version").val(),
-                name: $("#name").val(),
-                description: $("#description").val(),
-                tag: $("#tag").val(),
-                developer: $("#developer").val(),
-                publisher: $("#publisher").val(),
+                userId: $("#userId").val(),
+                date: $("#date").val(),
             }
         });
     },
-    clear: function () {
-        $("#accountId").val("");
-        $("#shop").val("");
-        $("#version").val("");
-        $("#name").val(null);
-        $("#description").val(null);
-        $("#tag").val(null);
-        $("#developer").val(null);
-        $("#publisher").val(null);
-        refreshTable();
-        form.render('select');
-    }
 };
 
 // 监听按钮的点击事件
@@ -113,82 +124,11 @@ $('#table-div .layui-btn').on('click', function(){
     active[type] ? active[type].call(this) : '';
 });
 
-// 删除选中的行
-function deleteRows(toBeDeletedIdList) {
-    app.util.ajax.delete(app.util.api.getAPIUrl('game-register.game.delete'),
-        {idList: toBeDeletedIdList.join()},
-        function (res) {
-            // console.log(res);
-            if(res.code === app.RESPONSE_CODE.SUCCESS) {
-                layer.msg('删除成功。', {time: 2000});
-                refreshTable();
-            }
-        },
-        function (res) {
-            layer.msg('删除失败！', {icon:2, time: 2000});
-            refreshTable();
-        }
-    );
+function layeropen(videoUrl) {
+    layer.open({
+        title: '皮肤预览视频',
+        type: 1,
+        content: '<video src="' + videoUrl + '" controls style="height:auto; width:auto; max-height:100%; max-width:100%;" preload="metadata">',
+        area: ['900px', '560px']
+    });
 }
-
-// 顶部工具栏事件
-table.on('toolbar(dataTable)', function(obj){
-    let id = obj.config.id; // 获取表格ID
-    let checkStatus = table.checkStatus(id); // 获取表格中复选框选中的行
-    switch(obj.event){
-        case 'create' :
-            layer.open({
-                title: '新增游戏',
-                type: 2,
-                content: 'create.html',
-                area: ['800px', '900px']
-            });
-            break;
-        case 'delete':
-            let checkedRows = checkStatus.data;
-            // console.log(checkedRows);
-            if(checkedRows.length === 0) {
-                layer.msg('未选中任何一行！', {time: 2000});
-            } else {
-                layer.confirm('你选中了 ' + checkedRows.length + ' 行，确认删除？', {icon: 3, title:'提示'}, function (index) {
-                    let toBeDeletedIdList = [];
-                    for(let row of checkedRows) {
-                        toBeDeletedIdList.push(row.gameId);
-                    }
-                    deleteRows(toBeDeletedIdList);
-                });
-            }
-            break;
-    };
-});
-
-// 单元格内工具栏事件
-table.on('tool(dataTable)', function(obj) {
-    let rowData = obj.data;
-    if(obj.event === 'del'){
-        layer.confirm('确认删除此行？', {icon: 3, title:'提示'}, function(index) {
-            let toBeDeletedIdList = [rowData.gameId];
-            deleteRows(toBeDeletedIdList);
-        });
-    } else if(obj.event === 'edit'){
-        layer.open({
-            title: '更新游戏信息',
-            type: 2,
-            content: 'update.html',
-            area: ['800px', '900px'],
-            success: function (layero, index) {
-                // 往子页面添加内容
-                // let body = layer.getChildFrame('body', index);
-                // body.find('#content').append(editor.txt.html());
-                // 执行子页面的函数
-                let iframe = window[layero.find('iframe')[0]['name']];
-                iframe.loadSelectAndSetRowData(rowData);
-            }
-        });
-    }
-});
-
-// 触发表格复选框选择事件
-// table.on('checkbox(accountTable)', function(obj){
-//     console.log(obj)
-// });

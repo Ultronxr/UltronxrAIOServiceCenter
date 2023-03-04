@@ -55,14 +55,14 @@ const app = {
                 url: '/weaponAndSkinAPI',
                 updateDB: '/updateDB',
             },
-            // account: {
-            //     url: '/account',
-            //     create: '/create',
-            //     delete: '/delete',
-            //     update: '/update',
-            //     query: '/query',
-            //     list: '/list'
-            // },
+            account: {
+                url: '/account',
+                create: '/create',
+                delete: '/delete',
+                // update: '/update',
+                query: '/query',
+                select: '/select'
+            },
             storefront: {
                 url: '/storefront',
                 single: '/singleItemOffers',

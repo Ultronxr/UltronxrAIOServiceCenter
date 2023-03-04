@@ -10,12 +10,12 @@
 <div id="table-div">
     <form class="searchBar layui-form layui-form-pane" action="">
         <div class="layui-form-item">
-            <!--<div class="layui-inline">-->
-            <!--    <label class="layui-form-label">拳头账户</label>-->
-            <!--    <div class="layui-input-inline">-->
-            <!--        <select class="layui-select" name="accountId" id="accountId"></select>-->
-            <!--    </div>-->
-            <!--</div>-->
+            <div class="layui-inline">
+                <label class="layui-form-label">拳头账户</label>
+                <div class="layui-input-inline">
+                    <select class="layui-select" name="userId" id="userId"></select>
+                </div>
+            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">日期</label>
                 <div class="layui-input-inline">
@@ -25,9 +25,6 @@
 
             <div class="layui-inline">
                 <button type="button" class="layui-btn"  data-type="reload" lay-filter="data-search-btn" id="searchBtn"><i class="layui-icon"></i> 搜 索</button>
-            </div>
-            <div class="layui-inline">
-                <button type="button" class="layui-btn layui-btn-primary"  data-type="clear" lay-filter="data-clear-btn" id="clearBtn">清 空</button>
             </div>
         </div>
     </form>
@@ -39,6 +36,5 @@
 <script src="/static/js/util/app.js"></script>
 <script src="/static/js/util/layui-utils.js"></script>
 <script src="/static/js/valorant/storefront/single/list.js"></script>
-<script src="list.ts" setup></script>
 </body>
 </html>
