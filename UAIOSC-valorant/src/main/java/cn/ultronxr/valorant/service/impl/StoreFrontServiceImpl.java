@@ -53,7 +53,7 @@ public class StoreFrontServiceImpl extends MppServiceImpl<StoreFrontMapper, Stor
 
         // 如果数据库中没有数据且过了今天8点，则请求API获取，并插入数据库
         // 注意：已经过去的日期是无法再通过接口获取数据的，如果当天没有存入数据库，那么只能返回空结果！
-        if((null == list || list.isEmpty()) && isNowAfterToday8AM()) {
+        if((null == list || list.isEmpty()) && isDateValid(date)) {
             JSONObject jObj = requestAPI(userId);
             list = sfAPI.getSingleItemOffers(jObj, userId);
             this.saveOrUpdateBatchByMultiId(list);
@@ -67,7 +67,7 @@ public class StoreFrontServiceImpl extends MppServiceImpl<StoreFrontMapper, Stor
         List<StoreFront> list = queryDB(userId, date, true);
 
         // 如果数据库中没有数据，则请求API获取，并插入数据库
-        if((null == list || list.isEmpty()) && isNowAfterToday8AM()) {
+        if((null == list || list.isEmpty()) && isDateValid(date)) {
             JSONObject jObj = requestAPI(userId);
             list = sfAPI.getBonusOffers(jObj, userId);
             this.saveOrUpdateBatchByMultiId(list);
@@ -120,6 +120,35 @@ public class StoreFrontServiceImpl extends MppServiceImpl<StoreFrontMapper, Stor
                 .eq(!isBonus, StoreFront::getDate, date)
                 .gt(isBonus, StoreFront::getDate, date);
         return sfMapper.selectList(wrapper);
+    }
+
+    /**
+     * 检查日期是否合法，合法的条件：<br/>
+     *      先把 date ==> dateTime
+     *      今天8点 < dateTime < 明天8点
+     * @param date 前端传入的查询日期
+     * @return 是否合法
+     */
+    private static boolean isDateValid(String date) {
+        DateTime now = DateUtil.date();
+        DateTime dateTime = DateUtil.parse(date)
+                .setField(DateField.HOUR_OF_DAY, now.getField(DateField.HOUR_OF_DAY))
+                .setField(DateField.MINUTE, now.getField(DateField.MINUTE))
+                .setField(DateField.SECOND, now.getField(DateField.SECOND))
+                .setField(DateField.MILLISECOND, now.getField(DateField.MILLISECOND));
+        DateTime today8AM = DateUtil.date()
+                .setField(DateField.HOUR_OF_DAY, 8)
+                .setField(DateField.MINUTE, 0)
+                .setField(DateField.SECOND, 0)
+                .setField(DateField.MILLISECOND, 0);
+        DateTime tomorrow8AM = DateUtil.date(
+                DateUtils.addDays(DateUtil.date(today8AM).toJdkDate(), 1)
+        );
+        boolean valid = DateUtil.compare(today8AM, dateTime) < 0
+                && DateUtil.compare(dateTime, tomorrow8AM) < 0;
+        log.info("dateTime={}, today8AM={}, tomorrow8AM={}", dateTime.toString(), today8AM.toString(), tomorrow8AM.toString());
+        log.info("valid={}", valid);
+        return valid;
     }
 
     private static boolean isNowAfterToday8AM() {

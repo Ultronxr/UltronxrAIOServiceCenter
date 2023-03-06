@@ -20,8 +20,10 @@ table.render({
     ,id: 'dataTable'
     // ,height: 500
     ,cols: [[ //表头
-        {field: 'weaponSkin.displayName', title: '皮肤名称', width: '10%', sort: false, align: 'center',
+        {field: 'weaponSkin.displayName', title: '皮肤名称', sort: false, align: 'center', width: '10%', style: 'height:150px;',
             templet: '<div>{{=d.weaponSkin.displayName}}</div>'}
+        ,{field: 'cost', title: '价格', sort: false, align: 'center', width: '5%', style: 'height:150px;',
+            templet: '<div>{{=d.cost}} VP</div>'}
         ,{field: 'weaponSkin.displayIcon', title: '皮肤图片', sort: false, align: 'center', width:'20%', style: 'height:150px;',
             templet: '<div><img src="{{=d.weaponSkin.displayIcon}}" style="height:auto; width:auto; max-height:100%; max-width:100%;"></div>'}
         ,{field: 'weaponSkin.streamedVideo', title: '皮肤本体预览', sort: false, align: 'center', width:'20%', style: 'height:150px',
@@ -32,7 +34,11 @@ table.render({
                 let videoUrl = d.weaponSkin.streamedVideo,
                     imgUrl = d.weaponSkin.displayIcon,
                     displayName = d.weaponSkin.displayName;
-                return '<a onclick="layeropen(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                if(videoUrl != null) {
+                    return '<a onclick="layerOpenVideo(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                } else {
+                    return '<a onclick="layerOpenImg(\'' + imgUrl + '\')">' + displayName + '</a>';
+                }
             }}
         ,{field: 'weaponSkinLevels', title: '皮肤升级', sort: false, align: 'center', width:'20%', style: 'height:150px',
             templet: function(d) {
@@ -42,7 +48,11 @@ table.render({
                         let videoUrl = d.weaponSkinLevels[index].streamedVideo,
                             imgUrl = d.weaponSkinLevels[index].displayIcon,
                             displayName = d.weaponSkinLevels[index].displayName;
-                        html += '<a onclick="layeropen(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                        if(videoUrl != null) {
+                            html += '<a onclick="layerOpenVideo(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                        } else {
+                            html += '<a onclick="layerOpenImg(\'' + imgUrl + '\')">' + displayName + '</a>';
+                        }
                         html += '<br/>';
                     }
                 }
@@ -56,7 +66,11 @@ table.render({
                         let videoUrl = d.weaponSkinChromas[index].streamedVideo,
                             imgUrl = d.weaponSkinChromas[index].displayIcon,
                             displayName = d.weaponSkinChromas[index].displayName;
-                        html += '<a onclick="layeropen(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                        if(videoUrl != null) {
+                            html += '<a onclick="layerOpenVideo(\'' + videoUrl + '\')" class="layui-table-link">' + displayName + '</a>';
+                        } else {
+                            html += '<a onclick="layerOpenImg(\'' + imgUrl + '\')">' + displayName + '</a>';
+                        }
                         html += '<br/>';
                     }
                 }
@@ -124,11 +138,22 @@ $('#table-div .layui-btn').on('click', function(){
     active[type] ? active[type].call(this) : '';
 });
 
-function layeropen(videoUrl) {
+function layerOpenVideo(videoUrl) {
     layer.open({
-        title: '皮肤预览视频',
+        title: '皮肤预览',
         type: 1,
         content: '<video src="' + videoUrl + '" controls style="height:auto; width:auto; max-height:100%; max-width:100%;" preload="metadata">',
-        area: ['900px', '560px']
+        area: ['900px', '560px'],
+        shadeClose: true
+    });
+}
+
+function layerOpenImg(imgUrl) {
+    layer.open({
+        title: '皮肤预览',
+        type: 1,
+        content: '<img src="' + imgUrl + '" controls style="height:auto; width:auto; max-height:100%; max-width:100%;">',
+        area: ['900px', '560px'],
+        shadeClose: true
     });
 }
