@@ -19,8 +19,15 @@
         <div class="layui-form-item">
             <label class="layui-form-label">密码<label class="emphasize-red">*</label></label>
             <div class="layui-input-inline">
-                <input type="email" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
             </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱验证码<label class="emphasize-red">*</label></label>
+            <div class="layui-input-inline">
+                <input type="number" name="multiFactor" required lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+            <button class="layui-btn" lay-submit lay-filter="multiFactor">获取验证码</button>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">社交名称</label>

@@ -13,4 +13,13 @@ public class APIUnauthorizedException extends Exception {
     public APIUnauthorizedException() {
     }
 
+    public APIUnauthorizedException(String msg) {
+        this.msg = msg;
+    }
+
+    @Override
+    public String getMessage() {
+        return this.msg;
+    }
+
 }
