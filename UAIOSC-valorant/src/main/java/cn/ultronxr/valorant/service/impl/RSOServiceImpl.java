@@ -109,7 +109,7 @@ public class RSOServiceImpl implements RSOService {
             throw new RSOEntitlementsErrorException();
         }
         rso = RSOUtils.parseEntitlementsToken(resObj, rso);
-
+        log.info("RSO流程完成：RSO = {}", rso.toString());
         return rso;
     }
 

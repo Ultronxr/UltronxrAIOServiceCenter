@@ -67,4 +67,16 @@ public class RSO {
         }};
     }
 
+    @Override
+    public String toString() {
+        return "RSO{" +
+                "accessToken=" + accessToken + '\n' +
+                ", entitlementsToken=" + entitlementsToken + '\n' +
+                ", userId=" + userId + '\n' +
+                ", riotClientPlatform=" + riotClientPlatform + '\n' +
+                ", riotClientVersion=" + riotClientVersion + '\n' +
+                ", riotClientBuild=" + riotClientBuild + '\n' +
+                ", riotClientAgent=" + riotClientAgent + '\n' +
+                '}';
+    }
 }
