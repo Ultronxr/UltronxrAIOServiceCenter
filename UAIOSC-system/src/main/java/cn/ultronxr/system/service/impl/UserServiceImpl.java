@@ -1,13 +1,11 @@
 package cn.ultronxr.system.service.impl;
 
-import cn.hutool.core.date.CalendarUtil;
-import cn.hutool.db.sql.Condition;
-import cn.hutool.db.sql.SqlUtil;
-import cn.ultronxr.framework.cache.user.UserCache;
 import cn.ultronxr.system.bean.mybatis.bean.User;
-import cn.ultronxr.system.bean.mybatis.bean.UserExample;
 import cn.ultronxr.system.bean.mybatis.mapper.UserMapper;
 import cn.ultronxr.system.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,57 +21,29 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     private UserMapper userMapper;
 
 
     @Override
-    public int createUser(User user) {
-        user.setId(null);
-        user.setCreateBy(((User) UserCache.getUser()).getUsername());
-        user.setCreateTime(CalendarUtil.calendar().getTime());
-        return userMapper.insertSelective(user);
-    }
-
-    @Override
-    public int updateUser(User user) {
-        user.setUpdateBy(((User) UserCache.getUser()).getUsername());
-        user.setUpdateTime(CalendarUtil.calendar().getTime());
-        return userMapper.updateByPrimaryKey(user);
-    }
-
-    @Override
-    public int deleteUser(Long userId) {
-        return userMapper.deleteByPrimaryKey(userId);
-    }
-
-    @Override
     public List<User> queryUser(User user) {
-        UserExample example = null;
+        LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
         if(user != null) {
-            example = new UserExample();
-            UserExample.Criteria criteria = example.createCriteria();
-
-            if(StringUtils.isNotEmpty(user.getNick())) {
-                criteria.andNickLike(SqlUtil.buildLikeValue(user.getNick(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(user.getUsername())) {
-                criteria.andUsernameLike(SqlUtil.buildLikeValue(user.getUsername(), Condition.LikeType.Contains, false));
-            }
-            if(StringUtils.isNotEmpty(user.getNote())) {
-                criteria.andNoteLike(SqlUtil.buildLikeValue(user.getNote(), Condition.LikeType.Contains, false));
-            }
+            wrapper.like(StringUtils.isNotEmpty(user.getNick()), User::getNick, user.getNick())
+                    .like(StringUtils.isNotEmpty(user.getUsername()), User::getUsername, user.getUsername())
+                    .like(StringUtils.isNotEmpty(user.getNote()), User::getNote, user.getNote());
         }
-        return userMapper.selectByExample(example);
+        return userMapper.selectList(wrapper);
     }
 
     @Override
     public User findUserByUsername(String username) {
-        UserExample example = new UserExample();
-        example.createCriteria().andUsernameEqualTo(username);
-        List<User> list = userMapper.selectByExample(example);
+        List<User> list = userMapper.selectList(
+                Wrappers.lambdaQuery(User.class)
+                        .eq(User::getUsername, username)
+        );
         if(CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
         }

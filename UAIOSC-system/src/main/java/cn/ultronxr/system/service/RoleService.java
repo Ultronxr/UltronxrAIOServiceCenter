@@ -1,6 +1,7 @@
 package cn.ultronxr.system.service;
 
 import cn.ultronxr.system.bean.mybatis.bean.Role;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -9,13 +10,7 @@ import java.util.List;
  * @date 2022/12/13 14:03
  * @description 角色信息 service
  */
-public interface RoleService {
-
-    int createRole(Role role);
-
-    int updateRole(Role role);
-
-    int deleteRole(Long roleId);
+public interface RoleService extends IService<Role> {
 
     List<Role> queryRole(Role role);
 

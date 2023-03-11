@@ -1,24 +1,7 @@
 package cn.ultronxr.system.bean.mybatis.mapper;
 
-import cn.ultronxr.system.bean.mybatis.bean.UserRoleExample;
-import cn.ultronxr.system.bean.mybatis.bean.UserRoleKey;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
+import cn.ultronxr.system.bean.mybatis.bean.UserRole;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface UserRoleMapper {
-    long countByExample(UserRoleExample example);
-
-    int deleteByExample(UserRoleExample example);
-
-    int deleteByPrimaryKey(UserRoleKey key);
-
-    int insert(UserRoleKey record);
-
-    int insertSelective(UserRoleKey record);
-
-    List<UserRoleKey> selectByExample(UserRoleExample example);
-
-    int updateByExampleSelective(@Param("record") UserRoleKey record, @Param("example") UserRoleExample example);
-
-    int updateByExample(@Param("record") UserRoleKey record, @Param("example") UserRoleExample example);
+public interface UserRoleMapper extends BaseMapper<UserRole> {
 }

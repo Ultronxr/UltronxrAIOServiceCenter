@@ -1,12 +1,11 @@
 package cn.ultronxr.system.service.impl;
 
 import cn.ultronxr.system.bean.mybatis.bean.Permission;
-import cn.ultronxr.system.bean.mybatis.bean.PermissionExample;
-import cn.ultronxr.system.bean.mybatis.bean.RolePermissionExample;
-import cn.ultronxr.system.bean.mybatis.bean.RolePermissionKey;
+import cn.ultronxr.system.bean.mybatis.bean.RolePermission;
 import cn.ultronxr.system.bean.mybatis.mapper.PermissionMapper;
 import cn.ultronxr.system.bean.mybatis.mapper.RolePermissionMapper;
 import cn.ultronxr.system.service.RolePermissionService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,25 +33,26 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     @Override
     public boolean processPermissionForRole(Long roleId, List<Long> permissionIdList) {
         // 查出这个角色已经存在的权限 list
-        RolePermissionExample example = new RolePermissionExample();
-        example.createCriteria().andRoleIdEqualTo(roleId);
-        List<RolePermissionKey> theRoleAlreadyHasThesePerms = rolePermissionMapper.selectByExample(example);
+        List<RolePermission> theRoleAlreadyHasThesePerms = rolePermissionMapper.selectList(
+                Wrappers.lambdaQuery(RolePermission.class)
+                        .eq(RolePermission::getRoleId, roleId)
+        );
 
         // 组装这个角色最终的权限 list
-        List<RolePermissionKey> targetPerms = new ArrayList<>(permissionIdList.size());
-        permissionIdList.forEach(id -> targetPerms.add(new RolePermissionKey(roleId, id)) );
+        List<RolePermission> targetPerms = new ArrayList<>(permissionIdList.size());
+        permissionIdList.forEach(id -> targetPerms.add(new RolePermission(roleId, id)) );
 
         // 分别去除两个 list 中的重复权限
-        List<RolePermissionKey> temp = new ArrayList<>(theRoleAlreadyHasThesePerms);
+        List<RolePermission> temp = new ArrayList<>(theRoleAlreadyHasThesePerms);
         theRoleAlreadyHasThesePerms.removeAll(targetPerms);
         targetPerms.removeAll(temp);
 
         // 移除旧 list 的权限
-        for(RolePermissionKey rp : theRoleAlreadyHasThesePerms) {
-            rolePermissionMapper.deleteByPrimaryKey(rp);
+        for(RolePermission rp : theRoleAlreadyHasThesePerms) {
+            rolePermissionMapper.deleteById(rp);
         }
         // 赋予新 list 的权限
-        for(RolePermissionKey rp : targetPerms) {
+        for(RolePermission rp : targetPerms) {
             rolePermissionMapper.insert(rp);
         }
 
@@ -61,17 +61,17 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
     @Override
     public List<Permission> getPermissionListForRole(Long roleId) {
-        RolePermissionExample example = new RolePermissionExample();
-        RolePermissionExample.Criteria criteria = example.createCriteria();
-        criteria.andRoleIdEqualTo(roleId);
-        List<RolePermissionKey> list = rolePermissionMapper.selectByExample(example);
-        List<Long> permissionIdList = list.stream().map(RolePermissionKey::getPermissionId).collect(Collectors.toList());
+        List<RolePermission> list = rolePermissionMapper.selectList(
+                Wrappers.lambdaQuery(RolePermission.class)
+                        .eq(RolePermission::getRoleId, roleId)
+        );
+        List<Long> permissionIdList = list.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
 
-        PermissionExample permExample = new PermissionExample();
-        PermissionExample.Criteria permCriteria = permExample.createCriteria();
-        permCriteria.andIdIn(permissionIdList);
-        permExample.setOrderByClause("id asc");
-        return permissionMapper.selectByExample(permExample);
+        return permissionMapper.selectList(
+                Wrappers.lambdaQuery(Permission.class)
+                        .in(Permission::getId, permissionIdList)
+                        .orderByAsc(Permission::getId)
+        );
     }
 
     //@Override
