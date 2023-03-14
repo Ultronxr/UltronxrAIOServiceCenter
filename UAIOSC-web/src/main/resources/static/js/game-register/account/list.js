@@ -31,7 +31,9 @@ table.render({
     ,url: app.util.api.getAPIUrl('game-register.account.query')
     ,method: 'POST'
     ,contentType: 'application/json'
-    ,headers: {}
+    ,headers: {
+        Authorization: "Bearer " + app.util.token.auth.get()
+    }
     ,where: {}
     ,page: false //分页
     ,request: {

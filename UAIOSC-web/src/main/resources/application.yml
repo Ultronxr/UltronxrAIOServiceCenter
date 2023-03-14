@@ -12,6 +12,11 @@ spring:
     resources:
       static-locations: classpath:/static/,classpath:/templates/
 
+  security:
+    user:
+      name: user
+      password: user
+
   redis:
     redisson:
       file: classpath:conf/redisson.yml

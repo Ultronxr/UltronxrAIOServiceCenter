@@ -8,6 +8,8 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +17,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author Ultronxr
@@ -57,13 +60,23 @@ public class JJWTService {
      *
      * @param username                登录用户名
      * @param tokenExpireMilliSeconds 指定该 JWT 的有效时长（毫秒）
+     * @param authentication          spring security Authentication 对象，存储了用户登录验证信息
      * @return  签发的 token 字符串
      */
-    public String generate(String username, long tokenExpireMilliSeconds) {
+    public String generate(String username, Authentication authentication, long tokenExpireMilliSeconds) {
         Date now = CalendarUtil.calendar().getTime(),
              expire = new Date(now.getTime() + tokenExpireMilliSeconds);
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("username", username);
+        if(null != authentication) {
+            username = authentication.getName();
+            claims.put("username", username);
+            String authorities =
+                    authentication.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.joining(","));
+            claims.put("authorities", authorities);
+        }
 
         JwtBuilder jwtBuilder = Jwts.builder()
                 // === Header ===

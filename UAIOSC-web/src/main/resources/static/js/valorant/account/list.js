@@ -24,7 +24,9 @@ table.render({
     ,url: app.util.api.getAPIUrl('valorant.account.query')
     ,method: 'POST'
     ,contentType: 'application/json'
-    ,headers: {}
+    ,headers: {
+        Authorization: "Bearer " + app.util.token.auth.get()
+    }
     ,where: {}
     ,page: false //分页
     ,request: {

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,7 +40,11 @@ public class JWSTokenService {
      * @param username   用户名
      */
     public String createAuthToken(String username) {
-        return jjwtService.generate(username, jjwtConfig.authTokenExpireMilliSeconds());
+        return jjwtService.generate(username, null, jjwtConfig.authTokenExpireMilliSeconds());
+    }
+
+    public String createAuthToken(Authentication authentication) {
+        return jjwtService.generate(null, authentication, jjwtConfig.authTokenExpireMilliSeconds());
     }
 
     /**
@@ -48,7 +53,11 @@ public class JWSTokenService {
      * @param username   用户名
      */
     public String createRefreshToken(String username) {
-        return jjwtService.generate(username, jjwtConfig.refreshTokenExpireMilliSeconds());
+        return jjwtService.generate(username, null, jjwtConfig.refreshTokenExpireMilliSeconds());
+    }
+
+    public String createRefreshToken(Authentication authentication) {
+        return jjwtService.generate(null, authentication, jjwtConfig.refreshTokenExpireMilliSeconds());
     }
 
     /**

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @date 2023/01/13 15:12
  * @description
  */
+@Deprecated
 @Service
 @Slf4j
 public class LoginServiceImpl implements LoginService {

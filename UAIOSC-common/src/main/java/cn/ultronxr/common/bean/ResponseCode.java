@@ -7,8 +7,6 @@ package cn.ultronxr.common.bean;
  *              注：这里的响应代码只在业务上使用，与HTTP响应代码不一样。
  */
 public enum ResponseCode {
-    UNAUTHORIZED(-1, "未登录/未授权"),
-    REFRESH_AUTH_TOKEN(0, "需要更新 JWS auth token"),
     SUCCESS(200, "业务成功"),
     FAIL(500, "业务失败"),
     ;

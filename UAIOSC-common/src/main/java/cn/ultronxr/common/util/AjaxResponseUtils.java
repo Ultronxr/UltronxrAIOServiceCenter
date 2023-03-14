@@ -3,6 +3,7 @@ package cn.ultronxr.common.util;
 import cn.ultronxr.common.bean.AjaxResponse;
 import cn.ultronxr.common.bean.ResponseCode;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author Ultronxr
@@ -11,29 +12,38 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class AjaxResponseUtils {
 
-    /** 无数据的“未登录/未授权”响应单例 */
-    private static final AjaxResponse UNAUTHORIZED = new AjaxResponse(ResponseCode.UNAUTHORIZED);
-
     /** 无数据的“业务成功”响应单例 */
     private static final AjaxResponse SUCCESS = new AjaxResponse(ResponseCode.SUCCESS);
 
     /** 无数据的“业务失败”响应单例 */
     private static final AjaxResponse FAIL = new AjaxResponse(ResponseCode.FAIL);
 
+    /** HTTP 响应封装 */
+    public static class HTTP {
+        private static final AjaxResponse UNAUTHORIZED = new AjaxResponse(HttpStatus.UNAUTHORIZED);
+        private static final AjaxResponse FORBIDDEN = new AjaxResponse(HttpStatus.FORBIDDEN);
 
-    public static AjaxResponse unauthorized() {
-        return UNAUTHORIZED;
-    }
-
-    public static AjaxResponse unauthorized(String msg) {
-        if(StringUtils.isEmpty(msg)) {
+        public static AjaxResponse unauthorized() {
             return UNAUTHORIZED;
         }
-        return new AjaxResponse(ResponseCode.UNAUTHORIZED, msg);
-    }
 
-    public static AjaxResponse refreshAuthToken(Object data) {
-        return new AjaxResponse(ResponseCode.REFRESH_AUTH_TOKEN, data);
+        public static AjaxResponse unauthorized(String msg) {
+            if(StringUtils.isEmpty(msg)) {
+                return UNAUTHORIZED;
+            }
+            return new AjaxResponse(HttpStatus.UNAUTHORIZED, msg);
+        }
+
+        public static AjaxResponse forbidden() {
+            return FORBIDDEN;
+        }
+
+        public static AjaxResponse forbidden(String msg) {
+            if(StringUtils.isEmpty(msg)) {
+                return FORBIDDEN;
+            }
+            return new AjaxResponse(HttpStatus.FORBIDDEN, msg);
+        }
     }
 
     public static AjaxResponse success() {

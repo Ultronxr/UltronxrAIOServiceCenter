@@ -2,6 +2,7 @@ package cn.ultronxr.common.bean;
 
 import cn.hutool.json.JSONUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 
 import java.util.HashMap;
 
@@ -51,6 +52,16 @@ public class AjaxResponse extends HashMap<String, Object> {
         if(null != data) {
             super.put(DATA_KEY, data);
         }
+    }
+
+    public AjaxResponse(HttpStatus httpStatus) {
+        super.put(CODE_KEY, httpStatus.value());
+        super.put(MSG_KEY, httpStatus.getReasonPhrase());
+    }
+
+    public AjaxResponse(HttpStatus httpStatus, String msg) {
+        super.put(CODE_KEY, httpStatus.value());
+        super.put(MSG_KEY, msg);
     }
 
     @Override

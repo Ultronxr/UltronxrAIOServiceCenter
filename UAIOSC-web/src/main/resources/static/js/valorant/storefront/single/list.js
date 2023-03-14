@@ -82,7 +82,9 @@ table.render({
     ,url: app.util.api.getAPIUrl('valorant.storefront.single')
     ,method: 'GET'
     // ,contentType: 'application/json'
-    ,headers: {}
+    ,headers: {
+        Authorization: "Bearer " + app.util.token.auth.get()
+    }
     ,where: {
         userId: $("#userId").val(),
         date: $("#date").val(),

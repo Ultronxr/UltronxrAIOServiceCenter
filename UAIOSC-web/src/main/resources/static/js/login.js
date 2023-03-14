@@ -8,6 +8,7 @@ form.on('submit(login)', function(data) {
             // console.log(res);
             switch (res.code) {
                 case app.RESPONSE_CODE.SUCCESS: {
+                    console.log(res);
                     app.util.token.clear();
                     app.util.token.auth.set(res.data[app.util.token.usernameKey], res.data[app.util.token.authKey], null, null);
                     app.util.token.refresh.set(res.data[app.util.token.usernameKey], res.data[app.util.token.refreshKey], null, null);

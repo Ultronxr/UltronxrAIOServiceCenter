@@ -164,15 +164,15 @@ const app = {
                 if(headers == null) {
                     headers = {};
                 }
-                // let authToken = app.util.token.auth.get(),
-                //     refreshToken = app.util.token.refresh.get();
-                // if(app.util.string.isNotEmpty(authToken)) {
-                //     headers["Authorization"] = "Bearer " + authToken;
-                // }
+                let authToken = app.util.token.auth.get();
+                    // refreshToken = app.util.token.refresh.get();
+                if(app.util.string.isNotEmpty(authToken)) {
+                    headers["Authorization"] = "Bearer " + authToken;
+                }
                 // if(app.util.string.isNotEmpty(refreshToken)) {
                 //     headers["Authorization-Refresh"] = "Bearer " + refreshToken;
                 // }
-                // console.log(headers);
+                console.log(headers);
 
                 if(async == null) {
                     async = true;

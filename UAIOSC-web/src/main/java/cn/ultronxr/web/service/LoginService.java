@@ -8,6 +8,7 @@ import cn.ultronxr.web.bean.LoginObj;
  * @date 2023/01/13 15:12
  * @description
  */
+@Deprecated
 public interface LoginService {
 
     /**

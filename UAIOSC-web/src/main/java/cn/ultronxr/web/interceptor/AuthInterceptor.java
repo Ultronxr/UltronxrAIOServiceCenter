@@ -25,6 +25,7 @@ import static cn.ultronxr.web.bean.Constant.AuthInfo;
  * @description 用户验证拦截器<br/>
  *              判断用户是否已登录，对于系统的操作是否放行
  */
+@Deprecated
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
@@ -84,7 +85,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         PrintWriter pw = response.getWriter();
-        pw.write(AjaxResponseUtils.unauthorized("用户登录验证失败").toString());
+        pw.write(AjaxResponseUtils.HTTP.unauthorized("用户登录验证失败").toString());
         response.sendRedirect("/login");
 
         return false;

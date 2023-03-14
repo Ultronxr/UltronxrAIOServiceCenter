@@ -7,10 +7,12 @@ import cn.ultronxr.system.bean.mybatis.mapper.RolePermissionMapper;
 import cn.ultronxr.system.service.RolePermissionService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +69,9 @@ public class RolePermissionServiceImpl implements RolePermissionService {
         );
         List<Long> permissionIdList = list.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
 
+        if(CollectionUtils.isEmpty(permissionIdList)) {
+            return Collections.emptyList();
+        }
         return permissionMapper.selectList(
                 Wrappers.lambdaQuery(Permission.class)
                         .in(Permission::getId, permissionIdList)
