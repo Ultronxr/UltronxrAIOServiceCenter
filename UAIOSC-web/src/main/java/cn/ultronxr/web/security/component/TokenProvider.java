@@ -1,7 +1,7 @@
-package cn.ultronxr.web.service;
+package cn.ultronxr.web.security.component;
 
 import cn.ultronxr.framework.jjwt.JWSTokenService;
-import cn.ultronxr.web.bean.SecurityUser;
+import cn.ultronxr.web.security.bean.SecurityUser;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

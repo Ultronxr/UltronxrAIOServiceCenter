@@ -172,7 +172,7 @@ const app = {
                 // if(app.util.string.isNotEmpty(refreshToken)) {
                 //     headers["Authorization-Refresh"] = "Bearer " + refreshToken;
                 // }
-                console.log(headers);
+                // console.log(headers);
 
                 if(async == null) {
                     async = true;
@@ -196,6 +196,7 @@ const app = {
                     contentType: contentType,
                     dataType: dataType,
                     data: data,
+                    xhrFields: { withCredentials: true },
                     beforeSend: beforeSend,
                     success: success,
                     error: error,

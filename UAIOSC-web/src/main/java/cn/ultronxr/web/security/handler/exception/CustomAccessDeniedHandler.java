@@ -1,4 +1,4 @@
-package cn.ultronxr.web.authExceptionHandler;
+package cn.ultronxr.web.security.handler.exception;
 
 import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.common.util.HttpResponseUtils;
@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +14,8 @@ import java.io.IOException;
 /**
  * @author Ultronxr
  * @date 2023/03/11 16:50
- * @description
+ * @description 用户鉴权失败 handler
  */
-@Component
 @Slf4j
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 

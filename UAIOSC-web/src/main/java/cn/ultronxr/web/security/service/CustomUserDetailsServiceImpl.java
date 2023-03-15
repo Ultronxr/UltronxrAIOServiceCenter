@@ -1,4 +1,4 @@
-package cn.ultronxr.web.service.impl;
+package cn.ultronxr.web.security.service;
 
 import cn.ultronxr.system.bean.mybatis.bean.Permission;
 import cn.ultronxr.system.bean.mybatis.bean.Role;
@@ -6,7 +6,7 @@ import cn.ultronxr.system.bean.mybatis.bean.User;
 import cn.ultronxr.system.service.RolePermissionService;
 import cn.ultronxr.system.service.UserRoleService;
 import cn.ultronxr.system.service.UserService;
-import cn.ultronxr.web.bean.SecurityUser;
+import cn.ultronxr.web.security.bean.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     private RolePermissionService rolePermissionService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder customPasswordEncoder;
 
 
     /**
@@ -68,7 +68,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         });
 
         SecurityUser securityUser = new SecurityUser(user);
-        securityUser.setPassword(passwordEncoder.encode(securityUser.getPassword()));
+        securityUser.setPassword(customPasswordEncoder.encode(securityUser.getPassword()));
         securityUser.setAuthorities(authorities);
 
         return securityUser;

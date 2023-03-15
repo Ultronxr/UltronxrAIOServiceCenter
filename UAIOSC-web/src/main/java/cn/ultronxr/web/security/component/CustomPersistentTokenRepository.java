@@ -1,4 +1,4 @@
-package cn.ultronxr.web.component;
+package cn.ultronxr.web.security.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

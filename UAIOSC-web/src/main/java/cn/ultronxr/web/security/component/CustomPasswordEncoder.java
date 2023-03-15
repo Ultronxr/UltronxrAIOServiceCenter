@@ -1,4 +1,4 @@
-package cn.ultronxr.web.component;
+package cn.ultronxr.web.security.component;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -82,14 +82,18 @@ table.render({
     ,url: app.util.api.getAPIUrl('valorant.storefront.single')
     ,method: 'GET'
     // ,contentType: 'application/json'
-    ,headers: {
-        Authorization: "Bearer " + app.util.token.auth.get()
-    }
+    ,headers: {}
     ,where: {
         userId: $("#userId").val(),
         date: $("#date").val(),
     }
     ,page: false //分页
+    ,before: function(req) {
+        let authToken = app.util.token.auth.get();
+        if(app.util.string.isNotEmpty(authToken)) {
+            req.headers["Authorization"] = "Bearer " + authToken;
+        }
+    }
     ,request: {
         // pageName: 'page' //页码的参数名称，默认：page
         // ,limitName: 'limit' //每页数据量的参数名，默认：limit

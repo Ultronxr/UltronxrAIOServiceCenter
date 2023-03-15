@@ -20,6 +20,8 @@ public class Constant {
 
         public static final String USERNAME_KEY = "Username";
 
+        public static final String REMEMBER_ME_KEY = "RememberMe";
+
     }
 
 

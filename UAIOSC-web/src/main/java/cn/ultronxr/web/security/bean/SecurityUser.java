@@ -1,4 +1,4 @@
-package cn.ultronxr.web.bean;
+package cn.ultronxr.web.security.bean;
 
 import cn.ultronxr.system.bean.mybatis.bean.User;
 import lombok.AllArgsConstructor;
