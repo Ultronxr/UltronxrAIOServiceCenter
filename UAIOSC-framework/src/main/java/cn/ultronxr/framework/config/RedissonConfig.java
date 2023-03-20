@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -29,7 +28,7 @@ public class RedissonConfig {
     @Value("${spring.redis.redisson.singleServerConfig.password}")
     private String password;
 
-    public static final String CONFIG_RESOURCE_PATH = "config" + File.separator + "redisson.yml";
+    public static final String CONFIG_RESOURCE_PATH = "config/redisson.yml";
 
 
     /**
@@ -56,7 +55,7 @@ public class RedissonConfig {
 
     @Bean
     public RedissonClient redisson() throws IOException {
-        Config config = Config.fromYAML(RedissonConfig.class.getClassLoader().getResource(CONFIG_RESOURCE_PATH));
+        Config config = Config.fromYAML(RedissonConfig.class.getClassLoader().getResourceAsStream(CONFIG_RESOURCE_PATH));
         config.useSingleServer().setAddress(address);
         config.useSingleServer().setPassword(password);
         return Redisson.create(config);

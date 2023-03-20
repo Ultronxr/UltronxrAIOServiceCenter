@@ -21,12 +21,10 @@ IntelliJ IDEA 2022.2
 
 打包成一个可以直接运行的最终 jar 包。
 
+使用多模块版本统一控制（在 [根项目pom.xml](./pom.xml#L36) 中统一配置版本号），需要引入 [Maven Flatten Plugin 插件](./pom.xml#L394) 。
+
 ```shell
-# cd UltronxrAIOServiceCenter
-mvn clean install
-mvn clean install -pl UAIOSC-common
-mvn clean install -pl UAIOSC-framework
-mvn clean install -pl UAIOSC-system
-mvn clean install -pl UAIOSC-game-register
-mvn clean package -pl UAIOSC-web
+cd UltronxrAIOServiceCenter
+mvn clean install package
+# mvn clean install -pl <module>
 ```
