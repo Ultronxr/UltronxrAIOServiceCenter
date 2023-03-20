@@ -53,7 +53,7 @@ public class CustomPersistentTokenBasedRememberMeServicesImpl extends Persistent
                 JSONObject jsonObject = JSONUtil.parseObj(str);
                 Boolean rememberMe = jsonObject.getBool("rememberMe");
                 log.info("登录请求 rememberMe = {}", rememberMe);
-                if(rememberMe) {
+                if(rememberMe != null && rememberMe) {
                     return true;
                 }
             } catch (IOException e) {
