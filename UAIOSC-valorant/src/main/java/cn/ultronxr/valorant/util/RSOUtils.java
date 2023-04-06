@@ -1,6 +1,8 @@
 package cn.ultronxr.valorant.util;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.codec.Base64Decoder;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.ultronxr.valorant.auth.RSO;
@@ -69,6 +71,12 @@ public class RSOUtils {
     }
 
     public static Map<String, Object> getPingBody() {
+        // 在RSO ping步骤的请求头中修改随机因子nonce，防止服务器记住账号的登录状态，进而导致获取到其他账号的脏数据
+        // 返回安全的 URL 随机文本字符串，包含 n bytes 个随机字节，文本用 Base64 编码
+        byte[] bytes = RandomUtil.randomBytes(16);
+        String nonce = Base64.encode(bytes);
+        PING_BODY.put("nonce", nonce);
+        log.info("RSO ping步骤 请求头 生成随机因子 nonce = {}", nonce);
         return PING_BODY;
     }
 
