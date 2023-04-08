@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.HttpCookie;
 import java.util.List;
 
 /**
@@ -36,6 +37,13 @@ public class RSOServiceImpl implements RSOService {
     public RSO processRSO(HttpRequest request, String username, String password, String multiFactorCode) {
         if(null == request) {
             return null;
+        }
+
+        // 清空 cookie ，防止服务器记住账号登录
+        List<HttpCookie> cookies = HttpRequest.getCookieManager().getCookieStore().getCookies();
+        if(cookies.size() > 0) {
+            HttpRequest.getCookieManager().getCookieStore().removeAll();
+            log.info("清空cookie");
         }
 
         request.setUrl(RSOUtils.AUTH_URL)
