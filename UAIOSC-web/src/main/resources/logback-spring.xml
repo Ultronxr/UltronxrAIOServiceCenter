@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- %15.20 宽度15右对齐，不足15字符在左侧以空格填充；至多输出20字符，多余的从左侧截断；数字前面添加负号，则对齐、填充、截断方向相反。 -->
+            <!--               日期时间              高亮     日志等级           线程名称    青色           类名        行号    日志内容 换行符  -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) - [%15(%thread)] %cyan(%-55.55(%logger{50}:%line)) : %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/UAIOSC.log</file>
+        <append>true</append>
+        <!-- 过滤器，拒绝记录命中 ERROR 级别的日志 -->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+        <!--    <level>ERROR</level>-->
+        <!--    <onMatch>DENY</onMatch>-->
+        <!--    <onMismatch>ACCEPT</onMismatch>-->
+        <!--</filter>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/UAIOSC.%d.%i.log</fileNamePattern>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - [%15(%thread)] %-55.55(%logger{50}:%line) : %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/UAIOSC_error.log</File>
+        <append>true</append>
+        <!-- 过滤器，拒绝记录命中 等级低于 ERROR 级别 的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/UAIOSC_error.%d.%i.log</fileNamePattern>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - [%15(%thread)] %-55.55(%logger{50}:%line) : %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/UAIOSC_sql.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/UAIOSC_sql.%d.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - [%15(%thread)] %-55.55(%logger{50}:%line) : %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE_ERROR" />
+    </root>
+
+    <!-- ALL TRACE DEBUG INFO WARN ERROR OFF -->
+    <logger name="cn.ultronxr" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE_ERROR" />
+    </logger>
+
+    <!-- 注意：这里使用 cn.ultronxr.*.bean.mybatis.mapper 中间的通配符是不生效的！ -->
+    <logger name="cn.ultronxr.common.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="cn.ultronxr.framework.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="cn.ultronxr.system.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="cn.ultronxr.web.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="cn.ultronxr.gameregister.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="cn.ultronxr.valorant.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+
+</configuration>

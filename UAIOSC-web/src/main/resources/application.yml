@@ -26,11 +26,8 @@ server:
   servlet:
     context-path: /
 
-# TRACE DEBUG INFO WARN ERROR FATAL OFF
 logging:
-  level:
-    cn.ultronxr.*: debug
-    cn.ultronxr.*.bean.mybatis.mapper: debug
+  config: classpath:logback-spring.xml
 
 mybatis-plus:
   type-aliases-package: cn.ultronxr.**.bean.mybatis.bean
@@ -43,7 +40,6 @@ mybatis-plus:
       where-strategy: not_empty
   configuration:
     map-underscore-to-camel-case: true
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # springboot actuator 配置，参见 {@link https://www.cnblogs.com/caoweixiong/p/15325382.html}
 management:

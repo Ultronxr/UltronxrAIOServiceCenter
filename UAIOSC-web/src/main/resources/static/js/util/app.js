@@ -128,14 +128,14 @@ const app = {
                     dataType = "json";
                 this.request(method, url, null, data, success, error, null, null, async, null, contentType, dataType);
             },
-            post: function (url, data, success, error, beforeSend, complete, async) {
+            post: function (url, data, success, error, beforeSend, complete, async, timeout) {
                 let method = "POST",
                     contentType = "application/json; charset=UTF-8",
                     dataType = "json";
                 if(!app.util.string.isJsonStringify(data)) {
                     data = JSON.stringify(data);
                 }
-                this.request(method, url, null, data, success, error, beforeSend, complete, async, null, contentType, dataType);
+                this.request(method, url, null, data, success, error, beforeSend, complete, async, timeout, contentType, dataType);
             },
             put: function (url, data, success, error, beforeSend, complete, async) {
                 let method = "PUT",
