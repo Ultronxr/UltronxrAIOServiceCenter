@@ -39,6 +39,12 @@
 
         <dependency>
             <groupId>cn.ultronxr</groupId>
+            <artifactId>UAIOSC-scheduled</artifactId>
+            <version>${module.scheduled.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.ultronxr</groupId>
             <artifactId>UAIOSC-game-register</artifactId>
             <version>${module.game-register.version}</version>
         </dependency>

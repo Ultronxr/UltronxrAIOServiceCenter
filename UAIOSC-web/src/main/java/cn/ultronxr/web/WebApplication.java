@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "cn.ultronxr.framework",
         "cn.ultronxr.system",
         "cn.ultronxr.web",
+        "cn.ultronxr.scheduled",
         "cn.ultronxr.gameregister",
         "cn.ultronxr.valorant",
 })
@@ -23,6 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "cn.ultronxr.framework.bean.mybatis.mapper",
         "cn.ultronxr.system.bean.mybatis.mapper",
         "cn.ultronxr.web.bean.mybatis.mapper",
+        "cn.ultronxr.scheduled.bean.mybatis.mapper",
         "cn.ultronxr.gameregister.bean.mybatis.mapper",
         "cn.ultronxr.valorant.bean.mybatis.mapper",
 })
