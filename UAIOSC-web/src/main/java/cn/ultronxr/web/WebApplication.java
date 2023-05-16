@@ -4,6 +4,7 @@ import com.github.jeffreyning.mybatisplus.conf.EnableMPP;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author Ultronxr
@@ -29,6 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "cn.ultronxr.valorant.bean.mybatis.mapper",
 })
 @EnableMPP
+@EnableScheduling
 public class WebApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);

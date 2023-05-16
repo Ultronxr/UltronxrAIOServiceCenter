@@ -24,6 +24,12 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
 
+        <!-- 腾讯云API -->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

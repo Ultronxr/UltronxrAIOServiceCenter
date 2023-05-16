@@ -42,6 +42,9 @@ build/
 application-secret.yml
 application-local.yml
 mybatisGeneratorConfig.xml
+aliCloudConfig.properties
+tencentCloudConfig.properties
+sms.properties
 
 # flatten-maven-plugin 生成的文件
 .flattened-pom.xml
