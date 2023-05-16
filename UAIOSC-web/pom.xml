@@ -60,7 +60,7 @@
 
     <build>
         <!-- 指定 jar包名称 -->
-        <finalName>UltronxrAIOServiceCenter-${project.version}</finalName>
+        <finalName>UltronxrAIOServiceCenter-${project.version}-${timestamp.GMT8}</finalName>
 
         <!-- 资源文件配置 -->
         <resources>
@@ -114,6 +114,26 @@
                         <scope>runtime</scope>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <!-- 打jar包添加GMT+8时间戳插件（maven默认的时间戳是UTC） -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <name>timestamp.GMT8</name>
+                    <pattern>yyyyMMddHHmm</pattern>
+                    <timeZone>GMT+8</timeZone>
+                </configuration>
             </plugin>
         </plugins>
     </build>
