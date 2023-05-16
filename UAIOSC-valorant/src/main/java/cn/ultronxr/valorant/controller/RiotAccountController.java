@@ -9,6 +9,7 @@ import cn.ultronxr.valorant.service.RSOService;
 import cn.ultronxr.valorant.service.RiotAccountService;
 import cn.ultronxr.valorant.util.RSOUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,10 @@ public class RiotAccountController {
         log.info("RSO获取邮箱验证码：username = {}", account.getUsername());
         try {
             HttpRequest request = HttpRequest.post(RSOUtils.AUTH_URL);
-            rsoService.processRSO(request, account.getUsername(), account.getPassword(), null);
+            if(StringUtils.isNotEmpty(account.getUserId()) && StringUtils.isEmpty(account.getPassword())) {
+                account = accountService.getById(account.getUserId());
+            }
+            rsoService.processRSO(request, account.getUsername(), account.getPassword(), null, false);
         } catch (Exception e) {
             if(e instanceof RSOMultiFactorAttemptFailedException) {
                 log.info("邮箱验证码发送成功");
@@ -46,6 +50,15 @@ public class RiotAccountController {
             }
             log.info("拳头账号验证失败！");
             return AjaxResponseUtils.fail("拳头账号验证失败");
+        }
+        return AjaxResponseUtils.fail();
+    }
+
+    @PostMapping("/updateMultiFactor")
+    @ResponseBody
+    public AjaxResponse updateMultiFactor(@RequestBody RiotAccount account) {
+        if(accountService.updateMultiFactor(account)) {
+            return AjaxResponseUtils.success();
         }
         return AjaxResponseUtils.fail();
     }

@@ -58,6 +58,7 @@ const app = {
             account: {
                 url: '/account',
                 multiFactor: '/multiFactor',
+                updateMultiFactor: '/updateMultiFactor',
                 create: '/create',
                 delete: '/delete',
                 // update: '/update',

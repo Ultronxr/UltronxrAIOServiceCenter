@@ -14,6 +14,12 @@ public interface RiotAccountService extends IService<RiotAccount> {
 
     boolean create(RiotAccount account);
 
+    /**
+     * 为已经在数据库中存在的、且开启了两步验证的账号，更新两步验证账号的验证码（相当于重新登录）
+     * @return
+     */
+    boolean updateMultiFactor(RiotAccount account);
+
     //boolean update(RiotAccount account);
 
     /**

@@ -34,7 +34,7 @@ public class RSOServiceImpl implements RSOService {
 
 
     @Override
-    public RSO processRSO(HttpRequest request, String username, String password, String multiFactorCode) {
+    public RSO processRSO(HttpRequest request, String username, String password, String multiFactorCode, boolean needRequestEntitlementsToken) {
         if(null == request) {
             return null;
         }
@@ -104,6 +104,13 @@ public class RSOServiceImpl implements RSOService {
         RSO rso = new RSO();
         rso = RSOUtils.parseAccessToken(resObj, rso);
 
+        // 如果不需要获取 entitlements token ，那么在此中断，返回RSO
+        if(!needRequestEntitlementsToken) {
+            response.close();
+            log.info("RSO流程完成（无需请求 entitlements token）：RSO = {}", rso.toString());
+            return rso;
+        }
+
         request.setUrl(RSOUtils.ENTITLEMENTS_URL)
                 .method(Method.POST)
                 .headerMap(RSOUtils.getHeader(), true)
@@ -126,7 +133,7 @@ public class RSOServiceImpl implements RSOService {
         RSO rso = null;
         try {
             HttpRequest request = HttpUtil.createPost(RSOUtils.AUTH_URL);
-            rso = this.processRSO(request, username, password, multiFactorCode);
+            rso = this.processRSO(request, username, password, multiFactorCode, true);
         } catch (Exception e) {
             log.warn("RSO验证失败：username = {}, exception = {}", username, e.getMessage());
             return null;
@@ -138,15 +145,22 @@ public class RSOServiceImpl implements RSOService {
     public RSO updateRSO(String userId) {
         RSO rso = null;
         RiotAccount account = accountMapper.selectById(userId);
+        boolean needRequestEntitlementsToken = StringUtils.isEmpty(account.getEntitlementsToken());
         try {
             HttpRequest request = HttpUtil.createPost(RSOUtils.AUTH_URL);
-            rso = this.processRSO(request, account.getUsername(), account.getPassword(), account.getMultiFactor());
+            rso = this.processRSO(request, account.getUsername(), account.getPassword(), account.getMultiFactor(), needRequestEntitlementsToken);
+            // 如果不需要请求 entitlementsToken，那么需要手动填充 RSO 对象字段
+            if(!needRequestEntitlementsToken) {
+                rso.setEntitlementsToken(account.getEntitlementsToken());
+            }
         } catch (Exception e) {
-            log.warn("RSO验证失败：username = {}, exception = {}", account.getUsername(), e.getMessage());
+            log.warn("RSO验证失败：exception={}, userId={}, username={}, ", e.getMessage(), account.getUserId(), account.getUsername());
             return null;
         }
         account.setAccessToken(rso.getAccessToken());
-        account.setEntitlementsToken(rso.getEntitlementsToken());
+        if(needRequestEntitlementsToken) {
+            account.setEntitlementsToken(rso.getEntitlementsToken());
+        }
         accountMapper.updateById(account);
         return rso;
     }

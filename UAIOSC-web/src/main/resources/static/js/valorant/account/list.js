@@ -11,11 +11,12 @@ table.render({
     ,height: 500
     ,cols: [[ //表头
         {type: 'checkbox', fixed: 'left'}
-        ,{field: 'userId', title: 'ID', sort: true, hide: false}
-        ,{field: 'username', title: '用户名', sort: true}
-        ,{field: 'socialName', title: '拳头社交名称', sort: true}
-        ,{field: 'socialTag', title: '社交标签', sort: true}
-        ,{title:'操作', width: 125, minWidth: 125, fixed: 'right', toolbar: '#inlineToolbar'}
+        ,{field: 'userId', title: 'ID', sort: true, align: 'center', hide: false}
+        ,{field: 'username', title: '用户名', sort: true, align: 'center'}
+        ,{field: 'socialName', title: '拳头社交名称', sort: true, align: 'center'}
+        ,{field: 'socialTag', title: '社交标签', sort: true, align: 'center'}
+        ,{field: 'multiFactor', title: '是否开启两步验证', sort: true, align: 'center'}
+        ,{title:'操作', fixed: 'right', toolbar: '#inlineToolbar', align: 'center'}
     ]]
     ,toolbar: '#toolbar'
     ,defaultToolbar: [] //清空默认的三个工具栏按钮
@@ -163,8 +164,62 @@ table.on('tool(dataTable)', function(obj) {
                 iframe.loadSelectAndSetRowData(rowData);
             }
         });
+    } else if(obj.event === 'updateMultiFactor') {
+        if(rowData.multiFactor !== 'true') {
+            layer.msg("该账号未开启两步验证！", {icon: 2, time: 2000});
+            return;
+        }
+        requestMultiFactor(rowData);
     }
 });
+
+// 点击更新两步验证码 行内按钮的时候，马上就请求一次，触发发送验证码
+function requestMultiFactor(rowData) {
+    app.util.ajax.post(app.util.api.getAPIUrl('valorant.account.multiFactor'),
+        JSON.stringify(rowData),
+        function (res) {
+            // console.log(res);
+            if(res.code === app.RESPONSE_CODE.SUCCESS) {
+                parent.layer.msg('验证码发送成功', {icon: 1, time: 2000});
+                layer.prompt({
+                    formType: 0,
+                    value: '',
+                    title: '请输入邮箱中收到的验证码',
+                }, function(value, index, elem){
+                    updateMultiFactor(rowData, value, index);
+                    // layer.close(index);
+                });
+            } else {
+                parent.layer.msg(res.msg, {icon: 2, time: 2000});
+            }
+        },
+        function (res) {
+            parent.layer.msg('请求失败！', {icon:2, time: 2000});
+        }
+    );
+}
+
+// 收到验证码之后进行更新
+function updateMultiFactor(rowData, multiFactorCode, promptIndex) {
+    rowData.multiFactor = multiFactorCode;
+    app.util.ajax.post(app.util.api.getAPIUrl('valorant.account.updateMultiFactor'),
+        JSON.stringify(rowData),
+        function (res) {
+            // console.log(res);
+            if(res.code === app.RESPONSE_CODE.SUCCESS) {
+                parent.layer.msg('更新成功。', {icon: 1, time: 2000});
+                layer.close(promptIndex);
+                refreshTable();
+            } else {
+                parent.layer.msg(res.msg, {icon: 2, time: 2000});
+            }
+        },
+        function (res) {
+            parent.layer.msg('更新失败！', {icon:2, time: 2000});
+            refreshTable();
+        }
+    );
+}
 
 // 触发表格复选框选择事件
 // table.on('checkbox(accountTable)', function(obj){
