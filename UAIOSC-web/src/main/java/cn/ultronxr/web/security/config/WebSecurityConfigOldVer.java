@@ -99,6 +99,7 @@ public class WebSecurityConfigOldVer extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/static/**", "/file/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/login", "/ajaxLogin", "/ajaxLogout").permitAll()
+                .antMatchers("/wechat/push").permitAll()
                 .anyRequest().authenticated();
 
         // 开启用户登录功能
