@@ -9,6 +9,7 @@ out/
 *.iws
 *.iml
 *.ipr
+.fastRequest
 
 ### Eclipse ###
 .apt_generated

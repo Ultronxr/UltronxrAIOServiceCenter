@@ -195,7 +195,8 @@ function requestMultiFactor(rowData) {
         },
         function (res) {
             parent.layer.msg('请求失败！', {icon:2, time: 2000});
-        }
+        },
+        null, null, null, 30000
     );
 }
 
@@ -217,7 +218,8 @@ function updateMultiFactor(rowData, multiFactorCode, promptIndex) {
         function (res) {
             parent.layer.msg('更新失败！', {icon:2, time: 2000});
             refreshTable();
-        }
+        },
+        null, null, null, 30000
     );
 }
 

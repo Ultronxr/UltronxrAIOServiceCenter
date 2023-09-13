@@ -19,7 +19,7 @@ spring:
 
   redis:
     redisson:
-      file: classpath:conf/redisson.yml
+      file: classpath:config/redisson.yml
 
 server:
   port: 9500
