@@ -96,5 +96,8 @@
     <logger name="cn.ultronxr.valorant.bean.mybatis.mapper" level="DEBUG" additivity="false">
         <appender-ref ref="FILE_SQL" />
     </logger>
+    <logger name="cn.ultronxr.wechat.publicPlatform.bean.mybatis.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
 
 </configuration>

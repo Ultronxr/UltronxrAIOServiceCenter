@@ -55,6 +55,12 @@
             <version>${module.valorant.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.ultronxr</groupId>
+            <artifactId>UAIOSC-wechat</artifactId>
+            <version>${module.wechat.version}</version>
+        </dependency>
+
 
     </dependencies>
 

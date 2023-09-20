@@ -197,3 +197,16 @@ CREATE TABLE valorant_store_front (
     `is_bonus`              TINYINT(1)      DEFAULT NULL     COMMENT '是否是Bonus商店（夜市）货物：1 - true / 0 - false',
     PRIMARY KEY(`user_id`, `offer_id`, `date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'valorant 模块 - 每日商店出售物品';
+
+-- ----------------------------
+-- UAIOSC-wechat 微信相关功能模块
+-- ----------------------------
+
+CREATE TABLE wechat_access_token (
+    `app_id`          VARCHAR(100)    NOT NULL              COMMENT '微信公众号的唯一标识',
+    `access_token`    VARCHAR(500)    NOT NULL              COMMENT '获取到的凭证',
+    `expires_in`      INT             NOT NULL DEFAULT 0    COMMENT '凭证有效时间，单位：秒。小于等于7200',
+    `create_time`     DATETIME        NOT NULL              COMMENT '创建时间',
+    `update_time`     DATETIME        DEFAULT NULL          COMMENT '更新时间',
+    PRIMARY KEY(`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'wechat 模块 - 微信 access token 表';

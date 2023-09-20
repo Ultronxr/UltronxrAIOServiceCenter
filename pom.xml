@@ -11,6 +11,7 @@
         <module>UAIOSC-scheduled</module>
         <module>UAIOSC-game-register</module>
         <module>UAIOSC-valorant</module>
+        <module>UAIOSC-wechat</module>
     </modules>
 
     <parent>
@@ -42,6 +43,7 @@
         <module.scheduled.version>0.0.1-SNAPSHOT</module.scheduled.version>
         <module.game-register.version>0.0.1-SNAPSHOT</module.game-register.version>
         <module.valorant.version>0.0.1-SNAPSHOT</module.valorant.version>
+        <module.wechat.version>0.0.1-SNAPSHOT</module.wechat.version>
 
         <spring-boot.version>2.7.10</spring-boot.version>
         <junit.version>4.13.2</junit.version>
@@ -224,12 +226,6 @@
             <!--    <version>${spring-boot.version}</version>-->
             <!--</dependency>-->
 
-
-            <!--<dependency>-->
-            <!--    <groupId>com.baomidou</groupId>-->
-            <!--    <artifactId>mybatis-plus-boot-starter</artifactId>-->
-            <!--    <version>${mybatis-plus.version}</version>-->
-            <!--</dependency>-->
 
             <!--<dependency>-->
             <!--    <groupId>com.github.pagehelper</groupId>-->

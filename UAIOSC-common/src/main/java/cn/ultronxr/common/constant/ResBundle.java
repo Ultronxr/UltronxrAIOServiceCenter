@@ -16,4 +16,6 @@ public class ResBundle {
 
     public static final ResourceBundle SMS = ResourceBundle.getBundle("config.sms", Locale.SIMPLIFIED_CHINESE);
 
+    public static final ResourceBundle WECHAT = ResourceBundle.getBundle("config.wechat", Locale.SIMPLIFIED_CHINESE);
+
 }

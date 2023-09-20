@@ -19,15 +19,18 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "cn.ultronxr.scheduled",
         "cn.ultronxr.gameregister",
         "cn.ultronxr.valorant",
+        "cn.ultronxr.wechat",
 })
 @MapperScan(basePackages = {
-        "cn.ultronxr.common.bean.mybatis.mapper",
-        "cn.ultronxr.framework.bean.mybatis.mapper",
-        "cn.ultronxr.system.bean.mybatis.mapper",
-        "cn.ultronxr.web.bean.mybatis.mapper",
-        "cn.ultronxr.scheduled.bean.mybatis.mapper",
-        "cn.ultronxr.gameregister.bean.mybatis.mapper",
-        "cn.ultronxr.valorant.bean.mybatis.mapper",
+        //"cn.ultronxr.common.bean.mybatis.mapper",
+        //"cn.ultronxr.framework.bean.mybatis.mapper",
+        //"cn.ultronxr.system.bean.mybatis.mapper",
+        //"cn.ultronxr.web.bean.mybatis.mapper",
+        //"cn.ultronxr.scheduled.bean.mybatis.mapper",
+        //"cn.ultronxr.gameregister.bean.mybatis.mapper",
+        //"cn.ultronxr.valorant.bean.mybatis.mapper",
+        //"cn.ultronxr.wechat.**.bean.mybatis.mapper",
+        "cn.ultronxr.**.bean.mybatis.mapper",
 })
 @EnableMPP
 @EnableScheduling

@@ -46,6 +46,7 @@ mybatisGeneratorConfig.xml
 aliCloudConfig.properties
 tencentCloudConfig.properties
 sms.properties
+wechat.properties
 
 # flatten-maven-plugin 生成的文件
 .flattened-pom.xml
