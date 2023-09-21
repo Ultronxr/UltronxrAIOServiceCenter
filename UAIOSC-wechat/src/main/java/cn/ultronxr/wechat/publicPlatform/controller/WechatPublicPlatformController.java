@@ -2,7 +2,10 @@ package cn.ultronxr.wechat.publicPlatform.controller;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.json.JSONObject;
+import cn.ultronxr.common.bean.AjaxResponse;
+import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.wechat.publicPlatform.API.MessageTemplateAPI;
+import cn.ultronxr.wechat.publicPlatform.bean.DTO.MessageTemplateDTO;
 import cn.ultronxr.wechat.publicPlatform.bean.PublicPlatformData;
 import cn.ultronxr.wechat.publicPlatform.bean.mybatis.bean.AccessToken;
 import cn.ultronxr.wechat.publicPlatform.token.AccessTokenManager;
@@ -45,10 +48,10 @@ public class WechatPublicPlatformController {
         String nonce = request.getParameter("nonce");
         String echostr = request.getParameter("echostr");
 
-        log.info("signature={}", signature);
-        log.info("timestamp={}", timestamp);
-        log.info("nonce={}", nonce);
-        log.info("echostr={}", echostr);
+        //log.info("signature={}", signature);
+        //log.info("timestamp={}", timestamp);
+        //log.info("nonce={}", nonce);
+        //log.info("echostr={}", echostr);
 
         String[] array = new String[] {PublicPlatformData.TOKEN, timestamp, nonce};
         Arrays.sort(array);
@@ -80,17 +83,17 @@ public class WechatPublicPlatformController {
      */
     @GetMapping("/refreshAccessToken")
     @ResponseBody
-    public AccessToken refreshAccessToken() {
+    public AjaxResponse refreshAccessToken() {
         accessTokenManager.refreshAccessToken();
-        return accessTokenManager.getAccessToken();
+        return AjaxResponseUtils.success(accessTokenManager.getAccessToken());
     }
 
     /**
-     * 发送模板消息
+     * 发送模板消息，使用预设参数
      */
-    @RequestMapping("/messageTemplate")
+    @RequestMapping("/messageTemplatePreset")
     @ResponseBody
-    public String[] messageTemplate() {
+    public AjaxResponse messageTemplatePreset() {
         String[] toUserOpenIds = new String[] {""};
         String templateId = "";
         String url = "https://www.baidu.com/";
@@ -102,7 +105,29 @@ public class WechatPublicPlatformController {
         for(int i = 0; i < toUserOpenIds.length; i++) {
             responseArray[i] = MessageTemplateAPI.sendRequest(toUserOpenIds[i], templateId, url, data, accessToken);
         }
-        return responseArray;
+        return AjaxResponseUtils.success(responseArray);
+    }
+
+    /**
+     * 发送模板消息
+     * @param messageTemplateDTO 模板消息 DTO
+     */
+    @PostMapping("/messageTemplate")
+    @ResponseBody
+    public AjaxResponse messageTemplate(@RequestBody MessageTemplateDTO messageTemplateDTO) {
+        log.info("{}", messageTemplateDTO);
+
+        String[] responseArray = new String[messageTemplateDTO.getToUserOpenIds().length];
+        for(int i = 0; i < messageTemplateDTO.getToUserOpenIds().length; i++) {
+            responseArray[i] =
+                    MessageTemplateAPI.sendRequest(
+                            messageTemplateDTO.getToUserOpenIds()[i],
+                            messageTemplateDTO.getTemplateId(),
+                            messageTemplateDTO.getUrl(),
+                            messageTemplateDTO.getData(),
+                            accessTokenManager.getAccessToken());
+        }
+        return AjaxResponseUtils.success(responseArray);
     }
 
 }
