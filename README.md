@@ -21,7 +21,7 @@ IntelliJ IDEA 2022.2
 
 打包成一个可以直接运行的最终 jar 包。
 
-使用多模块版本统一控制（在 [根项目pom.xml](./pom.xml#L36) 中统一配置版本号），需要引入 [Maven Flatten Plugin 插件](./pom.xml#L394) 。
+使用多模块版本统一控制（在 [根项目pom.xml](./pom.xml#L38) 中统一配置版本号），需要引入 [Maven Flatten Plugin 插件](./pom.xml#L351) 。
 
 ```shell
 cd UltronxrAIOServiceCenter
@@ -31,7 +31,7 @@ mvn clean install package
 
 ## 敏感信息配置文件（未包含在 commit 内，按需手动添加）
 
-### ./UAIOSC-web/src/main/resources/config/`aliCloudConfig.properties`
+### /UAIOSC-web/src/main/resources/config/`aliCloudConfig.properties`
 
 ```properties
 # 阿里云天气接口appKey
@@ -50,7 +50,7 @@ ali.oss.folderKey=
 
 ```
 
-### ./UAIOSC-web/src/main/resources/config/`tencentCloudConfig.properties`
+### /UAIOSC-web/src/main/resources/config/`tencentCloudConfig.properties`
 
 ```properties
 ## 腾讯云配置文件 ##
@@ -67,7 +67,7 @@ app.createTime=
 
 ```
 
-### ./UAIOSC-web/src/main/resources/config/`sms.properties`
+### /UAIOSC-web/src/main/resources/config/`sms.properties`
 
 ```properties
 ## 发送短信配置文件 ##
@@ -83,7 +83,7 @@ phoneNumber.electricityBill=
 
 ```
 
-### ./UAIOSC-web/src/main/resources/config/`wechat.properties`
+### /UAIOSC-web/src/main/resources/config/`wechat.properties`
 
 ```properties
 # 微信公众平台测试号 https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
