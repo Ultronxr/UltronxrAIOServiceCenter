@@ -28,3 +28,72 @@ cd UltronxrAIOServiceCenter
 mvn clean install package
 # mvn clean install -pl <module>
 ```
+
+## 敏感信息配置文件（未包含在 commit 内，按需手动添加）
+
+### ./UAIOSC-web/src/main/resources/config/`aliCloudConfig.properties`
+
+```properties
+# 阿里云天气接口appKey
+ali.weatherAPI.app.key=
+ali.weatherAPI.app.secret=
+ali.weatherAPI.app.code=
+
+# 阿里云OSS子用户
+ali.subUser.accessKey.id=
+ali.subUser.accessKey.secret=
+
+# 阿里云OSS配置
+ali.oss.endPoint=
+ali.oss.bucketName=
+ali.oss.folderKey=
+
+```
+
+### ./UAIOSC-web/src/main/resources/config/`tencentCloudConfig.properties`
+
+```properties
+## 腾讯云配置文件 ##
+
+# 腾讯云账户的SecretId和SecretKey
+secret.id=
+secret.key=
+
+# 腾讯云短信服务APP信息
+app.name=
+app.id=
+app.key=
+app.createTime=
+
+```
+
+### ./UAIOSC-web/src/main/resources/config/`sms.properties`
+
+```properties
+## 发送短信配置文件 ##
+
+# 短信签名
+sign=
+
+# 短信模板ID
+template.id.xx=
+
+# 短消息接收手机号，使用空格分隔
+phoneNumber.electricityBill=
+
+```
+
+### ./UAIOSC-web/src/main/resources/config/`wechat.properties`
+
+```properties
+# 微信公众平台测试号 https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
+
+## 测试号appID、appSecret
+sandbox.app.id=
+sandbox.app.secret=
+
+## 测试号消息接口配置
+sandbox.messageInterface.url=
+sandbox.messageInterface.token=
+
+```
