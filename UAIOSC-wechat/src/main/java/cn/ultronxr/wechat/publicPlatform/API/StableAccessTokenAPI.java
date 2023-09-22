@@ -6,7 +6,7 @@ import cn.hutool.json.*;
 import cn.ultronxr.common.constant.ResBundle;
 import cn.ultronxr.wechat.publicPlatform.bean.PublicPlatformData;
 import cn.ultronxr.wechat.publicPlatform.bean.mybatis.bean.AccessToken;
-import cn.ultronxr.wechat.publicPlatform.exception.AccessTokenRequireFailureException;
+import cn.ultronxr.wechat.publicPlatform.exception.AccessTokenRequestFailureException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,20 +27,18 @@ public class StableAccessTokenAPI {
         set("force_refresh", false);
     }};
 
-    public static AccessToken requestAccessToken() throws AccessTokenRequireFailureException {
+    public static AccessToken requestAccessToken() throws AccessTokenRequestFailureException {
         HttpRequest request = HttpRequest
                 .post(API)
                 .body(REQUEST_BODY.toString());
         HttpResponse response = request.execute();
         if(response.isOk()) {
             JSONObject resObj = JSONUtil.parseObj(response.body());
-            log.info("获取 access token 成功：{}", resObj);
             AccessToken token = JSONUtil.toBean(resObj, AccessToken.class);
             token.setAppId(ResBundle.WECHAT.getString("sandbox.app.id"));
             return token;
         }
-        log.warn("获取 access token 失败！{}", response.body());
-        throw new AccessTokenRequireFailureException();
+        throw new AccessTokenRequestFailureException(null, response.body());
     }
 
 }
