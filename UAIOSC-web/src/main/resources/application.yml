@@ -14,8 +14,8 @@ spring:
 
   security:
     user:
-      name: user
-      password: user
+      name: USELESS_PLACEHOLDER
+      password: USELESS_PLACEHOLDER
 
   redis:
     redisson:
