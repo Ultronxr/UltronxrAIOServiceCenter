@@ -2,7 +2,7 @@
 
 包括拳头游戏《瓦洛兰特》的各项数据统计功能。
 
-[Notion 文档](https://ultronxr2ws.notion.site/UAIOSC-valorant-GitHub-Valorant-API-0ac20cd4c5b744148a74c6cd0f3380dc)
+[Notion 文档](https://ultronxr.notion.site/UAIOSC-valorant-GitHub-Valorant-API-0495c0db416a4d14bc7e5e5c935a667e)
 
 ## MySQL
 
