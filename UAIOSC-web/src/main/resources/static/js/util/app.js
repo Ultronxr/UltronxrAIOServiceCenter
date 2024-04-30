@@ -71,6 +71,21 @@ const app = {
                 bonus: '/bonusOffers',
             },
         },
+        'tool': {
+            url: '/tool',
+            // IPLockoutStatistics: {
+            //     url: '/IPLockoutStatistics',
+            //     process: '/process',
+            // },
+            random: {
+                url: '/random',
+                string: '/string',
+            },
+            finalShellCrack: {
+                url: '/finalShellCrack',
+                getActivateKey: '/getActivateKey',
+            },
+        },
     },
 
     // 通用方法类库
