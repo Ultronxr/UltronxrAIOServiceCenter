@@ -5,6 +5,7 @@ import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.tool.bean.FinalShellCrackActivateKey;
 import cn.ultronxr.tool.service.FinalShellCrackService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @description
  */
 @Controller
-@RequestMapping("/finalShellCrack")
+@RequestMapping("/tool/finalShellCrack")
 @Slf4j
 public class FinalShellCrackController {
 
@@ -28,6 +29,9 @@ public class FinalShellCrackController {
     @RequestMapping("/getActivateKey")
     @ResponseBody
     public AjaxResponse getActivateKey(String machineCode) {
+        if(StringUtils.isBlank(machineCode)) {
+            return AjaxResponseUtils.fail("机器码为空");
+        }
         FinalShellCrackActivateKey key = service.getActivateKey(machineCode);
         return AjaxResponseUtils.success(key);
     }

@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "cn.ultronxr.gameregister",
         "cn.ultronxr.valorant",
         "cn.ultronxr.wechat",
+        "cn.ultronxr.tool",
 })
 @MapperScan(basePackages = {
         //"cn.ultronxr.common.bean.mybatis.mapper",

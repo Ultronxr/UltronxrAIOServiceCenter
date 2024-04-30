@@ -1,6 +1,5 @@
 package cn.ultronxr.tool.controller;
 
-import cn.hutool.core.util.RandomUtil;
 import cn.ultronxr.tool.service.RandomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @description 随机工具 controller
  */
 @Controller
-@RequestMapping("/random")
+@RequestMapping("/tool/random")
 @Slf4j
 public class RandomController {
 
@@ -26,6 +25,11 @@ public class RandomController {
         this.randomService = randomService;
     }
 
+    @GetMapping("/string")
+    @ResponseBody
+    public String randomString() {
+        return randomService.randomString(null);
+    }
 
     @GetMapping("/string/{length}")
     @ResponseBody
