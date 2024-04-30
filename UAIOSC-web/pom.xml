@@ -61,6 +61,11 @@
             <version>${module.wechat.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.ultronxr</groupId>
+            <artifactId>UAIOSC-tool</artifactId>
+            <version>${module.tool.version}</version>
+        </dependency>
 
     </dependencies>
 

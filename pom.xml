@@ -12,6 +12,7 @@
         <module>UAIOSC-game-register</module>
         <module>UAIOSC-valorant</module>
         <module>UAIOSC-wechat</module>
+        <module>UAIOSC-tool</module>
     </modules>
 
     <parent>
@@ -44,6 +45,7 @@
         <module.game-register.version>0.0.1-SNAPSHOT</module.game-register.version>
         <module.valorant.version>0.0.1-SNAPSHOT</module.valorant.version>
         <module.wechat.version>0.0.1-SNAPSHOT</module.wechat.version>
+        <module.tool.version>0.0.1-SNAPSHOT</module.tool.version>
 
         <spring-boot.version>2.7.10</spring-boot.version>
         <junit.version>4.13.2</junit.version>
@@ -72,6 +74,7 @@
         <aliyun-sdk-oss.version>3.11.0</aliyun-sdk-oss.version>
         <tencentcloud-sdk-java.version>3.1.621</tencentcloud-sdk-java.version>
         <quartz.version>2.3.2</quartz.version>
+        <bouncycastle.version>1.78.1</bouncycastle.version>
     </properties>
 
     <dependencies>
@@ -341,6 +344,13 @@
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz-jobs</artifactId>
                 <version>${quartz.version}</version>
+            </dependency>
+
+            <!-- 额外提供 Java Cryptography Architecture (JCA) 标准加密算法 -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk14</artifactId>
+                <version>${bouncycastle.version}</version>
             </dependency>
 
         </dependencies>
