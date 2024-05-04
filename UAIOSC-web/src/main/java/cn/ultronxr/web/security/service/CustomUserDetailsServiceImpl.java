@@ -77,6 +77,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         SecurityUser securityUser = new SecurityUser(user);
         securityUser.setPassword(customPasswordEncoder.encode(securityUser.getPassword()));
         securityUser.setAuthorities(authorities);
+        securityUser.setUserId(user.getId());
 
         return securityUser;
     }

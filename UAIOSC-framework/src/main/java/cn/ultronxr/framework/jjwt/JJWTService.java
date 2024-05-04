@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,6 +70,18 @@ public class JJWTService {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("username", username);
         if(null != authentication) {
+            // 使用反射获取 userId 字段
+            Long userId = null;
+            Class<?> clazz = authentication.getPrincipal().getClass();
+            try {
+                Field field = clazz.getDeclaredField("userId");
+                field.setAccessible(true);
+                userId = field.getLong(authentication.getPrincipal());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                log.error("生成 JWS token 抛出异常：无法使用反射获取 userId 字段值！");
+            }
+            claims.put("userId", userId);
+
             username = authentication.getName();
             claims.put("username", username);
             String authorities =

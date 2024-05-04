@@ -59,4 +59,15 @@ public class JWSParseResult {
         return null == jws ? null : jws.getBody().get("username", String.class);
     }
 
+    /**
+     * 前提：当 JWS token 通过验证后，<br/>
+     *      获取解析结果中 "userId" 对应的值
+     *
+     * @return token 解析结果中的 "userId" 对应的 {@code Long} 值<br/>
+     *          如果 token 验证未通过，返回 {@code null}
+     */
+    public Long getUserId() {
+        return null == jws ? null : jws.getBody().get("userId", Long.class);
+    }
+
 }

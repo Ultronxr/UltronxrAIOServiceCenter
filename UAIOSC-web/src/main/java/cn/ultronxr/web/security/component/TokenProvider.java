@@ -1,5 +1,6 @@
 package cn.ultronxr.web.security.component;
 
+import cn.ultronxr.framework.bean.JWSParseResult;
 import cn.ultronxr.framework.jjwt.JWSTokenService;
 import cn.ultronxr.web.security.bean.SecurityUser;
 import io.jsonwebtoken.Claims;
@@ -40,7 +41,9 @@ public class TokenProvider {
     }
 
     public Authentication parseAuthentication(String token) throws NullPointerException {
-        Claims claims = jwsTokenService.parseToken(token).getJws().getBody();
+        JWSParseResult parseResult = jwsTokenService.parseToken(token);
+        Claims claims = parseResult.getJws().getBody();
+
         Object authoritiesStr = claims.get("authorities");
         List<GrantedAuthority> authorities =
                 authoritiesStr != null ?
@@ -52,6 +55,8 @@ public class TokenProvider {
         principal.setUsername(claims.getSubject());
         principal.setPassword("******");
         principal.setAuthorities(authorities);
+        principal.setUserId(parseResult.getUserId());
+
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

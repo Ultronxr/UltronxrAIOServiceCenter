@@ -22,6 +22,8 @@ public class SecurityUser extends User implements UserDetails {
 
     private List<GrantedAuthority> authorities;
 
+    private long userId;
+
     public SecurityUser(User user) {
         super(user);
     }
