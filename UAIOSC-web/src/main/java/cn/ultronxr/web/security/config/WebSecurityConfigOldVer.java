@@ -24,8 +24,8 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.filter.CorsFilter;
 
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.AUTH_KEY;
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.REMEMBER_ME_KEY;
+import static cn.ultronxr.framework.bean.Constant.AuthCookieKey.AUTH_KEY;
+import static cn.ultronxr.framework.bean.Constant.AuthCookieKey.REMEMBER_ME_KEY;
 
 /**
  * @author Ultronxr

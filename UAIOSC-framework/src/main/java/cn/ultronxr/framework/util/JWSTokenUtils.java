@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static cn.ultronxr.framework.bean.Constant.AuthCookieKey.AUTH_KEY;
+
 /**
  * @author Ultronxr
  * @date 2023/02/02 14:58
@@ -39,6 +41,16 @@ public class JWSTokenUtils {
      */
     public static String refreshFieldWrapper(String username) {
         return FIELD_PREFIX_REFRESH_TOKEN + username;
+    }
+
+    /**
+     * 把客户端请求头中的 JWS token 解析出来
+     *
+     * @param request   客户端请求
+     * @return 干净的 JWS token 字符串
+     */
+    public static String unwrapRequestToken(HttpServletRequest request) {
+        return unwrapRequestToken(request, AUTH_KEY);
     }
 
     /**

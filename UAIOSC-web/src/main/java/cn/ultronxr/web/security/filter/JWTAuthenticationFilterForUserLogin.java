@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.REMEMBER_ME_KEY;
+import static cn.ultronxr.framework.bean.Constant.AuthCookieKey.REMEMBER_ME_KEY;
 
 /**
  * @author Ultronxr

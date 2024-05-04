@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.AUTH_KEY;
-
 /**
  * @author Ultronxr
  * @date 2023/03/15 18:43
@@ -42,7 +40,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         SecurityContextHolder.clearContext();
 
         // 通过 token 解析出当前登出的用户
-        String token = JWSTokenUtils.unwrapRequestToken(request, AUTH_KEY);
+        String token = JWSTokenUtils.unwrapRequestToken(request);
         JWSParseResult parseResult = jwsTokenService.parseToken(token);
         String username = parseResult.getUsername();
         log.info("用户登出成功：username = {}", username);

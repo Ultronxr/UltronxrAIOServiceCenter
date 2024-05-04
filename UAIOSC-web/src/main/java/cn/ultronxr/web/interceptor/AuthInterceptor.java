@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.*;
-import static cn.ultronxr.web.bean.Constant.AuthInfo;
+import static cn.ultronxr.framework.bean.Constant.AuthCookieKey.*;
+import static cn.ultronxr.framework.bean.Constant.AuthInfo;
 
 /**
  * @author Ultronxr

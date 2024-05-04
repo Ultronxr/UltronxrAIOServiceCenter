@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.AUTH_KEY;
-
 /**
  * @author Ultronxr
  * @date 2023/03/11 16:53
@@ -38,7 +36,7 @@ public class JWTAuthenticationFilterForRequest extends BasicAuthenticationFilter
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = JWSTokenUtils.unwrapRequestToken(request, AUTH_KEY);
+        String token = JWSTokenUtils.unwrapRequestToken(request);
         if (StringUtils.isNotEmpty(token)) {
             Authentication authentication = null;
             try {

@@ -1,4 +1,4 @@
-package cn.ultronxr.web.bean;
+package cn.ultronxr.framework.bean;
 
 import lombok.Getter;
 
