@@ -4,7 +4,6 @@ import cn.ultronxr.framework.jjwt.JWSTokenService;
 import cn.ultronxr.web.security.bean.SecurityUser;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,8 +24,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TokenProvider {
 
-    @Autowired
-    private JWSTokenService jwsTokenService;
+    private final JWSTokenService jwsTokenService;
+
+    public TokenProvider(JWSTokenService jwsTokenService) {
+        this.jwsTokenService = jwsTokenService;
+    }
 
 
     public String createAuthToken(Authentication authentication) {

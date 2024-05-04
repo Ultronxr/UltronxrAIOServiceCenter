@@ -9,7 +9,6 @@ import cn.ultronxr.system.service.UserService;
 import cn.ultronxr.web.security.bean.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,17 +29,25 @@ import java.util.List;
 @Slf4j
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private UserRoleService userRoleService;
+    private final UserRoleService userRoleService;
 
-    @Autowired
-    private RolePermissionService rolePermissionService;
+    private final RolePermissionService rolePermissionService;
 
-    @Autowired
-    private PasswordEncoder customPasswordEncoder;
+    private final PasswordEncoder customPasswordEncoder;
+
+    public CustomUserDetailsServiceImpl(
+            UserService userService,
+            UserRoleService userRoleService,
+            RolePermissionService rolePermissionService,
+            PasswordEncoder customPasswordEncoder
+    ) {
+        this.userService = userService;
+        this.userRoleService = userRoleService;
+        this.rolePermissionService = rolePermissionService;
+        this.customPasswordEncoder = customPasswordEncoder;
+    }
 
 
     /**

@@ -1,4 +1,4 @@
-package cn.ultronxr.web.security.handler.failure;
+package cn.ultronxr.web.security.handler.authenticationHandler;
 
 import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.common.util.HttpResponseUtils;

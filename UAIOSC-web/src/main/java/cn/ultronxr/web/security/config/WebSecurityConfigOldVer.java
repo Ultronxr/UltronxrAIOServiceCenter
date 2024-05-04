@@ -1,14 +1,12 @@
 package cn.ultronxr.web.security.config;
 
-import cn.ultronxr.web.security.handler.exception.CustomAccessDeniedHandler;
-import cn.ultronxr.web.security.handler.exception.CustomAuthenticationEntryPoint;
+import cn.ultronxr.web.security.handler.accessHandler.CustomAccessDeniedHandler;
+import cn.ultronxr.web.security.handler.authenticationHandler.CustomAuthenticationEntryPoint;
 import cn.ultronxr.web.security.filter.JWTAuthenticationFilterForUserLogin;
 import cn.ultronxr.web.security.filter.JWTAuthenticationFilterForRequest;
 import cn.ultronxr.web.filter.ReplaceRequestInputStreamFilter;
 import cn.ultronxr.web.security.component.TokenProvider;
-import cn.ultronxr.web.security.handler.success.CustomLogoutSuccessHandler;
-import cn.ultronxr.web.security.service.CustomPersistentTokenBasedRememberMeServicesImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.ultronxr.web.security.handler.logoutHandler.CustomLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,13 +19,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.filter.CorsFilter;
-
-import java.util.UUID;
 
 import static cn.ultronxr.web.bean.Constant.AuthCookieKey.AUTH_KEY;
 import static cn.ultronxr.web.bean.Constant.AuthCookieKey.REMEMBER_ME_KEY;
@@ -42,20 +37,41 @@ import static cn.ultronxr.web.bean.Constant.AuthCookieKey.REMEMBER_ME_KEY;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfigOldVer extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CorsFilter corsFilter;
+    private final TokenProvider tokenProvider;
 
-    @Autowired
-    private UserDetailsService customUserDetailsServiceImpl;
+    private final CorsFilter corsFilter;
 
-    @Autowired
-    private PasswordEncoder customPasswordEncoder;
+    private final UserDetailsService customUserDetailsServiceImpl;
 
-    @Autowired
-    private PersistentTokenRepository customPersistentTokenRepository;
+    private final PasswordEncoder customPasswordEncoder;
 
-    @Autowired
-    private TokenProvider tokenProvider;
+    private final PersistentTokenRepository customPersistentTokenRepository;
+
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    public WebSecurityConfigOldVer(
+            TokenProvider tokenProvider,
+            CorsFilter corsFilter,
+            UserDetailsService customUserDetailsServiceImpl,
+            PasswordEncoder customPasswordEncoder,
+            PersistentTokenRepository customPersistentTokenRepository,
+            CustomLogoutSuccessHandler customLogoutSuccessHandler,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+            CustomAccessDeniedHandler customAccessDeniedHandler
+    ) {
+        this.tokenProvider = tokenProvider;
+        this.corsFilter = corsFilter;
+        this.customUserDetailsServiceImpl = customUserDetailsServiceImpl;
+        this.customPasswordEncoder = customPasswordEncoder;
+        this.customPersistentTokenRepository = customPersistentTokenRepository;
+        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+    }
 
 
     @Override
@@ -98,15 +114,15 @@ public class WebSecurityConfigOldVer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/static/**", "/file/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
-                .antMatchers("/login", "/ajaxLogin", "/ajaxLogout").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/wechat/messageInterface").permitAll()
                 .anyRequest().authenticated();
 
         // 开启用户登录功能
         httpSecurity
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/ajaxLogin");
+                //.loginPage("/login")
+                .loginProcessingUrl("/login");
         // 在这里写如下配置是无效的！
         // 因为 JWTAuthenticationFilterForUserLogin 自定义实现了 AbstractAuthenticationProcessingFilter ，
         // 这里的配置会被自定义Filter覆盖，所以需要进入自定义Filter构造中调用 super.setXX() 方法进行设置
@@ -124,17 +140,20 @@ public class WebSecurityConfigOldVer extends WebSecurityConfigurerAdapter {
 
         // 配置用户登出功能
         httpSecurity
+                // 解决跨域问题
+                .addFilterBefore(corsFilter, LogoutFilter.class)
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+                .logoutSuccessHandler(customLogoutSuccessHandler)
                 .invalidateHttpSession(true)
+                // 前后端分离不使用 session ，不需要删除 cookie 中的 JSESSIONID
                 .deleteCookies(AUTH_KEY, REMEMBER_ME_KEY);
 
         // 自定义异常处理
         httpSecurity
                 .exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .accessDeniedHandler(new CustomAccessDeniedHandler());
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler);
 
     }
 

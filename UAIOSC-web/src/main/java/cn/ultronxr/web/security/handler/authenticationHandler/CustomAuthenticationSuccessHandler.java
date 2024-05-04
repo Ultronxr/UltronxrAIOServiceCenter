@@ -1,7 +1,8 @@
-package cn.ultronxr.web.security.handler.success;
+package cn.ultronxr.web.security.handler.authenticationHandler;
 
 import cn.ultronxr.common.util.AjaxResponseUtils;
 import cn.ultronxr.common.util.HttpResponseUtils;
+import cn.ultronxr.system.bean.mybatis.bean.User;
 import cn.ultronxr.web.security.component.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -13,9 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.AUTH_KEY;
-import static cn.ultronxr.web.bean.Constant.AuthCookieKey.USERNAME_KEY;
-
 /**
  * @author Ultronxr
  * @date 2023/03/14 18:08
@@ -24,7 +22,7 @@ import static cn.ultronxr.web.bean.Constant.AuthCookieKey.USERNAME_KEY;
 @Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
 
     public CustomAuthenticationSuccessHandler(TokenProvider tokenProvider) {
@@ -36,12 +34,16 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String authToken = tokenProvider.createAuthToken(authentication);
         log.info("用户登录成功：username = {}\n{}", authentication.getName(), authToken);
 
-        //User user = (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         //UserCache.putUser(user);
+         authentication.getAuthorities();
 
         HashMap<String, String> responseMap = new HashMap<>();
-        responseMap.put(AUTH_KEY, authToken);
         //responseMap.put(USERNAME_KEY, authentication.getName());
+        //responseMap.put(AUTH_KEY, authToken);
+        responseMap.put("token", authToken);
+        responseMap.put("userId", String.valueOf(user.getId()));
+
         HttpResponseUtils.sendJson(response, AjaxResponseUtils.success("用户登录成功", responseMap));
     }
 

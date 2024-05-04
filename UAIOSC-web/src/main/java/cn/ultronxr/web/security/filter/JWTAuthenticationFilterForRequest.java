@@ -1,14 +1,14 @@
 package cn.ultronxr.web.security.filter;
 
+import cn.ultronxr.framework.util.JWSTokenUtils;
 import cn.ultronxr.web.security.component.TokenProvider;
-import cn.ultronxr.web.security.handler.exception.CustomAuthenticationEntryPoint;
+import cn.ultronxr.web.security.handler.authenticationHandler.CustomAuthenticationEntryPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -38,12 +38,7 @@ public class JWTAuthenticationFilterForRequest extends BasicAuthenticationFilter
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String bearerToken = request.getHeader(AUTH_KEY);
-        String token = null;
-        if (StringUtils.isNotEmpty(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.replace("Bearer ", "");
-        }
-
+        String token = JWSTokenUtils.unwrapRequestToken(request, AUTH_KEY);
         if (StringUtils.isNotEmpty(token)) {
             Authentication authentication = null;
             try {

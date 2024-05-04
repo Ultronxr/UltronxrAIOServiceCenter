@@ -1,7 +1,7 @@
 package cn.ultronxr.web.security.filter;
 
-import cn.ultronxr.web.security.handler.failure.CustomAuthenticationFailureHandler;
-import cn.ultronxr.web.security.handler.success.CustomAuthenticationSuccessHandler;
+import cn.ultronxr.web.security.handler.authenticationHandler.CustomAuthenticationFailureHandler;
+import cn.ultronxr.web.security.handler.authenticationHandler.CustomAuthenticationSuccessHandler;
 import cn.ultronxr.web.bean.LoginObj;
 import cn.ultronxr.web.bean.RequestWrapper;
 import cn.ultronxr.web.security.component.TokenProvider;
@@ -50,7 +50,7 @@ public class JWTAuthenticationFilterForUserLogin extends UsernamePasswordAuthent
         this.customPersistentTokenRepository = customPersistentTokenRepository;
 
         // 指定该过滤器拦截的请求
-        super.setFilterProcessesUrl("/ajaxLogin");
+        super.setFilterProcessesUrl("/login");
         // 设置 handler
         super.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(tokenProvider));
         super.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
