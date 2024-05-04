@@ -63,9 +63,18 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
     @Override
     public List<Permission> getPermissionListForRole(Long roleId) {
+        return getPermissionListForRoleList(List.of(roleId));
+    }
+
+    @Override
+    public List<Permission> getPermissionListForRoleList(List<Long> roleIdList) {
+        if(CollectionUtils.isEmpty(roleIdList)) {
+            return Collections.emptyList();
+        }
+
         List<RolePermission> list = rolePermissionMapper.selectList(
                 Wrappers.lambdaQuery(RolePermission.class)
-                        .eq(RolePermission::getRoleId, roleId)
+                        .in(RolePermission::getRoleId, roleIdList)
         );
         List<Long> permissionIdList = list.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
 

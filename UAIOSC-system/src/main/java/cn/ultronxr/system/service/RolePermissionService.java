@@ -46,4 +46,11 @@ public interface RolePermissionService {
      */
     List<Permission> getPermissionListForRole(Long roleId);
 
+    /**
+     * 获取多个角色的所有权限
+     * @param roleIdList 角色 ID 列表
+     * @return {@code List<Permission>} 权限对象列表
+     */
+    List<Permission> getPermissionListForRoleList(List<Long> roleIdList);
+
 }
