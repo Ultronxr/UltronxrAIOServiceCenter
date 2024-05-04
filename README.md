@@ -1,12 +1,12 @@
-# UltronxrAIOServiceCenter
+# UltronxrAIOServiceCenter (UAIOSC)
 
-Ultronxr 服务中心，SpringBoot 多模块项目架构。
+Ultronxr 集成式服务中心，`SpringBoot` 多模块项目架构。
+
+本仓库是**后端项目**，配套的前端项目见 [此](https://github.com/Ultronxr/UltronxrAIOServiceCenter-web) 。
 
 ## 环境
 
 openjdk 11.0.10 2021-01-19 (AdoptOpenJDK11U-LTS-jdk_x64_windows_hotspot_11.0.10_9)
-
-IntelliJ IDEA 2022.2
 
 
 ## 项目构建
