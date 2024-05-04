@@ -7,8 +7,8 @@ package cn.ultronxr.common.bean;
  *              注：这里的响应代码只在业务上使用，与HTTP响应代码不一样。
  */
 public enum ResponseCode {
-    SUCCESS(200, "业务成功"),
-    FAIL(500, "业务失败"),
+    SUCCESS(0, "业务成功"),
+    FAIL(-1, "业务失败"),
     ;
 
 

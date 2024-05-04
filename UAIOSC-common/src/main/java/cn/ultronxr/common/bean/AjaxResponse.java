@@ -17,10 +17,10 @@ public class AjaxResponse extends HashMap<String, Object> {
     private static final String CODE_KEY = "code";
 
     // 消息
-    private static final String MSG_KEY = "msg";
+    private static final String MSG_KEY = "message";
 
     // 数据
-    private static final String DATA_KEY = "data";
+    private static final String DATA_KEY = "result";
 
 
     public AjaxResponse() {

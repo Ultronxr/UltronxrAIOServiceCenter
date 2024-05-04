@@ -20,8 +20,20 @@ public class AjaxResponseUtils {
 
     /** HTTP 响应封装 */
     public static class HTTP {
+        private static final AjaxResponse NOT_FOUND = new AjaxResponse(HttpStatus.NOT_FOUND);
         private static final AjaxResponse UNAUTHORIZED = new AjaxResponse(HttpStatus.UNAUTHORIZED);
         private static final AjaxResponse FORBIDDEN = new AjaxResponse(HttpStatus.FORBIDDEN);
+
+        public static AjaxResponse notFound() {
+            return NOT_FOUND;
+        }
+
+        public static AjaxResponse notFound(String msg) {
+            if(StringUtils.isEmpty(msg)) {
+                return NOT_FOUND;
+            }
+            return new AjaxResponse(HttpStatus.NOT_FOUND, msg);
+        }
 
         public static AjaxResponse unauthorized() {
             return UNAUTHORIZED;
