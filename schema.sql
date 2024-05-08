@@ -65,6 +65,51 @@ CREATE TABLE system_role_permission (
     PRIMARY KEY(`role_id`, `permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 角色/权限 对应表';
 
+CREATE TABLE system_menu (
+    `id`                           VARCHAR(255)    NOT NULL              COMMENT '菜单 ID',
+    `parent_id`                    VARCHAR(255)    DEFAULT NULL          COMMENT '父级菜单 ID',
+    `name`                         VARCHAR(255)    NOT NULL              COMMENT '菜单名称',
+    `type`                         INT             NOT NULL              COMMENT '菜单类型：0-目录、1-菜单、2-按钮',
+    `path`                         VARCHAR(255)    DEFAULT NULL          COMMENT '菜单路由地址',
+    `redirect`                     VARCHAR(255)    DEFAULT NULL          COMMENT '输入菜单路由地址进行访问时，实际跳转的路由地址',
+    `component`                    VARCHAR(255)    DEFAULT NULL          COMMENT '组件路径',
+    `permission_code`              VARCHAR(255)    NOT NULL              COMMENT '权限标识',
+    `is_enabled`                   TINYINT(1)      NOT NULL DEFAULT 1    COMMENT '是否启用：0-禁用、1-启用',
+    `is_link`                      TINYINT(1)      NOT NULL DEFAULT 0    COMMENT '是否外链：0-非外链、1-外链',
+    `is_cached`                    TINYINT(1)      NOT NULL DEFAULT 0    COMMENT '是否缓存：0-不缓存、1-缓存',
+    PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 菜单表';
+
+CREATE TABLE system_menu_meta (
+    `id`                        VARCHAR(255)    NOT NULL              COMMENT '菜单 ID',
+    `title`                     VARCHAR(255)    NOT NULL              COMMENT '菜单标题（对应前端 i18 的值）',
+    `order_no`                  INT             DEFAULT NULL          COMMENT '菜单排序，只对第一级有效',
+    `dynamic_level`             INT             DEFAULT NULL          COMMENT '动态路由可打开Tab页数',
+    `icon`                      VARCHAR(255)    DEFAULT NULL          COMMENT '菜单图标',
+    `real_path`                 VARCHAR(255)    DEFAULT NULL          COMMENT '动态路由的实际Path, 即去除路由的动态部分',
+    `roles`                     VARCHAR(999)    DEFAULT NULL          COMMENT '可以访问的角色，只在权限模式为Role的时候有效（使用,分隔）',
+    `frame_src`                 VARCHAR(255)    DEFAULT NULL          COMMENT '内嵌iframe的地址',
+    `transition_name`           VARCHAR(255)    DEFAULT NULL          COMMENT '指定该路由切换的动画名',
+    `current_active_menu`       VARCHAR(255)    DEFAULT NULL          COMMENT '当前激活的菜单。用于配置详情页时左侧激活的菜单路径',
+    `hide_menu`                 TINYINT(1)      DEFAULT NULL          COMMENT '当前路由不在菜单栏显示',
+    `hide_children_in_menu`     TINYINT(1)      DEFAULT NULL          COMMENT '隐藏所有子菜单',
+    `hide_breadcrumb`           TINYINT(1)      DEFAULT NULL          COMMENT '隐藏该路由在面包屑上面的显示',
+    `hide_tab`                  TINYINT(1)      DEFAULT NULL          COMMENT '当前路由不在标签页显示',
+    `ignore_auth`               TINYINT(1)      DEFAULT NULL          COMMENT '是否忽略权限，只在权限模式为Role的时候有效',
+    `ignore_keep_alive`         TINYINT(1)      DEFAULT NULL          COMMENT '是否忽略KeepAlive缓存',
+    `ignore_route`              TINYINT(1)      DEFAULT NULL          COMMENT '忽略路由。用于在ROUTE_MAPPING以及BACK权限模式下，生成对应的菜单而忽略路由。2.5.3以上版本有效',
+    `affix`                     TINYINT(1)      DEFAULT NULL          COMMENT '是否固定标签',
+    `carry_param`               TINYINT(1)      DEFAULT NULL          COMMENT '如果该路由会携带参数，且需要在tab页上面显示。则需要设置为true',
+    `hide_path_for_children`    TINYINT(1)      DEFAULT NULL          COMMENT '是否在子级菜单的完整path中忽略本级path。2.5.3以上版本有效',
+    PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 菜单元数据表（参见：https://doc.vvbin.cn/guide/router.html#meta-%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E）';
+
+CREATE TABLE system_role_menu (
+    `role_id`      BIGINT          NOT NULL    COMMENT '角色 ID',
+    `menu_id`      VARCHAR(255)    NOT NULL    COMMENT '菜单 ID',
+    PRIMARY KEY(`role_id`, `menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 角色/菜单 对应表';
+
 
 -- ----------------------------
 -- UAIOSC-game-register 游戏统计模块

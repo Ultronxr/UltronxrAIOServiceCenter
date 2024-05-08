@@ -24,7 +24,7 @@ spring:
 server:
   port: 9500
   servlet:
-    context-path: /
+    context-path: /api
 
 logging:
   config: classpath:logback-spring.xml

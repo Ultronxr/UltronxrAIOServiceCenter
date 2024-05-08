@@ -1,6 +1,8 @@
 package cn.ultronxr.system.service;
 
 import cn.ultronxr.system.bean.mybatis.bean.Permission;
+import cn.ultronxr.system.bean.mybatis.bean.RolePermission;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * @date 2022/12/14 15:07
  * @description 角色-权限 对应关系 service
  */
-public interface RolePermissionService {
+public interface RolePermissionService extends IService<RolePermission> {
 
     /**
      * 处理（赋予或移除）一个角色的权限。<br/>

@@ -1,6 +1,8 @@
 package cn.ultronxr.system.service;
 
 import cn.ultronxr.system.bean.mybatis.bean.Role;
+import cn.ultronxr.system.bean.mybatis.bean.UserRole;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * @date 2022/12/14 15:07
  * @description 用户-角色 对应关系 service
  */
-public interface UserRoleService {
+public interface UserRoleService extends IService<UserRole> {
 
     /**
      * 给一个用户赋予一个角色
