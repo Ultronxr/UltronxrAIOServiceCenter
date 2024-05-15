@@ -36,22 +36,22 @@ CREATE TABLE system_role (
     PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 角色信息表';
 
-CREATE TABLE system_permission (
-    `id`                 BIGINT          NOT NULL AUTO_INCREMENT    COMMENT '权限ID，主键',
-    `parent_id`          VARCHAR(50)     DEFAULT NULL               COMMENT '父权限ID',
-    `permission_name`    VARCHAR(100)    NOT NULL                   COMMENT '权限名称（例：用户删除权限）',
-    `permission_code`    VARCHAR(100)    NOT NULL                   COMMENT '权限代码（例：system:user:delete）',
-    `menu`               VARCHAR(255)    DEFAULT NULL               COMMENT '此权限对应的功能菜单',
-    `menu_type`          VARCHAR(50)     DEFAULT NULL               COMMENT '菜单类型：目录 DIRECTORY / 菜单 MENU / 按钮 BUTTON',
-    `menu_sort`          INT             DEFAULT NULL               COMMENT '菜单排序',
-    `request`            VARCHAR(255)    DEFAULT NULL               COMMENT '请求接口',
-    `note`               VARCHAR(255)    DEFAULT NULL               COMMENT '备注',
-    `create_by`          VARCHAR(100)    DEFAULT NULL               COMMENT '创建者',
-    `create_time`        DATETIME        DEFAULT NULL               COMMENT '创建时间',
-    `update_by`          VARCHAR(100)    DEFAULT NULL               COMMENT '更新者',
-    `update_time`        DATETIME        DEFAULT NULL               COMMENT '更新时间',
-    PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 权限信息表';
+# CREATE TABLE system_permission (
+#     `id`                 BIGINT          NOT NULL AUTO_INCREMENT    COMMENT '权限ID，主键',
+#     `parent_id`          VARCHAR(50)     DEFAULT NULL               COMMENT '父权限ID',
+#     `permission_name`    VARCHAR(100)    NOT NULL                   COMMENT '权限名称（例：用户删除权限）',
+#     `permission_code`    VARCHAR(100)    NOT NULL                   COMMENT '权限代码（例：system:user:delete）',
+#     `menu`               VARCHAR(255)    DEFAULT NULL               COMMENT '此权限对应的功能菜单',
+#     `menu_type`          VARCHAR(50)     DEFAULT NULL               COMMENT '菜单类型：目录 DIRECTORY / 菜单 MENU / 按钮 BUTTON',
+#     `menu_sort`          INT             DEFAULT NULL               COMMENT '菜单排序',
+#     `request`            VARCHAR(255)    DEFAULT NULL               COMMENT '请求接口',
+#     `note`               VARCHAR(255)    DEFAULT NULL               COMMENT '备注',
+#     `create_by`          VARCHAR(100)    DEFAULT NULL               COMMENT '创建者',
+#     `create_time`        DATETIME        DEFAULT NULL               COMMENT '创建时间',
+#     `update_by`          VARCHAR(100)    DEFAULT NULL               COMMENT '更新者',
+#     `update_time`        DATETIME        DEFAULT NULL               COMMENT '更新时间',
+#     PRIMARY KEY(`id`)
+# ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 权限信息表';
 
 CREATE TABLE system_user_role (
     `user_id`    BIGINT    NOT NULL    COMMENT '用户ID',
@@ -59,11 +59,11 @@ CREATE TABLE system_user_role (
     PRIMARY KEY(`user_id`, `role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 用户/角色 对应表';
 
-CREATE TABLE system_role_permission (
-    `role_id`          BIGINT    NOT NULL    COMMENT '角色ID',
-    `permission_id`    BIGINT    NOT NULL    COMMENT '权限ID',
-    PRIMARY KEY(`role_id`, `permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 角色/权限 对应表';
+# CREATE TABLE system_role_permission (
+#     `role_id`          BIGINT    NOT NULL    COMMENT '角色ID',
+#     `permission_id`    BIGINT    NOT NULL    COMMENT '权限ID',
+#     PRIMARY KEY(`role_id`, `permission_id`)
+# ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'system 模块 - 角色/权限 对应表';
 
 CREATE TABLE system_menu (
     `id`                           VARCHAR(255)    NOT NULL              COMMENT '菜单 ID',
