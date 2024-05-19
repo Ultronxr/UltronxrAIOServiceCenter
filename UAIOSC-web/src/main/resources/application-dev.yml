@@ -52,7 +52,7 @@ jjwt:
   issuer: UAIOSC-framework-JJWT-dev
   secret: ${secret.dev.jjwt.secret}
   expireMinutes:
-    authToken: 20
+    authToken: 50
     refreshToken: 60
 #  cookieKey:
 #    auth: Authorization
